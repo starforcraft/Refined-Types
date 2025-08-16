@@ -1,0 +1,6 @@
+{
+  "parent": "refinedtypes:block/disk/energy_disk",
+  "textures": {
+    "base": "refinedtypes:block/disk/source_disk"
+  }
+}

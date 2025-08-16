@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "refinedtypes:item/energy/262144k_energy_storage_disk"
+  }
+}

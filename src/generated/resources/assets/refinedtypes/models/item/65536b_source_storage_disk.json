@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "refinedtypes:item/source/65536b_source_storage_disk"
+  }
+}

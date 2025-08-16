@@ -1,0 +1,31 @@
+{
+  "values": [
+    "refinedtypes:64k_energy_storage_block",
+    "refinedtypes:256k_energy_storage_block",
+    "refinedtypes:1024k_energy_storage_block",
+    "refinedtypes:8192k_energy_storage_block",
+    "refinedtypes:65536k_energy_storage_block",
+    "refinedtypes:262144k_energy_storage_block",
+    "refinedtypes:1048576k_energy_storage_block",
+    "refinedtypes:8388608k_energy_storage_block",
+    "refinedtypes:infinite_energy_storage_block",
+    "refinedtypes:64b_source_storage_block",
+    "refinedtypes:256b_source_storage_block",
+    "refinedtypes:1024b_source_storage_block",
+    "refinedtypes:8192b_source_storage_block",
+    "refinedtypes:65536b_source_storage_block",
+    "refinedtypes:262144b_source_storage_block",
+    "refinedtypes:1048576b_source_storage_block",
+    "refinedtypes:8388608b_source_storage_block",
+    "refinedtypes:infinite_source_storage_block",
+    "refinedtypes:1k_soul_storage_block",
+    "refinedtypes:8k_soul_storage_block",
+    "refinedtypes:64k_soul_storage_block",
+    "refinedtypes:512k_soul_storage_block",
+    "refinedtypes:4096k_soul_storage_block",
+    "refinedtypes:32768k_soul_storage_block",
+    "refinedtypes:262144k_soul_storage_block",
+    "refinedtypes:2097152k_soul_storage_block",
+    "refinedtypes:infinite_soul_storage_block"
+  ]
+}

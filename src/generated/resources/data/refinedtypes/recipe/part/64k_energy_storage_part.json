@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:redstone_block"
+    },
+    "G": {
+      "tag": "c:glass_blocks"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    },
+    "S": {
+      "tag": "c:silicon"
+    }
+  },
+  "pattern": [
+    "SES",
+    "GRG",
+    "SGS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "refinedtypes:64k_energy_storage_part"
+  }
+}

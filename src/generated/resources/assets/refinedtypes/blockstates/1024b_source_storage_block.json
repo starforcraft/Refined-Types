@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "refinedtypes:block/1024b_source_storage_block"
+    }
+  }
+}

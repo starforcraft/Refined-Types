@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "id": "refinedtypes:64k_soul_storage_disk"
+    },
+    "title": {
+      "translate": "advancements.refinedtypes.storing_souls"
+    },
+    "description": {
+      "translate": "advancements.refinedtypes.storing_souls.description"
+    }
+  },
+  "parent": "refinedstorage:drives",
+  "criteria": {
+    "soul_storage_disk_in_inventory": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#refinedtypes:soul_storage_disks"
+          }
+        ]
+      }
+    }
+  }
+}

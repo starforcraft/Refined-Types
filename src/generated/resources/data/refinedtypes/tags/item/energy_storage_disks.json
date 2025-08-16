@@ -1,0 +1,13 @@
+{
+  "values": [
+    "refinedtypes:64k_energy_storage_disk",
+    "refinedtypes:256k_energy_storage_disk",
+    "refinedtypes:1024k_energy_storage_disk",
+    "refinedtypes:8192k_energy_storage_disk",
+    "refinedtypes:65536k_energy_storage_disk",
+    "refinedtypes:262144k_energy_storage_disk",
+    "refinedtypes:1048576k_energy_storage_disk",
+    "refinedtypes:8388608k_energy_storage_disk",
+    "refinedtypes:infinite_energy_storage_disk"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "id": "refinedtypes:64k_energy_storage_disk"
+    },
+    "title": {
+      "translate": "advancements.refinedtypes.storing_energies"
+    },
+    "description": {
+      "translate": "advancements.refinedtypes.storing_energies.description"
+    }
+  },
+  "parent": "refinedstorage:drives",
+  "criteria": {
+    "energy_storage_disk_in_inventory": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#refinedtypes:energy_storage_disks"
+          }
+        ]
+      }
+    }
+  }
+}

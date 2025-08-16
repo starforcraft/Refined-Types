@@ -1,0 +1,4 @@
+{
+  "type": "refinedtypes:source_storage_disk_upgrade",
+  "to": "1048576b"
+}

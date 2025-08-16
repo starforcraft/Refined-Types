@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:redstone_block"
+    },
+    "P": {
+      "item": "refinedstorage:advanced_processor"
+    },
+    "R": {
+      "item": "minecraft:netherite_block"
+    },
+    "S": {
+      "item": "refinedtypes:8388608k_energy_storage_part"
+    }
+  },
+  "pattern": [
+    "PEP",
+    "SRS",
+    "PSP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "refinedtypes:infinite_energy_storage_part"
+  }
+}

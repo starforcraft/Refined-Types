@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "industrialforegoingsouls"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "refinedstorage:storage_housing"
+    },
+    {
+      "item": "refinedtypes:32768k_soul_storage_part"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "refinedtypes:32768k_soul_storage_disk"
+  }
+}

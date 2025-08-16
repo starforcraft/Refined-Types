@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "refinedtypes:block/64k_soul_storage_block"
+    }
+  }
+}

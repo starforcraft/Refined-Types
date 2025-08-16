@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "refinedtypes:block/infinite_source_storage_block"
+    }
+  }
+}

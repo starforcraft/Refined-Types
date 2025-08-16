@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "refinedtypes:block/65536k_energy_storage_block"
+    }
+  }
+}

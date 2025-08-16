@@ -1,0 +1,27 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+issueTrackerURL = "https://github.com/starforcraft/Refined-Types/issues"
+license = "MIT"
+[[mods]]
+modId = "refinedtypes"
+version = "${version}"
+displayName = "Refined Types"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/refined-types"
+authors = "Refined Types"
+description = "Refined Types is an addon for Refined Storage which adds FE, Source and Souls Storage Disks."
+
+[[mixins]]
+config="refinedtypes.mixins.json"
+
+[[dependencies.refinedtypes]]
+modId="minecraft"
+type="required"
+versionRange="[1.21,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.refinedtypes]]
+modId = "refinedstorage"
+type = "required"
+versionRange = "2.0.0-beta.7"
+side = "BOTH"

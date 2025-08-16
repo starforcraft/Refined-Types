@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "refinedtypes:block/energy_storage_block/256k_energy_storage_block"
+  }
+}

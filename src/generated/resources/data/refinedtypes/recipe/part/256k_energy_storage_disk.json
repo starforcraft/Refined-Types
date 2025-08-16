@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "refinedstorage:storage_housing"
+    },
+    {
+      "item": "refinedtypes:256k_energy_storage_part"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "refinedtypes:256k_energy_storage_disk"
+  }
+}

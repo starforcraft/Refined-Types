@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "refinedtypes:item/soul/64k_soul_storage_part"
+  }
+}

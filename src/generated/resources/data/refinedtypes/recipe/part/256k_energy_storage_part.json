@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:redstone_block"
+    },
+    "P": {
+      "item": "refinedstorage:basic_processor"
+    },
+    "R": {
+      "item": "minecraft:gold_block"
+    },
+    "S": {
+      "item": "refinedtypes:64k_energy_storage_part"
+    }
+  },
+  "pattern": [
+    "PEP",
+    "SRS",
+    "PSP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "refinedtypes:256k_energy_storage_part"
+  }
+}

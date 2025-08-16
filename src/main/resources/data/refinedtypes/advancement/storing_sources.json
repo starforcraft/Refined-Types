@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "id": "refinedtypes:64k_source_storage_disk"
+    },
+    "title": {
+      "translate": "advancements.refinedtypes.storing_sources"
+    },
+    "description": {
+      "translate": "advancements.refinedtypes.storing_sources.description"
+    }
+  },
+  "parent": "refinedstorage:drives",
+  "criteria": {
+    "source_storage_disk_in_inventory": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#refinedtypes:source_storage_disks"
+          }
+        ]
+      }
+    }
+  }
+}

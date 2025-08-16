@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "refinedtypes:item/source/1048576b_source_storage_part"
+  }
+}

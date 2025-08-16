@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "refinedtypes:block/soul_storage_block/262144k_soul_storage_block"
+  }
+}

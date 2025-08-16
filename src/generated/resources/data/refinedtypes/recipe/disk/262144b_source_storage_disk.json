@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "ars_nouveau"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:redstone_block"
+    },
+    "G": {
+      "tag": "c:glass_blocks"
+    },
+    "P": {
+      "item": "refinedtypes:262144b_source_storage_part"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "GRG",
+    "RPR",
+    "EEE"
+  ],
+  "result": {
+    "count": 1,
+    "id": "refinedtypes:262144b_source_storage_disk"
+  }
+}

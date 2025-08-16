@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "refinedtypes:block/source_storage_block/infinite_source_storage_block"
+  }
+}
