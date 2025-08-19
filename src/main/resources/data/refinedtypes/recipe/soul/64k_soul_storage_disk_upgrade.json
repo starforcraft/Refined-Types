@@ -1,4 +1,4 @@
 {
-  "type": "refinedtypes:soul_storage_block_upgrade",
+  "type": "refinedtypes:soul_storage_disk_upgrade",
   "to": "64k"
 }

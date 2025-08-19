@@ -13,6 +13,10 @@ import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergy
 public record EnergyStorageInterface(InterfaceBlockEntity interfaceBlockEntity) implements ILongEnergyStorage {
     @Override
     public long receive(final long maxReceive, final boolean simulate) {
+        if (maxReceive <= 0) {
+            return 0;
+        }
+
         final Network network = this.interfaceBlockEntity.getNetworkForItem();
         if (network != null) {
             final StorageNetworkComponent storageComponent = this.interfaceBlockEntity.getNetworkForItem().getComponent(StorageNetworkComponent.class);
@@ -23,6 +27,10 @@ public record EnergyStorageInterface(InterfaceBlockEntity interfaceBlockEntity) 
 
     @Override
     public long extract(final long maxExtract, final boolean simulate) {
+        if (maxExtract <= 0) {
+            return 0;
+        }
+
         final Network network = this.interfaceBlockEntity.getNetworkForItem();
         if (network != null) {
             final StorageNetworkComponent storageComponent = this.interfaceBlockEntity.getNetworkForItem().getComponent(StorageNetworkComponent.class);

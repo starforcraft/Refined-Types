@@ -33,7 +33,7 @@ public class RecipeProviderImpl extends RecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(final RecipeOutput output) {
+    protected void buildRecipes(final RecipeOutput output) { //TODO: change recipe of energy disks to use copper
         // The following lines aren't my proudest bit of code
 
         record Upgrade(Item from, Item to, Item processor, Item upgradeBlock) { }

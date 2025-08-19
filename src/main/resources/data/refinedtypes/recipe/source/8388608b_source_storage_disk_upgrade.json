@@ -1,4 +1,4 @@
 {
-  "type": "refinedtypes:source_storage_block_upgrade",
+  "type": "refinedtypes:source_storage_disk_upgrade",
   "to": "8388608b"
 }
