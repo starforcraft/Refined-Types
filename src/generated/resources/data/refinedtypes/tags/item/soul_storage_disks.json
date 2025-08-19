@@ -1,13 +1,40 @@
 {
   "values": [
-    "refinedtypes:1k_soul_storage_disk",
-    "refinedtypes:8k_soul_storage_disk",
-    "refinedtypes:64k_soul_storage_disk",
-    "refinedtypes:512k_soul_storage_disk",
-    "refinedtypes:4096k_soul_storage_disk",
-    "refinedtypes:32768k_soul_storage_disk",
-    "refinedtypes:262144k_soul_storage_disk",
-    "refinedtypes:2097152k_soul_storage_disk",
-    "refinedtypes:infinite_soul_storage_disk"
+    {
+      "id": "refinedtypes:1k_soul_storage_disk",
+      "required": false
+    },
+    {
+      "id": "refinedtypes:8k_soul_storage_disk",
+      "required": false
+    },
+    {
+      "id": "refinedtypes:64k_soul_storage_disk",
+      "required": false
+    },
+    {
+      "id": "refinedtypes:512k_soul_storage_disk",
+      "required": false
+    },
+    {
+      "id": "refinedtypes:4096k_soul_storage_disk",
+      "required": false
+    },
+    {
+      "id": "refinedtypes:32768k_soul_storage_disk",
+      "required": false
+    },
+    {
+      "id": "refinedtypes:262144k_soul_storage_disk",
+      "required": false
+    },
+    {
+      "id": "refinedtypes:2097152k_soul_storage_disk",
+      "required": false
+    },
+    {
+      "id": "refinedtypes:infinite_soul_storage_disk",
+      "required": false
+    }
   ]
 }

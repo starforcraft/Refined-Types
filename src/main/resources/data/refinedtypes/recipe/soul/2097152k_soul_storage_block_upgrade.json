@@ -1,4 +1,10 @@
 {
   "type": "refinedtypes:soul_storage_block_upgrade",
-  "to": "2097152k"
+  "to": "2097152k",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "industrialforegoingsouls"
+    }
+  ]
 }

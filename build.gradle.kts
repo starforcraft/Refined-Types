@@ -94,7 +94,6 @@ dependencies {
     jarJar("dev.technici4n:GrandPower:${grandpowerVersion}")
 
     implementation("com.hollingsworth.ars_nouveau:ars_nouveau-${minecraftVersion}:${arsNouveauVersion}")
-    implementation("com.hollingsworth.ars_nouveau:ars_nouveau-${minecraftVersion}:${arsNouveauVersion}")
     implementation("com.buuz135:industrialforegoing:1.21-${industrialForegoingVersion}")
     implementation("curse.maven:industrial-foregoing-souls-904394:6235883")
     implementation("com.hrznstudio:titanium:1.21-${titaniumVersion}")

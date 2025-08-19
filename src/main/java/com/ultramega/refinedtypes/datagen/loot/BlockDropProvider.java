@@ -51,7 +51,7 @@ public class BlockDropProvider extends BlockLootSubProvider {
         return blocks;
     }
 
-    private void drop(final Block block) {
+    private void drop(final Block block) { //TODO: make this optional somehow too
         this.add(block, this.createSingleItemTable(block)
             .apply(copyName()));
     }

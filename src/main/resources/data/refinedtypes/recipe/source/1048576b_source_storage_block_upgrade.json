@@ -1,4 +1,10 @@
 {
   "type": "refinedtypes:source_storage_block_upgrade",
-  "to": "1048576b"
+  "to": "1048576b",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "ars_nouveau"
+    }
+  ]
 }

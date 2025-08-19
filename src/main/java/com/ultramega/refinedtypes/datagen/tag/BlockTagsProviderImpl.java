@@ -13,6 +13,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -29,20 +30,23 @@ public class BlockTagsProviderImpl extends TagsProvider<Block> {
     @Override
     protected void addTags(final HolderLookup.Provider provider) {
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
-            this.markAsMineable(Blocks.getEnergyStorageBlock(variant));
+            this.markAsMineable(Blocks.getEnergyStorageBlock(variant), false);
         }
         for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-            this.markAsMineable(Blocks.getSourceStorageBlock(variant));
+            this.markAsMineable(Blocks.getSourceStorageBlock(variant), true);
         }
         for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-            this.markAsMineable(Blocks.getSoulStorageBlock(variant));
+            this.markAsMineable(Blocks.getSoulStorageBlock(variant), true);
         }
     }
 
-    private void markAsMineable(final Block block) {
-        this.tag(MINEABLE).add(ResourceKey.create(
-            Registries.BLOCK,
-            BuiltInRegistries.BLOCK.getKey(block)
-        ));
+    private void markAsMineable(final Block block, final boolean optional) {
+        final ResourceLocation key = BuiltInRegistries.BLOCK.getKey(block);
+
+        if (optional) {
+            this.tag(MINEABLE).addOptional(key);
+        } else {
+            this.tag(MINEABLE).add(ResourceKey.create(Registries.BLOCK, key));
+        }
     }
 }

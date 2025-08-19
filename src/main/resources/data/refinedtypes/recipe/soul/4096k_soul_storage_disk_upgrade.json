@@ -1,4 +1,10 @@
 {
   "type": "refinedtypes:soul_storage_disk_upgrade",
-  "to": "4096k"
+  "to": "4096k",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "industrialforegoingsouls"
+    }
+  ]
 }

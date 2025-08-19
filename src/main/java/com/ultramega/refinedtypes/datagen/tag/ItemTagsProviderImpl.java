@@ -11,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
@@ -38,20 +39,33 @@ public class ItemTagsProviderImpl extends ItemTagsProvider {
             Arrays.stream(EnergyStorageVariant.values())
                 .map(Items::getEnergyStorageDisk)
                 .map(t -> (Supplier<Item>) () -> t)
-                .toList());
+                .toList(), false);
         this.addAllToTag(SOURCE_STORAGE_DISKS,
             Arrays.stream(SourceStorageVariant.values())
                 .map(Items::getSourceStorageDisk)
                 .map(t -> (Supplier<Item>) () -> t)
-                .toList());
+                .toList(), true);
         this.addAllToTag(SOUL_STORAGE_DISKS,
             Arrays.stream(SoulStorageVariant.values())
                 .map(Items::getSoulStorageDisk)
                 .map(t -> (Supplier<Item>) () -> t)
-                .toList());
+                .toList(), true);
     }
 
-    private <T extends Item> void addAllToTag(final TagKey<Item> t, final Collection<Supplier<T>> items) {
-        this.tag(t).add(items.stream().map(Supplier::get).toArray(Item[]::new)).replace(false);
+    private <T extends Item> void addAllToTag(final TagKey<Item> tag,
+                                              final Collection<Supplier<T>> items,
+                                              final boolean optional) {
+        final var builder = this.tag(tag);
+
+        for (final Supplier<T> supplier : items) {
+            final Item item = supplier.get();
+            if (optional) {
+                builder.addOptional(BuiltInRegistries.ITEM.getKey(item));
+            } else {
+                builder.add(item);
+            }
+        }
+
+        builder.replace(false);
     }
 }
