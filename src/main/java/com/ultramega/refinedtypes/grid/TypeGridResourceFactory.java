@@ -1,6 +1,5 @@
 package com.ultramega.refinedtypes.grid;
 
-import com.google.common.base.Suppliers;
 import com.ultramega.refinedtypes.grid.energy.EnergyGridResource;
 import com.ultramega.refinedtypes.grid.soul.SoulGridResource;
 import com.ultramega.refinedtypes.grid.source.SourceGridResource;
@@ -23,6 +22,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import com.google.common.base.Suppliers;
 import net.minecraft.core.Holder;
 import net.neoforged.fml.ModList;
 
