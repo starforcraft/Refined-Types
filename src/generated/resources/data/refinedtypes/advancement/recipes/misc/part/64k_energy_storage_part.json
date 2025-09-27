@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_redstone_block": {
+    "has_craft_block": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:redstone_block"
+            "items": "minecraft:copper_block"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_redstone_block"
+      "has_craft_block"
     ]
   ],
   "rewards": {

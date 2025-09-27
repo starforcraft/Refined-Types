@@ -1,12 +1,12 @@
 package com.ultramega.refinedtypes.datagen.recipe;
 
-import com.ultramega.refinedtypes.registry.Items;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
 import com.ultramega.refinedtypes.storage.soul.SoulStorageVariant;
 import com.ultramega.refinedtypes.storage.source.SourceStorageVariant;
 
 import com.refinedmods.refinedstorage.common.content.Blocks;
 import com.refinedmods.refinedstorage.common.misc.ProcessorItem;
+import com.refinedmods.refinedstorage.common.storage.StorageVariant;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -21,6 +21,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 
@@ -33,68 +34,69 @@ public class RecipeProviderImpl extends RecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(final RecipeOutput output) { //TODO: change recipe of energy disks to use copper
-        // The following lines aren't my proudest bit of code
-
-        record Upgrade(Item from, Item to, Item processor, Item upgradeBlock) { }
+    protected void buildRecipes(final RecipeOutput output) {
+        record Upgrade(StorageVariant from, StorageVariant to, Item processor, Item upgradeBlock) { }
 
         final RecipeOutput arsOutput = output.withConditions(new ModLoadedCondition("ars_nouveau"));
         final RecipeOutput soulsOutput = output.withConditions(new ModLoadedCondition("industrialforegoingsouls"));
 
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
-            this.recipeStorageDisk(variant.getStoragePart(), Items.getEnergyStorageDisk(variant), output);
-            this.recipeStorageBlock(variant.getStoragePart(), Items.getEnergyStorageBlock(variant), output);
-            this.recipeDiskFromStorageHousing(variant.getStoragePart(), Items.getEnergyStorageDisk(variant), output);
+            this.recipeStorageDisk(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getEnergyStorageDisk(variant), output);
+            this.recipeStorageBlock(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getEnergyStorageBlock(variant), Items.COPPER_BLOCK, output);
+            this.recipeDiskFromStorageHousing(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getEnergyStorageDisk(variant), output);
         }
         for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-            this.recipeStorageDisk(variant.getStoragePart(), Items.getSourceStorageDisk(variant), arsOutput);
-            this.recipeStorageBlock(variant.getStoragePart(), Items.getSourceStorageBlock(variant), arsOutput);
-            this.recipeDiskFromStorageHousing(variant.getStoragePart(), Items.getSourceStorageDisk(variant), arsOutput);
+            this.recipeStorageDisk(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSourceStorageDisk(variant), arsOutput);
+            this.recipeStorageBlock(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSourceStorageBlock(variant), Items.REDSTONE_BLOCK, arsOutput);
+            this.recipeDiskFromStorageHousing(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSourceStorageDisk(variant), arsOutput);
         }
         for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-            this.recipeStorageDisk(variant.getStoragePart(), Items.getSoulStorageDisk(variant), soulsOutput);
-            this.recipeStorageBlock(variant.getStoragePart(), Items.getSoulStorageBlock(variant), soulsOutput);
-            this.recipeDiskFromStorageHousing(variant.getStoragePart(), Items.getSoulStorageDisk(variant), soulsOutput);
+            this.recipeStorageDisk(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSoulStorageDisk(variant), soulsOutput);
+            this.recipeStorageBlock(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSoulStorageBlock(variant), Items.REDSTONE_BLOCK, soulsOutput);
+            this.recipeDiskFromStorageHousing(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSoulStorageDisk(variant), soulsOutput);
         }
-        this.registerFirstPartRecipe(net.minecraft.world.item.Items.REDSTONE_BLOCK, EnergyStorageVariant.K_64.getStoragePart(), output);
+        this.registerFirstPartRecipe(Items.COPPER_BLOCK, EnergyStorageVariant.K_64.getStoragePart(), output);
         this.registerFirstPartRecipe(ItemsRegistry.MAGE_FIBER.get(), SourceStorageVariant.B_64.getStoragePart(), arsOutput);
-        this.registerFirstPartRecipe(net.minecraft.world.item.Items.SCULK, SoulStorageVariant.K_1.getStoragePart(), soulsOutput);
+        this.registerFirstPartRecipe(Items.SCULK, SoulStorageVariant.K_1.getStoragePart(), soulsOutput);
 
         final var items = com.refinedmods.refinedstorage.common.content.Items.INSTANCE;
         final List<Upgrade> energyUpgrades = List.of(
-            new Upgrade(EnergyStorageVariant.K_64.getStoragePart(),      EnergyStorageVariant.K_256.getStoragePart(),     items.getProcessor(ProcessorItem.Type.BASIC),    net.minecraft.world.item.Items.GOLD_BLOCK),
-            new Upgrade(EnergyStorageVariant.K_256.getStoragePart(),     EnergyStorageVariant.K_1024.getStoragePart(),    items.getProcessor(ProcessorItem.Type.IMPROVED), net.minecraft.world.item.Items.GOLD_BLOCK),
-            new Upgrade(EnergyStorageVariant.K_1024.getStoragePart(),    EnergyStorageVariant.K_8192.getStoragePart(),    items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.DIAMOND_BLOCK),
-            new Upgrade(EnergyStorageVariant.K_8192.getStoragePart(),    EnergyStorageVariant.K_65536.getStoragePart(),   items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.DIAMOND_BLOCK),
-            new Upgrade(EnergyStorageVariant.K_65536.getStoragePart(),   EnergyStorageVariant.K_262144.getStoragePart(),  items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.EMERALD_BLOCK),
-            new Upgrade(EnergyStorageVariant.K_262144.getStoragePart(),  EnergyStorageVariant.K_1048576.getStoragePart(), items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.EMERALD_BLOCK),
-            new Upgrade(EnergyStorageVariant.K_1048576.getStoragePart(), EnergyStorageVariant.K_8388608.getStoragePart(), items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.NETHERITE_BLOCK),
-            new Upgrade(EnergyStorageVariant.K_8388608.getStoragePart(), EnergyStorageVariant.INFINITE.getStoragePart(),  items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.NETHERITE_BLOCK)
+            new Upgrade(EnergyStorageVariant.K_64, EnergyStorageVariant.K_256, items.getProcessor(ProcessorItem.Type.BASIC), Items.GOLD_BLOCK),
+            new Upgrade(EnergyStorageVariant.K_256, EnergyStorageVariant.K_1024, items.getProcessor(ProcessorItem.Type.IMPROVED), Items.GOLD_BLOCK),
+            new Upgrade(EnergyStorageVariant.K_1024, EnergyStorageVariant.K_8192, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.DIAMOND_BLOCK),
+            new Upgrade(EnergyStorageVariant.K_8192, EnergyStorageVariant.K_65536, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.DIAMOND_BLOCK),
+            new Upgrade(EnergyStorageVariant.K_65536, EnergyStorageVariant.K_262144, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.EMERALD_BLOCK),
+            new Upgrade(EnergyStorageVariant.K_262144, EnergyStorageVariant.K_1048576, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.EMERALD_BLOCK),
+            new Upgrade(EnergyStorageVariant.K_1048576, EnergyStorageVariant.K_8388608, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.NETHERITE_BLOCK),
+            new Upgrade(EnergyStorageVariant.K_8388608, EnergyStorageVariant.INFINITE, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.NETHERITE_BLOCK)
         );
         final List<Upgrade> sourceUgrades = List.of(
-            new Upgrade(SourceStorageVariant.B_64.getStoragePart(),      SourceStorageVariant.B_256.getStoragePart(),     items.getProcessor(ProcessorItem.Type.BASIC),    net.minecraft.world.item.Items.GOLD_BLOCK),
-            new Upgrade(SourceStorageVariant.B_256.getStoragePart(),     SourceStorageVariant.B_1024.getStoragePart(),    items.getProcessor(ProcessorItem.Type.IMPROVED), net.minecraft.world.item.Items.GOLD_BLOCK),
-            new Upgrade(SourceStorageVariant.B_1024.getStoragePart(),    SourceStorageVariant.B_8192.getStoragePart(),    items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.DIAMOND_BLOCK),
-            new Upgrade(SourceStorageVariant.B_8192.getStoragePart(),    SourceStorageVariant.B_65536.getStoragePart(),   items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.DIAMOND_BLOCK),
-            new Upgrade(SourceStorageVariant.B_65536.getStoragePart(),   SourceStorageVariant.B_262144.getStoragePart(),  items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.EMERALD_BLOCK),
-            new Upgrade(SourceStorageVariant.B_262144.getStoragePart(),  SourceStorageVariant.B_1048576.getStoragePart(), items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.EMERALD_BLOCK),
-            new Upgrade(SourceStorageVariant.B_1048576.getStoragePart(), SourceStorageVariant.B_8388608.getStoragePart(), items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.NETHERITE_BLOCK),
-            new Upgrade(SourceStorageVariant.B_8388608.getStoragePart(), SourceStorageVariant.INFINITE.getStoragePart(),  items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.NETHERITE_BLOCK)
+            new Upgrade(SourceStorageVariant.B_64, SourceStorageVariant.B_256, items.getProcessor(ProcessorItem.Type.BASIC), Items.GOLD_BLOCK),
+            new Upgrade(SourceStorageVariant.B_256, SourceStorageVariant.B_1024, items.getProcessor(ProcessorItem.Type.IMPROVED), Items.GOLD_BLOCK),
+            new Upgrade(SourceStorageVariant.B_1024, SourceStorageVariant.B_8192, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.DIAMOND_BLOCK),
+            new Upgrade(SourceStorageVariant.B_8192, SourceStorageVariant.B_65536, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.DIAMOND_BLOCK),
+            new Upgrade(SourceStorageVariant.B_65536, SourceStorageVariant.B_262144, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.EMERALD_BLOCK),
+            new Upgrade(SourceStorageVariant.B_262144, SourceStorageVariant.B_1048576, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.EMERALD_BLOCK),
+            new Upgrade(SourceStorageVariant.B_1048576, SourceStorageVariant.B_8388608, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.NETHERITE_BLOCK),
+            new Upgrade(SourceStorageVariant.B_8388608, SourceStorageVariant.INFINITE, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.NETHERITE_BLOCK)
         );
         final List<Upgrade> soulUpgrades = List.of(
-            new Upgrade(SoulStorageVariant.K_1.getStoragePart(),       SoulStorageVariant.K_8.getStoragePart(),       items.getProcessor(ProcessorItem.Type.BASIC),    net.minecraft.world.item.Items.GOLD_BLOCK),
-            new Upgrade(SoulStorageVariant.K_8.getStoragePart(),       SoulStorageVariant.K_64.getStoragePart(),      items.getProcessor(ProcessorItem.Type.IMPROVED), net.minecraft.world.item.Items.GOLD_BLOCK),
-            new Upgrade(SoulStorageVariant.K_64.getStoragePart(),      SoulStorageVariant.K_512.getStoragePart(),     items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.DIAMOND_BLOCK),
-            new Upgrade(SoulStorageVariant.K_512.getStoragePart(),     SoulStorageVariant.K_4096.getStoragePart(),    items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.DIAMOND_BLOCK),
-            new Upgrade(SoulStorageVariant.K_4096.getStoragePart(),    SoulStorageVariant.K_32768.getStoragePart(),   items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.EMERALD_BLOCK),
-            new Upgrade(SoulStorageVariant.K_32768.getStoragePart(),   SoulStorageVariant.K_262144.getStoragePart(),  items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.EMERALD_BLOCK),
-            new Upgrade(SoulStorageVariant.K_262144.getStoragePart(),  SoulStorageVariant.K_2097152.getStoragePart(), items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.NETHERITE_BLOCK),
-            new Upgrade(SoulStorageVariant.K_2097152.getStoragePart(), SoulStorageVariant.INFINITE.getStoragePart(),  items.getProcessor(ProcessorItem.Type.ADVANCED), net.minecraft.world.item.Items.NETHERITE_BLOCK)
+            new Upgrade(SoulStorageVariant.K_1, SoulStorageVariant.K_8, items.getProcessor(ProcessorItem.Type.BASIC), Items.GOLD_BLOCK),
+            new Upgrade(SoulStorageVariant.K_8, SoulStorageVariant.K_64, items.getProcessor(ProcessorItem.Type.IMPROVED), Items.GOLD_BLOCK),
+            new Upgrade(SoulStorageVariant.K_64, SoulStorageVariant.K_512, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.DIAMOND_BLOCK),
+            new Upgrade(SoulStorageVariant.K_512, SoulStorageVariant.K_4096, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.DIAMOND_BLOCK),
+            new Upgrade(SoulStorageVariant.K_4096, SoulStorageVariant.K_32768, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.EMERALD_BLOCK),
+            new Upgrade(SoulStorageVariant.K_32768, SoulStorageVariant.K_262144, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.EMERALD_BLOCK),
+            new Upgrade(SoulStorageVariant.K_262144, SoulStorageVariant.K_2097152, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.NETHERITE_BLOCK),
+            new Upgrade(SoulStorageVariant.K_2097152, SoulStorageVariant.INFINITE, items.getProcessor(ProcessorItem.Type.ADVANCED), Items.NETHERITE_BLOCK)
         );
 
-        energyUpgrades.forEach(up -> this.registerUpgradePartRecipe(up.from(), up.to(), up.processor(), up.upgradeBlock(), output));
-        sourceUgrades.forEach(up -> this.registerUpgradePartRecipe(up.from(), up.to(), up.processor(), up.upgradeBlock(), arsOutput));
-        soulUpgrades.forEach(up -> this.registerUpgradePartRecipe(up.from(), up.to(), up.processor(), up.upgradeBlock(), soulsOutput));
+        energyUpgrades.forEach(up ->
+            this.registerUpgradePartRecipe(up.from(), up.to(), up.processor(), Items.COPPER_BLOCK, up.upgradeBlock(), output));
+        sourceUgrades.forEach(up ->
+            this.registerUpgradePartRecipe(up.from(), up.to(), up.processor(), Items.REDSTONE_BLOCK, up.upgradeBlock(), arsOutput));
+        soulUpgrades.forEach(up ->
+            this.registerUpgradePartRecipe(up.from(), up.to(), up.processor(), Items.REDSTONE_BLOCK, up.upgradeBlock(), soulsOutput));
     }
 
     private void recipeStorageDisk(final Item storagePart, final Item result, final RecipeOutput output) {
@@ -105,12 +107,12 @@ public class RecipeProviderImpl extends RecipeProvider {
             .define('G', Tags.Items.GLASS_BLOCKS)
             .define('R', Tags.Items.DUSTS_REDSTONE)
             .define('P', storagePart)
-            .define('E', net.minecraft.world.item.Items.REDSTONE_BLOCK)
+            .define('E', Items.REDSTONE_BLOCK)
             .unlockedBy("has_storage_part", has(storagePart))
             .save(output, createRefinedTypesIdentifier("disk/" + BuiltInRegistries.ITEM.getKey(result).getPath()));
     }
 
-    private void recipeStorageBlock(final Item storagePart, final Item result, final RecipeOutput output) {
+    private void recipeStorageBlock(final Item storagePart, final Item result, final Item resourceBlock, final RecipeOutput output) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
             .pattern("EPE")
             .pattern("EME")
@@ -118,7 +120,7 @@ public class RecipeProviderImpl extends RecipeProvider {
             .define('M', Blocks.INSTANCE.getMachineCasing())
             .define('R', Tags.Items.DUSTS_REDSTONE)
             .define('P', storagePart)
-            .define('E', net.minecraft.world.item.Items.REDSTONE_BLOCK)
+            .define('E', resourceBlock)
             .unlockedBy("has_storage_part", has(storagePart))
             .save(output, createRefinedTypesIdentifier("blocks/" + BuiltInRegistries.ITEM.getKey(result).getPath()));
     }
@@ -132,25 +134,32 @@ public class RecipeProviderImpl extends RecipeProvider {
             .define('E', craftBlock)
             .define('G', Tags.Items.GLASS_BLOCKS)
             .define('R', Tags.Items.DUSTS_REDSTONE)
-            .unlockedBy("has_redstone_block", has(craftBlock))
+            .unlockedBy("has_craft_block", has(craftBlock))
             .save(output, createRefinedTypesIdentifier("part/" + BuiltInRegistries.ITEM.getKey(result).getPath()));
     }
 
-    private void registerUpgradePartRecipe(final Item prevStoragePart,
-                                           final Item result,
+    private void registerUpgradePartRecipe(final StorageVariant prevPart,
+                                           final StorageVariant resultPart,
                                            final Item processor,
+                                           final Item resourceBlock,
                                            final Item upgradeBlock,
                                            final RecipeOutput output) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
+        final Item prevPartItem = prevPart.getStoragePart();
+        final Item resultPartItem = resultPart.getStoragePart();
+        if (prevPartItem == null || resultPartItem == null) {
+            return;
+        }
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, resultPartItem)
             .pattern("PEP")
             .pattern("SRS")
             .pattern("PSP")
             .define('P', processor)
-            .define('E', net.minecraft.world.item.Items.REDSTONE_BLOCK)
-            .define('S', prevStoragePart)
+            .define('E', resourceBlock)
+            .define('S', prevPartItem)
             .define('R', upgradeBlock)
-            .unlockedBy("has_prev_part", has(prevStoragePart))
-            .save(output, createRefinedTypesIdentifier("part/" + BuiltInRegistries.ITEM.getKey(result).getPath()));
+            .unlockedBy("has_prev_part", has(prevPartItem))
+            .save(output, createRefinedTypesIdentifier("part/" + BuiltInRegistries.ITEM.getKey(resultPartItem).getPath()));
     }
 
     private void recipeDiskFromStorageHousing(final Item storagePart, final Item result, final RecipeOutput output) {

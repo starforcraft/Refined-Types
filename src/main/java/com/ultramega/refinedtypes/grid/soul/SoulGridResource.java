@@ -19,9 +19,9 @@ import com.refinedmods.refinedstorage.common.api.support.resource.ResourceRender
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceType;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -37,7 +37,7 @@ public class SoulGridResource extends AbstractGridResource<SoulResource> {
 
     public SoulGridResource(final SoulResource resource,
                             final String name,
-                            final Map<GridResourceAttributeKey, Set<String>> attributes) {
+                            final Function<GridResourceAttributeKey, Set<String>> attributes) {
         super(resource, name, attributes);
         this.id = Types.TYPE_REGISTRY.getId(resource.type());
         this.rendering = RefinedStorageClientApi.INSTANCE.getResourceRendering(SoulResource.class);

@@ -4,6 +4,9 @@
   "refinedtypes.configuration.section.refinedtypes.common.toml.title": "Refined Types",
 
   "misc.refinedtypes.resource_type.energy": "Energy",
+  "block.refinedtypes.network_energizer": "Network Energizer",
+  "item.refinedtypes.network_energizer.help": "Automatically consumes stored Energy from Energy Disks within the Network to maintain it.",
+  "gui.refinedtypes.network_energizer.redstone_mode_help": "When this device is inactive, no Energy from Energy Disks will be consumed by the storage network to sustain it.",
   "item.refinedtypes.64k_energy_storage_part": "64K Energy Storage Part",
   "item.refinedtypes.256k_energy_storage_part": "256K Energy Storage Part",
   "item.refinedtypes.1024k_energy_storage_part": "1024K Energy Storage Part",

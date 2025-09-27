@@ -29,6 +29,8 @@ public class BlockTagsProviderImpl extends TagsProvider<Block> {
 
     @Override
     protected void addTags(final HolderLookup.Provider provider) {
+        this.markAsMineable(Blocks.getNetworkEnergizer(), true);
+
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             this.markAsMineable(Blocks.getEnergyStorageBlock(variant), false);
         }

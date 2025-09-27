@@ -1,6 +1,7 @@
 package com.ultramega.refinedtypes;
 
 import com.ultramega.refinedtypes.grid.energy.EnergyGridInsertionHint;
+import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerScreen;
 import com.ultramega.refinedtypes.registry.Items;
 import com.ultramega.refinedtypes.registry.Menus;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
@@ -66,6 +67,8 @@ public final class ClientModInitializer {
 
     @SubscribeEvent
     public static void onRegisterMenuScreens(final RegisterMenuScreensEvent e) {
+        e.register(Menus.getNetworkEnergizer(), NetworkEnergizerScreen::new);
+
         e.<AbstractContainerMenu, AbstractContainerScreen<AbstractContainerMenu>>register(Menus.getEnergyStorage(), (menu, inventory, title) ->
             RefinedStorageClientApi.INSTANCE.createStorageBlockScreen(menu, inventory, title, EnergyResource.class));
         if (isArsNouveauLoaded()) {

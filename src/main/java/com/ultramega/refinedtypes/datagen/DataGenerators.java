@@ -1,6 +1,6 @@
 package com.ultramega.refinedtypes.datagen;
 
-import com.ultramega.refinedtypes.datagen.loot.LootTableProviderImpl;
+import com.ultramega.refinedtypes.datagen.loot.BlockLootTableProviderImpl;
 import com.ultramega.refinedtypes.datagen.recipe.RecipeProviderImpl;
 import com.ultramega.refinedtypes.datagen.tag.BlockTagsProviderImpl;
 import com.ultramega.refinedtypes.datagen.tag.ItemTagsProviderImpl;
@@ -16,7 +16,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.MOD_ID;
 
-@EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MOD_ID)
 public class DataGenerators {
     private DataGenerators() {
     }
@@ -53,7 +53,7 @@ public class DataGenerators {
     private static void registerLootTableProviders(final DataGenerator generator,
                                                    final CompletableFuture<HolderLookup.Provider> provider) {
         final DataGenerator.PackGenerator mainPack = generator.getVanillaPack(true);
-        mainPack.addProvider(output -> new LootTableProviderImpl(output, provider));
+        mainPack.addProvider(output -> new BlockLootTableProviderImpl(output, provider));
     }
 
     private static void registerRecipeProviders(final DataGenerator generator,

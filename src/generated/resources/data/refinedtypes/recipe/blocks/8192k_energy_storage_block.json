@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "E": {
-      "item": "minecraft:redstone_block"
+      "item": "minecraft:copper_block"
     },
     "M": {
       "item": "refinedstorage:machine_casing"

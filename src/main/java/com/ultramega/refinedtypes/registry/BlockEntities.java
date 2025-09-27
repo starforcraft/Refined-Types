@@ -1,5 +1,6 @@
 package com.ultramega.refinedtypes.registry;
 
+import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerBlockEntity;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
 import com.ultramega.refinedtypes.storage.soul.SoulStorageVariant;
 import com.ultramega.refinedtypes.storage.source.SourceStorageVariant;
@@ -9,8 +10,11 @@ import com.refinedmods.refinedstorage.common.api.support.network.AbstractNetwork
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
+import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
+
+import static java.util.Objects.requireNonNull;
 
 public final class BlockEntities {
     private static final Map<EnergyStorageVariant, Supplier<BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>>>> ENERGY_STORAGE_BLOCKS =
@@ -19,6 +23,9 @@ public final class BlockEntities {
         new EnumMap<>(SourceStorageVariant.class);
     private static final Map<SoulStorageVariant, Supplier<BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>>>> SOUL_STORAGE_BLOCKS =
         new EnumMap<>(SoulStorageVariant.class);
+
+    @Nullable
+    private static Supplier<BlockEntityType<NetworkEnergizerBlockEntity>> networkEnergizer;
 
     private BlockEntities() {
     }
@@ -48,5 +55,13 @@ public final class BlockEntities {
     public static void setSoulStorageBlock(final SoulStorageVariant variant,
                                              final Supplier<BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>>> supplier) {
         SOUL_STORAGE_BLOCKS.put(variant, supplier);
+    }
+
+    public static BlockEntityType<NetworkEnergizerBlockEntity> getNetworkEnergizer() {
+        return requireNonNull(networkEnergizer).get();
+    }
+
+    public static void setNetworkEnergizer(final Supplier<BlockEntityType<NetworkEnergizerBlockEntity>> supplier) {
+        networkEnergizer = supplier;
     }
 }

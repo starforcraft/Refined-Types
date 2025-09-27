@@ -1,6 +1,6 @@
 package com.ultramega.refinedtypes.type.soul;
 
-import com.ultramega.refinedtypes.storage.soul.SoulStorageInterface;
+import com.ultramega.refinedtypes.storage.soul.ResourceContainerSoulHandlerAdapter;
 
 import com.refinedmods.refinedstorage.api.core.Action;
 
@@ -21,7 +21,7 @@ public class SoulUtil {
         event.registerBlockEntity(
             SoulCapabilities.BLOCK,
             com.refinedmods.refinedstorage.common.content.BlockEntities.INSTANCE.getInterface(),
-            (be, side) -> new SoulStorageInterface(be.getExportedResources())
+            (be, side) -> new ResourceContainerSoulHandlerAdapter(be.getExportedResources())
         );
     }
 

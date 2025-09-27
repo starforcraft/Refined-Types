@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "refinedtypes:block/network_energizer_inactive"
+    },
+    "active=true": {
+      "model": "refinedtypes:block/network_energizer_on"
+    }
+  }
+}

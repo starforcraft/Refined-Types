@@ -1,5 +1,7 @@
 package com.ultramega.refinedtypes.registry;
 
+import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerContainerMenu;
+
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
@@ -13,6 +15,9 @@ public final class Menus {
     private static Supplier<MenuType<AbstractContainerMenu>> energyStorage;
     private static Supplier<MenuType<AbstractContainerMenu>> sourceStorage;
     private static Supplier<MenuType<AbstractContainerMenu>> soulStorage;
+
+    @Nullable
+    private static Supplier<MenuType<NetworkEnergizerContainerMenu>> networkEnergizer;
 
     private Menus() {
     }
@@ -39,5 +44,13 @@ public final class Menus {
 
     public static void setSoulStorage(final Supplier<MenuType<AbstractContainerMenu>> supplier) {
         soulStorage = supplier;
+    }
+
+    public static MenuType<NetworkEnergizerContainerMenu> getNetworkEnergizer() {
+        return requireNonNull(networkEnergizer).get();
+    }
+
+    public static void setNetworkEnergizer(final Supplier<MenuType<NetworkEnergizerContainerMenu>> supplier) {
+        networkEnergizer = supplier;
     }
 }

@@ -17,6 +17,11 @@ import com.ultramega.refinedtypes.grid.energy.EnergyGridInsertionStrategy;
 import com.ultramega.refinedtypes.importer.EnergyImporterTransferStrategyFactory;
 import com.ultramega.refinedtypes.importer.SoulImporterTransferStrategyFactory;
 import com.ultramega.refinedtypes.importer.SourceImporterTransferStrategyFactory;
+import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerBlock;
+import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerBlockEntity;
+import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerContainerMenu;
+import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerData;
+import com.ultramega.refinedtypes.packet.s2c.NetworkEnergizerEnergyInfoPacket;
 import com.ultramega.refinedtypes.registry.BlockEntities;
 import com.ultramega.refinedtypes.registry.Blocks;
 import com.ultramega.refinedtypes.registry.Items;
@@ -25,8 +30,8 @@ import com.ultramega.refinedtypes.registry.Types;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageBlockBlockItem;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageBlockProvider;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageDiskItem;
-import com.ultramega.refinedtypes.storage.energy.EnergyStorageInterface;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
+import com.ultramega.refinedtypes.storage.energy.ResourceContainerEnergyHandlerAdapter;
 import com.ultramega.refinedtypes.storage.soul.SoulStorageBlockBlockItem;
 import com.ultramega.refinedtypes.storage.soul.SoulStorageBlockProvider;
 import com.ultramega.refinedtypes.storage.soul.SoulStorageDiskItem;
@@ -55,6 +60,7 @@ import com.refinedmods.refinedstorage.common.content.ExtendedMenuTypeFactory;
 import com.refinedmods.refinedstorage.common.storage.StorageContainerUpgradeRecipe;
 import com.refinedmods.refinedstorage.common.storage.StorageContainerUpgradeRecipeSerializer;
 import com.refinedmods.refinedstorage.common.support.SimpleItem;
+import com.refinedmods.refinedstorage.common.support.packet.PacketHandler;
 import com.refinedmods.refinedstorage.neoforge.api.RefinedStorageNeoForgeApi;
 
 import java.util.Set;
@@ -63,6 +69,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -84,15 +91,19 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadHandler;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
+import static com.ultramega.refinedtypes.RefinedTypesUtil.MOD_ID;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.isArsNouveauLoaded;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.isIndustrialForegoingSoulsLoaded;
 
-@Mod(RefinedTypesUtil.MOD_ID)
+@Mod(MOD_ID)
 public final class ModInitializer {
     private static final ResourceLocation ENERGY_ID = createRefinedTypesIdentifier("energy");
     private static final ResourceLocation SOURCE_ID = createRefinedTypesIdentifier("source");
@@ -100,7 +111,6 @@ public final class ModInitializer {
 
     private static final Config CONFIG = new Config();
 
-    // TODO: add an energy converter/user block (Network Energizer?) which can use the saved energy on disk to power the controller
     public ModInitializer(final IEventBus eventBus, final ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.COMMON, CONFIG.getSpec());
         if (FMLEnvironment.dist == Dist.CLIENT) {
@@ -112,33 +122,34 @@ public final class ModInitializer {
         eventBus.addListener(this::registerRegistries);
         eventBus.addListener(this::registerCreativeModeTab);
         eventBus.addListener(this::registerCapabilities);
+        eventBus.addListener(this::registerPackets);
 
         Types.TYPES.register(eventBus);
 
         final DeferredRegister<Item> itemRegistry = DeferredRegister.create(
             BuiltInRegistries.ITEM,
-            RefinedTypesUtil.MOD_ID
+            MOD_ID
         );
         registerItems(itemRegistry);
         itemRegistry.register(eventBus);
 
         final DeferredRegister<Block> blockRegistry = DeferredRegister.create(
             BuiltInRegistries.BLOCK,
-            RefinedTypesUtil.MOD_ID
+            MOD_ID
         );
         registerBlocks(blockRegistry);
         blockRegistry.register(eventBus);
 
         final DeferredRegister<BlockEntityType<?>> blockEntityRegistry = DeferredRegister.create(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
-            RefinedTypesUtil.MOD_ID
+            MOD_ID
         );
         registerBlockEntities(blockEntityRegistry);
         blockEntityRegistry.register(eventBus);
 
         final DeferredRegister<MenuType<?>> menuRegistry = DeferredRegister.create(
             BuiltInRegistries.MENU,
-            RefinedTypesUtil.MOD_ID
+            MOD_ID
         );
         final ExtendedMenuTypeFactory extendedMenuTypeFactory = new ExtendedMenuTypeFactory() {
             @Override
@@ -156,13 +167,15 @@ public final class ModInitializer {
 
         final DeferredRegister<RecipeSerializer<?>> recipeSerializerRegistry = DeferredRegister.create(
             BuiltInRegistries.RECIPE_SERIALIZER,
-            RefinedTypesUtil.MOD_ID
+            MOD_ID
         );
         registerRecipeSerializers(recipeSerializerRegistry);
         recipeSerializerRegistry.register(eventBus);
     }
 
     private static void registerBlocks(final DeferredRegister<Block> registry) {
+        Blocks.setNetworkEnergizer(registry.register(ContentIdentification.NETWORK_ENERGIZER, NetworkEnergizerBlock::new));
+
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             Blocks.setEnergyStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(),
                 () -> RefinedStorageApi.INSTANCE.createStorageBlock(BlockConstants.PROPERTIES,
@@ -185,6 +198,8 @@ public final class ModInitializer {
     }
 
     private static void registerItems(final DeferredRegister<Item> registry) {
+        registry.register(ContentIdentification.NETWORK_ENERGIZER, () -> Blocks.getNetworkEnergizer().createBlockItem());
+
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             Items.setEnergyStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
             Items.setEnergyStorageDisk(variant, registry.register(variant.getStorageDiskId().getPath(), () -> new EnergyStorageDiskItem(
@@ -217,10 +232,19 @@ public final class ModInitializer {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    private static void registerBlockEntities(final DeferredRegister<BlockEntityType<?>> blockEntityRegistry) {
+    private static void registerBlockEntities(final DeferredRegister<BlockEntityType<?>> registry) {
+        BlockEntities.setNetworkEnergizer(registry.register(
+            ContentIdentification.NETWORK_ENERGIZER,
+            () -> new BlockEntityType<>(
+                NetworkEnergizerBlockEntity::new,
+                Set.of(Blocks.getNetworkEnergizer()),
+                null
+            )
+        ));
+
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             BlockEntities.setEnergyStorageBlock(variant,
-                blockEntityRegistry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
+                registry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
                     (pos, state) -> RefinedStorageApi.INSTANCE.createStorageBlockEntity(pos, state,
                         new EnergyStorageBlockProvider(variant)),
                     Set.of(Blocks.getEnergyStorageBlock(variant)),
@@ -231,7 +255,7 @@ public final class ModInitializer {
         if (isArsNouveauLoaded()) {
             for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
                 BlockEntities.setSourceStorageBlock(variant,
-                    blockEntityRegistry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
+                    registry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
                         (pos, state) -> RefinedStorageApi.INSTANCE.createStorageBlockEntity(pos, state,
                             new SourceStorageBlockProvider(variant)),
                         Set.of(Blocks.getSourceStorageBlock(variant)),
@@ -243,7 +267,7 @@ public final class ModInitializer {
         if (isIndustrialForegoingSoulsLoaded()) {
             for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
                 BlockEntities.setSoulStorageBlock(variant,
-                    blockEntityRegistry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
+                    registry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
                         (pos, state) -> RefinedStorageApi.INSTANCE.createStorageBlockEntity(pos, state,
                             new SoulStorageBlockProvider(variant)),
                         Set.of(Blocks.getSoulStorageBlock(variant)),
@@ -254,22 +278,27 @@ public final class ModInitializer {
         }
     }
 
-    private static void registerMenus(final DeferredRegister<MenuType<?>> menuRegistry,
+    private static void registerMenus(final DeferredRegister<MenuType<?>> registry,
                                       final ExtendedMenuTypeFactory extendedMenuTypeFactory) {
-        Menus.setEnergyStorage(menuRegistry.register(
+        Menus.setNetworkEnergizer(registry.register(
+            ContentIdentification.NETWORK_ENERGIZER,
+            () -> extendedMenuTypeFactory.create(NetworkEnergizerContainerMenu::new, NetworkEnergizerData.STREAM_CODEC)
+        ));
+
+        Menus.setEnergyStorage(registry.register(
             "energy_storage_block",
             () -> extendedMenuTypeFactory.create((syncId, playerInventory, data) ->
                 RefinedStorageApi.INSTANCE.createStorageBlockContainerMenu(syncId, playerInventory.player, data,
                     EnergyResourceFactory.INSTANCE, Menus.getEnergyStorage()), RefinedStorageApi.INSTANCE.getStorageBlockDataStreamCodec())));
         if (isArsNouveauLoaded()) {
-            Menus.setSourceStorage(menuRegistry.register(
+            Menus.setSourceStorage(registry.register(
                 "source_storage_block",
                 () -> extendedMenuTypeFactory.create((syncId, playerInventory, data) ->
                     RefinedStorageApi.INSTANCE.createStorageBlockContainerMenu(syncId, playerInventory.player, data,
                         SourceResourceFactory.INSTANCE, Menus.getSourceStorage()), RefinedStorageApi.INSTANCE.getStorageBlockDataStreamCodec())));
         }
         if (isIndustrialForegoingSoulsLoaded()) {
-            Menus.setSoulStorage(menuRegistry.register(
+            Menus.setSoulStorage(registry.register(
                 "soul_storage_block",
                 () -> extendedMenuTypeFactory.create((syncId, playerInventory, data) ->
                     RefinedStorageApi.INSTANCE.createStorageBlockContainerMenu(syncId, playerInventory.player, data,
@@ -392,6 +421,8 @@ public final class ModInitializer {
                 .title(RefinedTypesUtil.MOD)
                 .icon(() -> Items.getEnergyStoragePart(EnergyStorageVariant.K_64).getDefaultInstance())
                 .displayItems((params, output) -> {
+                    output.accept(Blocks.getNetworkEnergizer());
+
                     for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
                         output.accept(Items.getEnergyStoragePart(variant));
                     }
@@ -429,10 +460,11 @@ public final class ModInitializer {
     }
 
     private void registerCapabilities(final RegisterCapabilitiesEvent event) {
+        this.registerNetworkNodeContainerProvider(event, BlockEntities.getNetworkEnergizer());
         event.registerBlockEntity(
             Capabilities.EnergyStorage.BLOCK,
             com.refinedmods.refinedstorage.common.content.BlockEntities.INSTANCE.getInterface(),
-            (be, side) -> new EnergyStorageInterface(be)
+            (be, side) -> new ResourceContainerEnergyHandlerAdapter(be.getExportedResources()) //new EnergyStorageInterface(be)
         );
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             this.registerNetworkNodeContainerProvider(event, BlockEntities.getEnergyStorageBlock(variant));
@@ -459,6 +491,22 @@ public final class ModInitializer {
         );
     }
 
+    private void registerPackets(final RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(MOD_ID);
+        registerServerToClientPackets(registrar);
+    }
+
+    private static void registerServerToClientPackets(final PayloadRegistrar registrar) {
+        registrar.playToClient(
+            NetworkEnergizerEnergyInfoPacket.PACKET_TYPE,
+            NetworkEnergizerEnergyInfoPacket.STREAM_CODEC,
+            wrapHandler(NetworkEnergizerEnergyInfoPacket::handle)
+        );
+    }
+
+    private static <T extends CustomPacketPayload> IPayloadHandler<T> wrapHandler(final PacketHandler<T> handler) {
+        return (packet, ctx) -> handler.handle(packet, ctx::player);
+    }
 
     public static Config getConfig() {
         return CONFIG;

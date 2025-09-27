@@ -1,0 +1,8 @@
+{
+  "parent": "refinedstorage:block/emissive_all_cutout",
+  "textures": {
+    "particle": "refinedtypes:block/network_energizer_outside",
+    "all": "refinedtypes:block/network_energizer_outside",
+    "cutout": "refinedtypes:block/network_energizer"
+  }
+}

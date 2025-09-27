@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
 
-public class Tags {
+public final class Tags {
     public static final TagKey<Item> ENERGY_STORAGE_DISKS = createTag("energy_storage_disks");
     public static final TagKey<Item> SOURCE_STORAGE_DISKS = createTag("source_storage_disks");
     public static final TagKey<Item> SOUL_STORAGE_DISKS = createTag("soul_storage_disks");

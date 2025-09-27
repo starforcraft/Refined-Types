@@ -1,5 +1,6 @@
 package com.ultramega.refinedtypes.grid;
 
+import com.google.common.base.Suppliers;
 import com.ultramega.refinedtypes.grid.energy.EnergyGridResource;
 import com.ultramega.refinedtypes.grid.soul.SoulGridResource;
 import com.ultramega.refinedtypes.grid.source.SourceGridResource;
@@ -15,8 +16,11 @@ import com.refinedmods.refinedstorage.common.api.grid.GridResourceAttributeKeys;
 import com.refinedmods.refinedstorage.common.api.grid.view.GridResource;
 import com.refinedmods.refinedstorage.common.api.grid.view.GridResourceAttributeKey;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.core.Holder;
@@ -30,19 +34,18 @@ public class TypeGridResourceFactory implements ResourceRepositoryMapper<GridRes
         final String name = this.getName(type);
         final String modId = this.getModId(type);
         final String modName = this.getModName(modId);
-        final Set<String> tags = this.getTags(type);
-        final String tooltip = this.getTooltip(type);
-        final Map<GridResourceAttributeKey, Set<String>> attributes = Map.of(
-            GridResourceAttributeKeys.MOD_ID, Set.of(modId),
-            GridResourceAttributeKeys.MOD_NAME, Set.of(modName),
-            GridResourceAttributeKeys.TAGS, tags,
-            GridResourceAttributeKeys.TOOLTIP, Set.of(tooltip)
+        final Map<GridResourceAttributeKey, Supplier<Set<String>>> attributes = Map.of(
+            GridResourceAttributeKeys.MOD_ID, Suppliers.ofInstance(Set.of(modId)),
+            GridResourceAttributeKeys.MOD_NAME, Suppliers.ofInstance(Set.of(modName)),
+            GridResourceAttributeKeys.TAGS, Suppliers.ofInstance(this.getTags(type)),
+            GridResourceAttributeKeys.TOOLTIP, Suppliers.ofInstance(Set.of(this.getTooltip(type)))
         );
 
+        final Function<GridResourceAttributeKey, Set<String>> attributesFunction = k -> attributes.getOrDefault(k, Collections::emptySet).get();
         return switch (resource) {
-            case EnergyResource energyResource -> new EnergyGridResource(energyResource, name, attributes);
-            case SourceResource sourceResource -> new SourceGridResource(sourceResource, name, attributes);
-            case SoulResource soulResource -> new SoulGridResource(soulResource, name, attributes);
+            case EnergyResource energyResource -> new EnergyGridResource(energyResource, name, attributesFunction);
+            case SourceResource sourceResource -> new SourceGridResource(sourceResource, name, attributesFunction);
+            case SoulResource soulResource -> new SoulGridResource(soulResource, name, attributesFunction);
             default -> throw new IllegalArgumentException("Unsupported resource: " + resource);
         };
     }

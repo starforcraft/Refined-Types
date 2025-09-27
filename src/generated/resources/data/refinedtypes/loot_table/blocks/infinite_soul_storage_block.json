@@ -1,14 +1,11 @@
 {
-  "type": "minecraft:block",
-  "functions": [
+  "neoforge:conditions": [
     {
-      "function": "minecraft:copy_components",
-      "include": [
-        "minecraft:custom_name"
-      ],
-      "source": "block_entity"
+      "type": "neoforge:mod_loaded",
+      "modid": "industrialforegoingsouls"
     }
   ],
+  "type": "minecraft:block",
   "pools": [
     {
       "bonus_rolls": 0.0,
@@ -20,6 +17,12 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            }
+          ],
           "name": "refinedtypes:infinite_soul_storage_block"
         }
       ],

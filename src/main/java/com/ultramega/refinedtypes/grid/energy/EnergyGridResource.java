@@ -20,9 +20,9 @@ import com.refinedmods.refinedstorage.common.api.support.resource.ResourceType;
 import com.refinedmods.refinedstorage.common.support.tooltip.MouseClientTooltipComponent;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import dev.technici4n.grandpower.api.ILongEnergyStorage;
@@ -39,7 +39,7 @@ public class EnergyGridResource extends AbstractGridResource<EnergyResource> { /
 
     public EnergyGridResource(final EnergyResource resource,
                               final String name,
-                              final Map<GridResourceAttributeKey, Set<String>> attributes) {
+                              final Function<GridResourceAttributeKey, Set<String>> attributes) {
         super(resource, name, attributes);
         this.id = Types.TYPE_REGISTRY.getId(resource.type());
         this.rendering = RefinedStorageClientApi.INSTANCE.getResourceRendering(EnergyResource.class);

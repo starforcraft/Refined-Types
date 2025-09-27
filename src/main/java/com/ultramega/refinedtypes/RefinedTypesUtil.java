@@ -7,14 +7,15 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
 
-import static com.refinedmods.refinedstorage.common.util.IdentifierUtil.MOD_ID;
-
 public final class RefinedTypesUtil {
     public static final String MOD_ID = "refinedtypes";
     public static final ResourceLocation CREATIVE_MODE_TAB = createRefinedTypesIdentifier(MOD_ID);
     public static final MutableComponent MOD = Component.translatable("refinedtypes.configuration.title");
+
+    public static final String ARS_NOUVEAU = "ars_nouveau";
+    public static final String INDUSTRIAL_FOREGOING_SOULS = "industrialforegoingsouls";
     @Nullable
-    private static Boolean arsLoaded = null;
+    private static Boolean arsNouveauLoaded = null;
     @Nullable
     private static Boolean industrialForegoingSoulsLoaded = null;
 
@@ -40,15 +41,15 @@ public final class RefinedTypesUtil {
     }
 
     public static boolean isArsNouveauLoaded() {
-        if (arsLoaded == null) {
-            arsLoaded = ModList.get().isLoaded("ars_nouveau");
+        if (arsNouveauLoaded == null) {
+            arsNouveauLoaded = ModList.get().isLoaded(ARS_NOUVEAU);
         }
-        return arsLoaded;
+        return arsNouveauLoaded;
     }
 
     public static boolean isIndustrialForegoingSoulsLoaded() {
         if (industrialForegoingSoulsLoaded == null) {
-            industrialForegoingSoulsLoaded = ModList.get().isLoaded("industrialforegoingsouls");
+            industrialForegoingSoulsLoaded = ModList.get().isLoaded(INDUSTRIAL_FOREGOING_SOULS);
         }
         return industrialForegoingSoulsLoaded;
     }
