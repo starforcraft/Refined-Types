@@ -27,13 +27,7 @@ public record EnergyResource(Type type) implements PlatformResourceKey { //TODO:
 
     @Override
     public List<ResourceTag> getTags() {
-        return Types.TYPE_REGISTRY.wrapAsHolder(this.type)
-            .tags()
-            .flatMap(tagKey -> Types.TYPE_REGISTRY.getTag(tagKey).stream())
-            .map(tag -> new ResourceTag(
-                tag.key(),
-                tag.stream().map(holder -> (PlatformResourceKey) new EnergyResource(holder.value())).toList()
-            )).toList();
+        return List.of();
     }
 
     @Override

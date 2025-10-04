@@ -1,6 +1,9 @@
+import org.gradle.jvm.tasks.Jar
+
 plugins {
     id("refinedarchitect.root")
     id("refinedarchitect.neoforge")
+    id("me.modmuss50.mod-publish-plugin") version "1.0.0"
 }
 
 repositories {
@@ -107,5 +110,30 @@ dependencies {
     compileOnlyApi("mezz.jei:jei-${minecraftVersion}-neoforge-api:${jeiVersion}")
     // runtimeOnly("dev.emi:emi-neoforge:${emiVersion}")
     compileOnlyApi("dev.emi:emi-neoforge:${emiVersion}")
+}
+
+val currentChangelog: String by project
+
+publishMods {
+    changelog = currentChangelog
+    type = STABLE
+    modLoaders.add("neoforge")
+    file.set(tasks.named<Jar>("jar").flatMap { it.archiveFile })
+
+    curseforge {
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        projectId = "1327983"
+        minecraftVersions.add(minecraftVersion)
+        changelogType = "html"
+        displayName = file.map { it.asFile.name }
+        requires("refined-storage")
+    }
+
+    modrinth {
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        projectId = "WvQIise1"
+        minecraftVersions.add(minecraftVersion)
+        requires("refined-storage")
+    }
 }
 

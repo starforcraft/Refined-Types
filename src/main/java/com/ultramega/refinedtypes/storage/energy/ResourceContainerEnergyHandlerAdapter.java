@@ -19,6 +19,10 @@ public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage
 
     @Override
     public long receive(final long maxReceive, final boolean simulate) {
+        if (maxReceive <= 0) {
+            return 0L;
+        }
+
         for (int i = 0; i < this.container.size(); i++) {
             final ResourceAmount currentResource = this.container.get(i);
             if (currentResource == null) {
@@ -30,6 +34,7 @@ public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage
                 }
             }
         }
+
         return 0L;
     }
 

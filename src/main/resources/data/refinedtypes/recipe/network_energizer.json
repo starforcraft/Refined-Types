@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CCC",
+    "CIC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:copper_block"
+    },
+    "I": {
+      "item": "refinedstorage:interface"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "refinedtypes:network_energizer"
+  }
+}

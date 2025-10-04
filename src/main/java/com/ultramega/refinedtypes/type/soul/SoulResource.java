@@ -27,13 +27,7 @@ public record SoulResource(Type type) implements PlatformResourceKey {
 
     @Override
     public List<ResourceTag> getTags() {
-        return Types.TYPE_REGISTRY.wrapAsHolder(this.type)
-            .tags()
-            .flatMap(tagKey -> Types.TYPE_REGISTRY.getTag(tagKey).stream())
-            .map(tag -> new ResourceTag(
-                tag.key(),
-                tag.stream().map(holder -> (PlatformResourceKey) new SoulResource(holder.value())).toList()
-            )).toList();
+        return List.of();
     }
 
     @Override
