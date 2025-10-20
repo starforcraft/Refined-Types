@@ -53,6 +53,9 @@ public record ResourceContainerSoulHandlerAdapter(ResourceContainer container) i
             maxReceive,
             SoulResourceType.INSTANCE.getInterfaceExportLimit()
         );
+        if (toInsert <= 0) {
+            return 0L;
+        }
         if (action == Action.EXECUTE) {
             this.container.set(tank, new ResourceAmount(createSoulResource(), toInsert));
         }
