@@ -127,6 +127,7 @@ publishMods {
         changelogType = "html"
         displayName = file.map { it.asFile.name }
         requires("refined-storage")
+        optional("ars-nouveau", "industrial-foregoing-souls")
     }
 
     modrinth {
@@ -134,6 +135,7 @@ publishMods {
         projectId = "WvQIise1"
         minecraftVersions.add(minecraftVersion)
         requires("refined-storage")
+        optional("ars-nouveau", "industrial-foregoing-souls")
     }
 }
 
