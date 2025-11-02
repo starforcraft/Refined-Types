@@ -5,8 +5,10 @@ import com.ultramega.refinedtypes.type.energy.EnergyResourceType;
 
 import com.refinedmods.refinedstorage.api.resource.ResourceAmount;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceContainer;
+import com.refinedmods.refinedstorage.common.support.resource.ItemResource;
 
 import dev.technici4n.grandpower.api.ILongEnergyStorage;
+import net.minecraft.world.item.ItemStack;
 
 import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergyResource;
 
@@ -45,7 +47,7 @@ public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage
         final long currentAmount = currentResource.amount();
         final long toInsert = Math.min(
             maxReceive,
-            EnergyResourceType.INSTANCE.getInterfaceExportLimit() - currentAmount
+            Math.max(this.container.getMaxAmount(currentResource.resource()), EnergyResourceType.INSTANCE.getInterfaceExportLimit()) - currentAmount
         );
         if (toInsert <= 0) {
             return 0L;
@@ -61,7 +63,7 @@ public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage
                                          final boolean simulate) {
         final long toInsert = Math.min(
             maxReceive,
-            EnergyResourceType.INSTANCE.getInterfaceExportLimit()
+            Math.max(this.container.getMaxAmount(ItemResource.ofItemStack(ItemStack.EMPTY)), EnergyResourceType.INSTANCE.getInterfaceExportLimit())
         );
         if (!simulate) {
             this.container.set(tank, new ResourceAmount(createEnergyResource(), toInsert));
@@ -114,9 +116,10 @@ public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage
     public long getCapacity() {
         long capacity = 0;
         for (int i = 0; i < this.container.size(); i++) {
-            final ResourceAmount resourceAmount = this.container.get(i);
-            if (resourceAmount == null || resourceAmount.resource() instanceof EnergyResource) {
-                capacity += EnergyResourceType.INSTANCE.getInterfaceExportLimit();
+            final ResourceAmount resource = this.container.get(i);
+            if (resource == null || resource.resource() instanceof EnergyResource) {
+                capacity += Math.max(this.container.getMaxAmount(resource != null ? resource.resource() : ItemResource.ofItemStack(ItemStack.EMPTY)),
+                    EnergyResourceType.INSTANCE.getInterfaceExportLimit());
             }
         }
 

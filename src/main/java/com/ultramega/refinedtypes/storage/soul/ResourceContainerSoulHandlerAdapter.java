@@ -6,8 +6,10 @@ import com.ultramega.refinedtypes.type.soul.SoulResourceType;
 import com.refinedmods.refinedstorage.api.resource.ResourceAmount;
 import com.refinedmods.refinedstorage.api.resource.ResourceKey;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceContainer;
+import com.refinedmods.refinedstorage.common.support.resource.ItemResource;
 
 import com.buuz135.industrialforegoingsouls.capabilities.ISoulHandler;
+import net.minecraft.world.item.ItemStack;
 
 import static com.ultramega.refinedtypes.type.soul.SoulResource.createSoulResource;
 
@@ -35,7 +37,7 @@ public record ResourceContainerSoulHandlerAdapter(ResourceContainer container) i
         final long currentAmount = currentResource.amount();
         final long toInsert = Math.min(
             maxReceive,
-            SoulResourceType.INSTANCE.getInterfaceExportLimit() - currentAmount
+            Math.max(this.container.getMaxAmount(currentResource.resource()), SoulResourceType.INSTANCE.getInterfaceExportLimit()) - currentAmount
         );
         if (toInsert <= 0) {
             return 0L;
@@ -51,7 +53,7 @@ public record ResourceContainerSoulHandlerAdapter(ResourceContainer container) i
                                        final Action action) {
         final long toInsert = Math.min(
             maxReceive,
-            SoulResourceType.INSTANCE.getInterfaceExportLimit()
+            Math.max(this.container.getMaxAmount(ItemResource.ofItemStack(ItemStack.EMPTY)), SoulResourceType.INSTANCE.getInterfaceExportLimit())
         );
         if (toInsert <= 0) {
             return 0L;
@@ -108,7 +110,8 @@ public record ResourceContainerSoulHandlerAdapter(ResourceContainer container) i
     public int getTankCapacity(final int tank) {
         final ResourceKey resource = this.container.getResource(tank);
         if (resource == null || resource instanceof SoulResource) {
-            return (int) SoulResourceType.INSTANCE.getInterfaceExportLimit();
+            return (int) Math.max(this.container.getMaxAmount(resource != null ? resource : ItemResource.ofItemStack(ItemStack.EMPTY)),
+                SoulResourceType.INSTANCE.getInterfaceExportLimit());
         }
         return 0;
     }
