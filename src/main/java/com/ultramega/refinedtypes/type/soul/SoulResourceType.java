@@ -82,7 +82,7 @@ public enum SoulResourceType implements ResourceType {
 
     @Override
     public long getInterfaceExportLimit() {
-        return Platform.INSTANCE.getBucketAmount() * 100;
+        return 64;
     }
 
     @Override

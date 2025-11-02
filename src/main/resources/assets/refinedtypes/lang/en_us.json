@@ -155,6 +155,7 @@
   "item.refinedtypes.infinite_soul_storage_disk.help": "Stores an infinite amount of Soul.",
   "item.refinedtypes.soul_storage_block.help": "Stores %s Soul. When empty, use while holding to return the Soul Storage Part and Machine Casing. Upgradeable to a higher tier by combining with a Soul Storage Part.",
   "item.refinedtypes.infinite_soul_storage_block.help": "Stores an infinite amount of Soul.",
+  "item.refinedtypes.soul.help": "Tip: Use a Regulator Upgrade to prevent the exporter from dumping all of your souls into the connected soul pipe",
 
   "block.refinedtypes.1k_soul_storage_block": "1K Soul Storage Block",
   "block.refinedtypes.8k_soul_storage_block": "8K Soul Storage Block",

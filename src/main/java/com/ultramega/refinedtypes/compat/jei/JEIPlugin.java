@@ -18,6 +18,7 @@ import mezz.jei.api.ingredients.IIngredientRenderer;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.IModIngredientRegistration;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -79,7 +80,7 @@ public class JEIPlugin implements IModPlugin {
         @SuppressWarnings("removal")
         @Override
         public List<Component> getTooltip(final TypeStack ingredient, final TooltipFlag tooltipFlag) {
-            return List.of(ingredient.type().getDisplayName());
+            return List.of(ingredient.type().getDisplayName(), ingredient.type().getTooltip());
         }
     };
 

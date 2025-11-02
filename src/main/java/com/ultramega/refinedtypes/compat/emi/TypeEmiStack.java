@@ -87,7 +87,7 @@ public class TypeEmiStack extends EmiStack {
         if (this.isEmpty()) {
             return Collections.emptyList();
         }
-        return List.of(this.getName());
+        return List.of(this.getName(), this.type.tooltip());
     }
 
     @Override
