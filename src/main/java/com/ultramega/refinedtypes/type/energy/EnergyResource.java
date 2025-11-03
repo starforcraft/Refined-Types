@@ -22,7 +22,7 @@ public record EnergyResource(Type type) implements PlatformResourceKey { //TODO:
 
     @Override
     public long getProcessingPatternLimit() {
-        return Platform.INSTANCE.getBucketAmount() * 100;
+        return Platform.INSTANCE.getBucketAmount() * 1000;
     }
 
     @Override

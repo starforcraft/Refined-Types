@@ -38,8 +38,8 @@ public enum SoulResourceType implements ResourceType {
         CODEC,
         resource -> resource instanceof SoulResource,
         SoulResource.class::cast,
-        Platform.INSTANCE.getBucketAmount(),
-        Platform.INSTANCE.getBucketAmount() * 64
+        1,
+        64
     );
 
     private static final MutableComponent TITLE = RefinedTypesUtil.createRefinedTypesTranslation(

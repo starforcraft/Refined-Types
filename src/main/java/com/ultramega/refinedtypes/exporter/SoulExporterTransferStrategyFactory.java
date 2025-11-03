@@ -8,7 +8,6 @@ import com.refinedmods.refinedstorage.api.network.impl.node.exporter.ExporterTra
 import com.refinedmods.refinedstorage.api.network.impl.node.exporter.MissingResourcesListeningExporterTransferStrategy;
 import com.refinedmods.refinedstorage.api.network.node.exporter.ExporterTransferStrategy;
 import com.refinedmods.refinedstorage.api.resource.ResourceKey;
-import com.refinedmods.refinedstorage.common.Platform;
 import com.refinedmods.refinedstorage.common.api.exporter.ExporterTransferStrategyFactory;
 import com.refinedmods.refinedstorage.common.api.storage.root.FuzzyRootStorage;
 import com.refinedmods.refinedstorage.common.api.upgrade.UpgradeState;
@@ -37,7 +36,7 @@ public class SoulExporterTransferStrategyFactory implements ExporterTransferStra
                                            final boolean fuzzyMode) {
         final SoulCapabilityCache capabilityCache = new SoulCapabilityCache(level, pos, direction);
         final SoulInsertableStorage destination = new SoulInsertableStorage(capabilityCache);
-        final long singleAmount = (upgradeState.has(Items.INSTANCE.getStackUpgrade()) ? 64 : 1) * Platform.INSTANCE.getBucketAmount();
+        final long singleAmount = upgradeState.has(Items.INSTANCE.getStackUpgrade()) ? 64 : 1;
         final ExporterTransferStrategy strategy = this.create(
             fuzzyMode,
             destination,

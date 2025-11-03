@@ -3,7 +3,6 @@ package com.ultramega.refinedtypes.type.soul;
 import com.ultramega.refinedtypes.registry.Types;
 import com.ultramega.refinedtypes.type.Type;
 
-import com.refinedmods.refinedstorage.common.Platform;
 import com.refinedmods.refinedstorage.common.api.support.resource.PlatformResourceKey;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceTag;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceType;
@@ -22,7 +21,7 @@ public record SoulResource(Type type) implements PlatformResourceKey {
 
     @Override
     public long getProcessingPatternLimit() {
-        return Platform.INSTANCE.getBucketAmount() * 100;
+        return 500;
     }
 
     @Override

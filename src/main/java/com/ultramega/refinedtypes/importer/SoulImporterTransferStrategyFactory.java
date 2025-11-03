@@ -12,7 +12,6 @@ import com.refinedmods.refinedstorage.common.importer.ImporterTransferQuotaProvi
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.neoforged.neoforge.fluids.FluidType;
 
 public class SoulImporterTransferStrategyFactory implements ImporterTransferStrategyFactory {
     @Override
@@ -21,9 +20,7 @@ public class SoulImporterTransferStrategyFactory implements ImporterTransferStra
                                            final Direction direction,
                                            final UpgradeState upgradeState) {
         final SoulImporterSource source = new SoulImporterSource(new SoulCapabilityCache(level, pos, direction));
-        final int singleAmount = upgradeState.has(Items.INSTANCE.getStackUpgrade())
-            ? FluidType.BUCKET_VOLUME * 64
-            : FluidType.BUCKET_VOLUME;
+        final int singleAmount = upgradeState.has(Items.INSTANCE.getStackUpgrade()) ? 64 : 1;
         final ImporterTransferQuotaProvider transferQuotaProvider = new ImporterTransferQuotaProvider(
             singleAmount,
             upgradeState,

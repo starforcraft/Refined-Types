@@ -39,7 +39,7 @@ public enum EnergyResourceType implements ResourceType {
         resource -> resource instanceof EnergyResource,
         EnergyResource.class::cast,
         Platform.INSTANCE.getBucketAmount(),
-        Platform.INSTANCE.getBucketAmount() * 64
+        Platform.INSTANCE.getBucketAmount() * 100
     );
 
     private static final MutableComponent TITLE = RefinedTypesUtil.createRefinedTypesTranslation(

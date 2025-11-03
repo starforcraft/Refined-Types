@@ -7,7 +7,6 @@ import com.ultramega.refinedtypes.type.soul.SoulResourceType;
 import com.refinedmods.refinedstorage.api.network.node.grid.GridExtractMode;
 import com.refinedmods.refinedstorage.api.resource.ResourceAmount;
 import com.refinedmods.refinedstorage.api.resource.repository.ResourceRepository;
-import com.refinedmods.refinedstorage.common.Platform;
 import com.refinedmods.refinedstorage.common.api.RefinedStorageClientApi;
 import com.refinedmods.refinedstorage.common.api.grid.GridScrollMode;
 import com.refinedmods.refinedstorage.common.api.grid.strategy.GridExtractionStrategy;
@@ -58,7 +57,7 @@ public class SoulGridResource extends AbstractGridResource<SoulResource> {
     @Nullable
     @Override
     public ResourceAmount getAutocraftingRequest() {
-        return new ResourceAmount(this.resource, Platform.INSTANCE.getBucketAmount());
+        return new ResourceAmount(this.resource, 1);
     }
 
     @Override
