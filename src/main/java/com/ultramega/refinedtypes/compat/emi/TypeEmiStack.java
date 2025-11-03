@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 
 import dev.emi.emi.api.render.EmiTooltipComponents;
 import dev.emi.emi.api.stack.EmiStack;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.core.component.DataComponentPatch;
@@ -87,7 +88,7 @@ public class TypeEmiStack extends EmiStack {
         if (this.isEmpty()) {
             return Collections.emptyList();
         }
-        return List.of(this.getName(), this.type.tooltip());
+        return List.of(this.getName());
     }
 
     @Override
@@ -97,6 +98,10 @@ public class TypeEmiStack extends EmiStack {
             .collect(Collectors.toList());
         if (this.amount > 1) {
             tooltips.add(EmiTooltipComponents.of(Component.literal(this.rendering.formatAmount(this.amount))));
+        }
+        if (this.type == Types.SOUL.get()) {
+            tooltips.add(EmiTooltipComponents.of(Component.translatable("item.refinedtypes.soul.help")
+                .withStyle(ChatFormatting.AQUA)));
         }
 
         EmiTooltipComponents.appendModName(tooltips, this.getId().getNamespace());

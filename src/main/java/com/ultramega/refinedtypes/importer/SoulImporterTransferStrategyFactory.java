@@ -20,7 +20,9 @@ public class SoulImporterTransferStrategyFactory implements ImporterTransferStra
                                            final Direction direction,
                                            final UpgradeState upgradeState) {
         final SoulImporterSource source = new SoulImporterSource(new SoulCapabilityCache(level, pos, direction));
-        final int singleAmount = upgradeState.has(Items.INSTANCE.getStackUpgrade()) ? 64 : 1;
+        final int singleAmount = upgradeState.has(Items.INSTANCE.getStackUpgrade())
+            ? 64
+            : 1;
         final ImporterTransferQuotaProvider transferQuotaProvider = new ImporterTransferQuotaProvider(
             singleAmount,
             upgradeState,

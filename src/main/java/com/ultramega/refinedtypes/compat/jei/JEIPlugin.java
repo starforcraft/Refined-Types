@@ -80,7 +80,11 @@ public class JEIPlugin implements IModPlugin {
         @SuppressWarnings("removal")
         @Override
         public List<Component> getTooltip(final TypeStack ingredient, final TooltipFlag tooltipFlag) {
-            return List.of(ingredient.type().getDisplayName(), ingredient.type().getTooltip());
+            if (ingredient.type() == Types.SOUL.get()) {
+                return List.of(ingredient.type().getDisplayName(), Component.translatable("item.refinedtypes.soul.help")
+                    .withStyle(ChatFormatting.AQUA));
+            }
+            return List.of(ingredient.type().getDisplayName());
         }
     };
 

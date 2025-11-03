@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
@@ -31,17 +30,17 @@ public final class Types {
 
     public static final DeferredRegister<Type> TYPES = DeferredRegister.create(TYPE_REGISTRY, MOD_ID);
 
-    public static final Supplier<Type> FE = TYPES.register("fe", () -> new Type("FE", createRefinedTypesIdentifier("types/fe"), Component.empty()));
+    public static final Supplier<Type> FE = TYPES.register("fe", () -> new Type("FE", createRefinedTypesIdentifier("types/fe")));
     public static final Supplier<Type> SOURCE;
     public static final Supplier<Type> SOUL;
 
     static {
         SOURCE = isArsNouveauLoaded()
-            ? TYPES.register("source", () -> new Type("Source", ResourceLocation.fromNamespaceAndPath("ars_nouveau", "block/mana_still"), Component.empty()))
-            : () -> new Type("", null, Component.empty());
+            ? TYPES.register("source", () -> new Type("Source", ResourceLocation.fromNamespaceAndPath("ars_nouveau", "block/mana_still")))
+            : () -> new Type("", null);
         SOUL = isIndustrialForegoingSoulsLoaded()
-            ? TYPES.register("soul", () -> new Type("Soul", null, Component.translatable("item.refinedtypes.soul.help")))
-            : () -> new Type("", null, Component.empty());
+            ? TYPES.register("soul", () -> new Type("Soul", null))
+            : () -> new Type("", null);
     }
 
     private Types() {
