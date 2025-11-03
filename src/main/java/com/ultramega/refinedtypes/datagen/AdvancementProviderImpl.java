@@ -21,7 +21,8 @@ public class AdvancementProviderImpl extends AdvancementProvider {
         @Override
         public void generate(final HolderLookup.Provider provider, final Consumer<AdvancementHolder> saver, final ExistingFileHelper existingFileHelper) {
             // TODO
-            //  Caused by: java.util.concurrent.CompletionException: java.lang.IllegalStateException: The parent: 'refinedstorage:drives' of advancement 'refinedtypes:storing_energies', has not been saved yet!
+            //  Caused by: java.util.concurrent.CompletionException: java.lang.IllegalStateException:
+            //  The parent: 'refinedstorage:drives' of advancement 'refinedtypes:storing_energies', has not been saved yet!
             /*Advancement.Builder.advancement()
                 .parent(createIdentifier("drives"))
                 .display(Items.getEnergyStoragePart(EnergyStorageVariant.SIXTY_FOUR_K).getDefaultInstance(),
