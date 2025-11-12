@@ -3,6 +3,7 @@ package com.ultramega.refinedtypes.type.soul;
 import com.ultramega.refinedtypes.storage.soul.ResourceContainerSoulHandlerAdapter;
 
 import com.refinedmods.refinedstorage.api.core.Action;
+import com.refinedmods.refinedstorage.common.content.BlockEntities;
 
 import javax.annotation.Nullable;
 
@@ -20,7 +21,7 @@ public class SoulUtil {
     public static void registerCapability(final RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
             SoulCapabilities.BLOCK,
-            com.refinedmods.refinedstorage.common.content.BlockEntities.INSTANCE.getInterface(),
+            BlockEntities.INSTANCE.getInterface(),
             (be, side) -> new ResourceContainerSoulHandlerAdapter(be.getExportedResources())
         );
     }

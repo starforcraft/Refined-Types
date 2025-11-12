@@ -52,6 +52,7 @@ import com.ultramega.refinedtypes.type.soul.SoulUtil;
 import com.ultramega.refinedtypes.type.source.SourceResource;
 import com.ultramega.refinedtypes.type.source.SourceResourceFactory;
 import com.ultramega.refinedtypes.type.source.SourceResourceType;
+import com.ultramega.refinedtypes.type.source.SourceUtil;
 
 import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
 import com.refinedmods.refinedstorage.common.api.support.network.AbstractNetworkNodeContainerBlockEntity;
@@ -464,12 +465,13 @@ public final class ModInitializer {
         event.registerBlockEntity(
             Capabilities.EnergyStorage.BLOCK,
             com.refinedmods.refinedstorage.common.content.BlockEntities.INSTANCE.getInterface(),
-            (be, side) -> new ResourceContainerEnergyHandlerAdapter(be.getExportedResources()) //new EnergyStorageInterface(be)
+            (be, side) -> new ResourceContainerEnergyHandlerAdapter(be.getExportedResources())
         );
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             this.registerNetworkNodeContainerProvider(event, BlockEntities.getEnergyStorageBlock(variant));
         }
         if (isArsNouveauLoaded()) {
+            SourceUtil.registerCapability(event);
             for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
                 this.registerNetworkNodeContainerProvider(event, BlockEntities.getSourceStorageBlock(variant));
             }
