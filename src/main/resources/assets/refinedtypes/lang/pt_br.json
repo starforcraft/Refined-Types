@@ -4,9 +4,9 @@
   "refinedtypes.configuration.section.refinedtypes.common.toml.title": "Refined Types",
 
   "misc.refinedtypes.resource_type.energy": "Energia",
-  "block.refinedtypes.network_energizer": "Network Energizer",
-  "item.refinedtypes.network_energizer.help": "Automatically consumes stored Energy from Energy Disks within the Network to maintain it.",
-  "gui.refinedtypes.network_energizer.redstone_mode_help": "When this device is inactive, no Energy from Energy Disks will be consumed by the storage network to sustain it.",
+  "block.refinedtypes.network_energizer": "Energizador de Rede",
+  "item.refinedtypes.network_energizer.help": "Consome automaticamente Energia armazenada de Discos de Energia dentro da Rede para mantê-la.",
+  "gui.refinedtypes.network_energizer.redstone_mode_help": "Quando este dispositivo estiver inativo, nenhuma Energia dos Discos de Energia será consumida pela rede de armazenamento para sustentá-la.",
   "item.refinedtypes.64k_energy_storage_part": "Parte de Armazenamento de Energia de 64K",
   "item.refinedtypes.256k_energy_storage_part": "Parte de Armazenamento de Energia de 256K",
   "item.refinedtypes.1024k_energy_storage_part": "Parte de Armazenamento de Energia de 1024K",
@@ -25,11 +25,11 @@
   "item.refinedtypes.262144k_energy_storage_disk": "Disco de Armazenamento de Energia de 262144K",
   "item.refinedtypes.1048576k_energy_storage_disk": "Disco de Armazenamento de Energia de 1048576K",
   "item.refinedtypes.8388608k_energy_storage_disk": "Disco de Armazenamento de Energia de 8388608K",
-  "item.refinedtypes.infinite_energy_storage_disk": "Disco de Armazenamento de Energia Infinito",
+  "item.refinedtypes.infinite_energy_storage_disk": "Disco de Armazenamento de Energia Infinita",
 
-  "item.refinedtypes.energy_storage_disk.help": "Armazena %s FE. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Energia. Aprimorável para um nível superior ao combinar com uma Parte de Armazenamento de Energia.",
+  "item.refinedtypes.energy_storage_disk.help": "Armazena %s FE. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Energia. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Energia.",
   "item.refinedtypes.infinite_energy_storage_disk.help": "Armazena uma quantidade infinita de FE.",
-  "item.refinedtypes.energy_storage_block.help": "Armazena %s FE. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Energia e a Carcaça de Máquina. Aprimorável para um nível superior ao combinar com uma Parte de Armazenamento de Energia.",
+  "item.refinedtypes.energy_storage_block.help": "Armazena %s FE. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Energia e a Carcaça da Máquina. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Energia.",
   "item.refinedtypes.infinite_energy_storage_block.help": "Armazena uma quantidade infinita de FE.",
 
   "block.refinedtypes.64k_energy_storage_block": "Bloco de Armazenamento de Energia de 64K",
@@ -40,11 +40,11 @@
   "block.refinedtypes.262144k_energy_storage_block": "Bloco de Armazenamento de Energia de 262144K",
   "block.refinedtypes.1048576k_energy_storage_block": "Bloco de Armazenamento de Energia de 1048576K",
   "block.refinedtypes.8388608k_energy_storage_block": "Bloco de Armazenamento de Energia de 8388608K",
-  "block.refinedtypes.infinite_energy_storage_block": "Bloco de Armazenamento de Energia Infinito",
+  "block.refinedtypes.infinite_energy_storage_block": "Bloco de Armazenamento de Energia Infinita",
 
   "tag.item.refinedtypes.energy_storage_disks": "Discos de Armazenamento de Energia",
   "advancements.refinedtypes.storing_energies": "Armazenando energias",
-  "advancements.refinedtypes.storing_energies.description": "Crie um Disco de Armazenamento de Energia e coloque-o em seu Leitor de Disco",
+  "advancements.refinedtypes.storing_energies.description": "Fabrique um Disco de Armazenamento de Energia e coloque-o em seu Leitor de Disco",
 
   "config.refinedtypes.option.energyStorageBlock": "Bloco de Armazenamento de Energia",
   "config.refinedtypes.option.energyStorageBlock.tooltip": "Configuração para os Blocos de Armazenamento de Energia.",
@@ -65,7 +65,7 @@
   "config.refinedtypes.option.energyStorageBlock.8388608KEnergyUsage": "Uso de energia de 8388608K",
   "config.refinedtypes.option.energyStorageBlock.8388608KEnergyUsage.tooltip": "A energia usada pelo Bloco de Armazenamento de Energia de 8388608K.",
   "config.refinedtypes.option.energyStorageBlock.infiniteEnergyUsage": "Uso de energia infinita",
-  "config.refinedtypes.option.energyStorageBlock.infiniteEnergyUsage.tooltip": "A energia usada pelo Bloco de Armazenamento de Energia Infinito.",
+  "config.refinedtypes.option.energyStorageBlock.infiniteEnergyUsage.tooltip": "A energia usada pelo Bloco de Armazenamento de Energia Infinita.",
 
 
   "misc.refinedtypes.resource_type.source": "Fonte",
@@ -87,11 +87,11 @@
   "item.refinedtypes.262144b_source_storage_disk": "Disco de Armazenamento de Fonte de 262144B",
   "item.refinedtypes.1048576b_source_storage_disk": "Disco de Armazenamento de Fonte de 1048576B",
   "item.refinedtypes.8388608b_source_storage_disk": "Disco de Armazenamento de Fonte de 8388608B",
-  "item.refinedtypes.infinite_source_storage_disk": "Disco de Armazenamento de Fonte Infinito",
+  "item.refinedtypes.infinite_source_storage_disk": "Disco de Armazenamento de Fonte Infinita",
 
-  "item.refinedtypes.source_storage_disk.help": "Armazena %s de Fonte. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Fonte. Aprimorável para um nível superior ao combinar com uma Parte de Armazenamento de Fonte.",
+  "item.refinedtypes.source_storage_disk.help": "Armazena %s de Fonte. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Fonte. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Fonte.",
   "item.refinedtypes.infinite_source_storage_disk.help": "Armazena uma quantidade infinita de Fonte.",
-  "item.refinedtypes.source_storage_block.help": "Armazena %s de Fonte. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Fonte e a Carcaça de Máquina. Aprimorável para um nível superior ao combinar com uma Parte de Armazenamento de Fonte.",
+  "item.refinedtypes.source_storage_block.help": "Armazena %s de Fonte. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Fonte e a Carcaça da Máquina. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Fonte.",
   "item.refinedtypes.infinite_source_storage_block.help": "Armazena uma quantidade infinita de Fonte.",
 
   "block.refinedtypes.64b_source_storage_block": "Bloco de Armazenamento de Fonte de 64B",
@@ -102,11 +102,11 @@
   "block.refinedtypes.262144b_source_storage_block": "Bloco de Armazenamento de Fonte de 262144B",
   "block.refinedtypes.1048576b_source_storage_block": "Bloco de Armazenamento de Fonte de 1048576B",
   "block.refinedtypes.8388608b_source_storage_block": "Bloco de Armazenamento de Fonte de 8388608B",
-  "block.refinedtypes.infinite_source_storage_block": "Bloco de Armazenamento de Fonte Infinito",
+  "block.refinedtypes.infinite_source_storage_block": "Bloco de Armazenamento de Fonte Infinita",
 
   "tag.item.refinedtypes.source_storage_disks": "Discos de Armazenamento de Fonte",
   "advancements.refinedtypes.storing_sources": "Armazenando fontes",
-  "advancements.refinedtypes.storing_sources.description": "Crie um Disco de Armazenamento de Fonte e coloque-o em seu Leitor de Disco",
+  "advancements.refinedtypes.storing_sources.description": "Fabrique um Disco de Armazenamento de Fonte e coloque-o em seu Leitor de Disco",
 
   "config.refinedtypes.option.sourceStorageBlock": "Bloco de Armazenamento de Fonte",
   "config.refinedtypes.option.sourceStorageBlock.tooltip": "Configuração para os Blocos de Armazenamento de Fonte.",
@@ -127,7 +127,7 @@
   "config.refinedtypes.option.sourceStorageBlock.8388608BSourceUsage": "Uso de fonte de 8388608B",
   "config.refinedtypes.option.sourceStorageBlock.8388608BSourceUsage.tooltip": "A fonte usada pelo Bloco de Armazenamento de Fonte de 8388608B.",
   "config.refinedtypes.option.sourceStorageBlock.infiniteSourceUsage": "Uso de fonte infinita",
-  "config.refinedtypes.option.sourceStorageBlock.infiniteSourceUsage.tooltip": "A fonte usada pelo Bloco de Armazenamento de Fonte Infinito.",
+  "config.refinedtypes.option.sourceStorageBlock.infiniteSourceUsage.tooltip": "A fonte usada pelo Bloco de Armazenamento de Fonte Infinita.",
 
 
   "misc.refinedtypes.resource_type.soul": "Alma",
@@ -149,12 +149,13 @@
   "item.refinedtypes.32768k_soul_storage_disk": "Disco de Armazenamento de Alma de 32768K",
   "item.refinedtypes.262144k_soul_storage_disk": "Disco de Armazenamento de Alma de 262144K",
   "item.refinedtypes.2097152k_soul_storage_disk": "Disco de Armazenamento de Alma de 2097152K",
-  "item.refinedtypes.infinite_soul_storage_disk": "Disco de Armazenamento de Alma Infinito",
+  "item.refinedtypes.infinite_soul_storage_disk": "Disco de Armazenamento de Alma Infinita",
 
-  "item.refinedtypes.soul_storage_disk.help": "Armazena %s de Alma. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Alma. Aprimorável para um nível superior ao combinar com uma Parte de Armazenamento de Alma.",
+  "item.refinedtypes.soul_storage_disk.help": "Armazena %s de Alma. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Alma. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Alma.",
   "item.refinedtypes.infinite_soul_storage_disk.help": "Armazena uma quantidade infinita de Alma.",
-  "item.refinedtypes.soul_storage_block.help": "Armazena %s de Alma. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Alma e a Carcaça de Máquina. Aprimorável para um nível superior ao combinar com uma Parte de Armazenamento de Alma.",
+  "item.refinedtypes.soul_storage_block.help": "Armazena %s de Alma. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Alma e a Carcaça da Máquina. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Alma.",
   "item.refinedtypes.infinite_soul_storage_block.help": "Armazena uma quantidade infinita de Alma.",
+  "item.refinedtypes.soul.help": "Dica: Use uma Melhoria de Regulador para evitar que o exportador despeje todas as suas almas no tubo de alma conectado",
 
   "block.refinedtypes.1k_soul_storage_block": "Bloco de Armazenamento de Alma de 1K",
   "block.refinedtypes.8k_soul_storage_block": "Bloco de Armazenamento de Alma de 8K",
@@ -164,9 +165,9 @@
   "block.refinedtypes.32768k_soul_storage_block": "Bloco de Armazenamento de Alma de 32768K",
   "block.refinedtypes.262144k_soul_storage_block": "Bloco de Armazenamento de Alma de 262144K",
   "block.refinedtypes.2097152k_soul_storage_block": "Bloco de Armazenamento de Alma de 2097152K",
-  "block.refinedtypes.infinite_soul_storage_block": "Bloco de Armazenamento de Alma Infinito",
+  "block.refinedtypes.infinite_soul_storage_block": "Bloco de Armazenamento de Alma Infinita",
 
   "tag.item.refinedtypes.soul_storage_disks": "Discos de Armazenamento de Alma",
   "advancements.refinedtypes.storing_souls": "Armazenando almas",
-  "advancements.refinedtypes.storing_souls.description": "Crie um Disco de Armazenamento de Alma e coloque-o em seu Leitor de Disco"
+  "advancements.refinedtypes.storing_souls.description": "Fabrique um Disco de Armazenamento de Alma e coloque-o em seu Leitor de Disco"
 }
