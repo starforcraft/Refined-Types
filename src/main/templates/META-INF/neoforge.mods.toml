@@ -7,7 +7,7 @@ modId = "refinedtypes"
 version = "${version}"
 displayName = "Refined Types"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/refined-types"
-authors = "Refined Types"
+authors = "Ultramega"
 description = "Refined Types is an addon for Refined Storage which adds FE, Source and Souls Storage Disks."
 
 [[mixins]]
