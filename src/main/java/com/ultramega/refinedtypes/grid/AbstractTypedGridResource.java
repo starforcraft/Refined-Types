@@ -15,24 +15,22 @@ import com.refinedmods.refinedstorage.common.api.grid.view.GridResource;
 import com.refinedmods.refinedstorage.common.api.grid.view.GridResourceAttributeKey;
 import com.refinedmods.refinedstorage.common.api.support.resource.PlatformResourceKey;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceRendering;
-import com.refinedmods.refinedstorage.common.api.support.resource.ResourceType;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import javax.annotation.Nullable;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractTypedGridResource<R extends PlatformResourceKey> extends AbstractGridResource<R> {
     private final int id;
     private final ResourceRendering rendering;
-    private final ResourceType resourceType;
     private final long autocraftingAmount;
     private final List<Component> tooltip;
 
@@ -41,12 +39,10 @@ public abstract class AbstractTypedGridResource<R extends PlatformResourceKey> e
                                         final Function<GridResourceAttributeKey, Set<String>> attributes,
                                         final Class<R> resourceClass,
                                         final Type type,
-                                        final ResourceType resourceType,
                                         final long autocraftingAmount) {
         super(resource, name, attributes);
         this.id = Types.TYPE_REGISTRY.getId(type);
         this.rendering = RefinedStorageClientApi.INSTANCE.getResourceRendering(resourceClass);
-        this.resourceType = resourceType;
         this.autocraftingAmount = autocraftingAmount;
         this.tooltip = List.of(type.getDisplayName());
     }
@@ -64,7 +60,7 @@ public abstract class AbstractTypedGridResource<R extends PlatformResourceKey> e
 
     @Nullable
     @Override
-    public ResourceAmount getAutocraftingRequest() {
+    public ResourceAmount createAutocraftingRequest() {
         return new ResourceAmount(this.resource, this.autocraftingAmount);
     }
 
@@ -86,7 +82,7 @@ public abstract class AbstractTypedGridResource<R extends PlatformResourceKey> e
     }
 
     @Override
-    public final void render(final GuiGraphics graphics, final int x, final int y) {
+    public final void render(final GuiGraphicsExtractor graphics, final int x, final int y) {
         this.rendering.render(this.resource, graphics, x, y);
     }
 
@@ -98,11 +94,6 @@ public abstract class AbstractTypedGridResource<R extends PlatformResourceKey> e
     @Override
     public final String getAmountInTooltip(final ResourceRepository<GridResource> repository) {
         return this.rendering.formatAmount(this.getAmount(repository));
-    }
-
-    @Override
-    public final boolean belongsToResourceType(final ResourceType resourceType) {
-        return resourceType == this.resourceType;
     }
 
     @Override

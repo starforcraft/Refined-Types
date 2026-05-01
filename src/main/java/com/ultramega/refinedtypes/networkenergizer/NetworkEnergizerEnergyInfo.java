@@ -25,8 +25,8 @@ public class NetworkEnergizerEnergyInfo {
     private long capacity;
 
     private NetworkEnergizerEnergyInfo(final ServerPlayer player,
-                       final LongSupplier storedSupplier,
-                       final LongSupplier capacitySupplier) {
+                                       final LongSupplier storedSupplier,
+                                       final LongSupplier capacitySupplier) {
         this.player = player;
         this.storedSupplier = storedSupplier;
         this.capacitySupplier = capacitySupplier;

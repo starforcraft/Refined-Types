@@ -1,0 +1,9 @@
+{
+  "type": "refinedstorage:storage_container_upgrade",
+  "part": "refinedtypes:256k_energy_storage_part",
+  "result": "refinedtypes:256k_energy_storage_disk",
+  "sources": [
+    "refinedtypes:64k_energy_storage_disk",
+    "refinedtypes:creative_energy_storage_disk"
+  ]
+}

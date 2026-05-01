@@ -4,6 +4,5 @@
   "package": "com.ultramega.refinedtypes.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MixinSoulPipeBlock"
   ]
 }

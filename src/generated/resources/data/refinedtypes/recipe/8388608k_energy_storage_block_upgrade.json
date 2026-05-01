@@ -1,0 +1,15 @@
+{
+  "type": "refinedstorage:storage_container_upgrade",
+  "part": "refinedtypes:8388608k_energy_storage_part",
+  "result": "refinedtypes:8388608k_energy_storage_block",
+  "sources": [
+    "refinedtypes:64k_energy_storage_block",
+    "refinedtypes:256k_energy_storage_block",
+    "refinedtypes:1024k_energy_storage_block",
+    "refinedtypes:8192k_energy_storage_block",
+    "refinedtypes:65536k_energy_storage_block",
+    "refinedtypes:262144k_energy_storage_block",
+    "refinedtypes:1048576k_energy_storage_block",
+    "refinedtypes:creative_energy_storage_block"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "minecraft:copper_block",
+    "P": "refinedstorage:improved_processor",
+    "R": "minecraft:gold_block",
+    "S": "refinedtypes:256k_energy_storage_part"
+  },
+  "pattern": [
+    "PEP",
+    "SRS",
+    "PSP"
+  ],
+  "result": {
+    "id": "refinedtypes:1024k_energy_storage_part"
+  }
+}

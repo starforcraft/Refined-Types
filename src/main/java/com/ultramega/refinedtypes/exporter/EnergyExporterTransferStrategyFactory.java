@@ -8,7 +8,6 @@ import com.refinedmods.refinedstorage.api.network.impl.node.exporter.ExporterTra
 import com.refinedmods.refinedstorage.api.network.impl.node.exporter.MissingResourcesListeningExporterTransferStrategy;
 import com.refinedmods.refinedstorage.api.network.node.exporter.ExporterTransferStrategy;
 import com.refinedmods.refinedstorage.api.resource.ResourceKey;
-import com.refinedmods.refinedstorage.common.Platform;
 import com.refinedmods.refinedstorage.common.api.exporter.ExporterTransferStrategyFactory;
 import com.refinedmods.refinedstorage.common.api.storage.root.FuzzyRootStorage;
 import com.refinedmods.refinedstorage.common.api.upgrade.UpgradeState;
@@ -22,6 +21,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 
 import static com.refinedmods.refinedstorage.api.network.impl.node.exporter.MissingResourcesListeningExporterTransferStrategy.OnMissingResources.scheduleAutocrafting;
+import static com.ultramega.refinedtypes.type.energy.EnergyResourceType.DEFAULT_TRANSFER_AMOUNT;
 
 public class EnergyExporterTransferStrategyFactory implements ExporterTransferStrategyFactory {
     @Override
@@ -37,7 +37,9 @@ public class EnergyExporterTransferStrategyFactory implements ExporterTransferSt
                                            final boolean fuzzyMode) {
         final EnergyCapabilityCache capabilityCache = new EnergyCapabilityCache(level, pos, direction);
         final EnergyInsertableStorage destination = new EnergyInsertableStorage(capabilityCache);
-        final long singleAmount = (upgradeState.has(Items.INSTANCE.getStackUpgrade()) ? 100 : 1) * Platform.INSTANCE.getBucketAmount();
+        final int singleAmount = upgradeState.has(Items.INSTANCE.getStackUpgrade())
+            ? (int) DEFAULT_TRANSFER_AMOUNT * 100
+            : (int) DEFAULT_TRANSFER_AMOUNT;
         final ExporterTransferStrategy strategy = this.create(
             fuzzyMode,
             destination,

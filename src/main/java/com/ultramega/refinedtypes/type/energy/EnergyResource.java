@@ -4,13 +4,14 @@ import com.ultramega.refinedtypes.registry.Types;
 import com.ultramega.refinedtypes.type.Type;
 
 import com.refinedmods.refinedstorage.api.resource.ResourceKey;
-import com.refinedmods.refinedstorage.common.Platform;
 import com.refinedmods.refinedstorage.common.api.support.resource.FuzzyModeNormalizer;
 import com.refinedmods.refinedstorage.common.api.support.resource.PlatformResourceKey;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceTag;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceType;
 
 import java.util.List;
+
+import static com.ultramega.refinedtypes.type.energy.EnergyResourceType.DEFAULT_TRANSFER_AMOUNT;
 
 public record EnergyResource(Type type) implements PlatformResourceKey, FuzzyModeNormalizer {
     public static final EnergyResource ENERGY_RESOURCE = new EnergyResource(Types.FE.get());
@@ -22,7 +23,7 @@ public record EnergyResource(Type type) implements PlatformResourceKey, FuzzyMod
 
     @Override
     public long getProcessingPatternLimit() {
-        return Platform.INSTANCE.getBucketAmount() * 1000;
+        return DEFAULT_TRANSFER_AMOUNT * 1_000_000L;
     }
 
     @Override

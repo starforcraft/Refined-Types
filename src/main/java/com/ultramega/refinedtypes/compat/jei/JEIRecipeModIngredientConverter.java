@@ -4,8 +4,6 @@ import com.ultramega.refinedtypes.registry.Types;
 import com.ultramega.refinedtypes.type.Type;
 import com.ultramega.refinedtypes.type.TypeStack;
 import com.ultramega.refinedtypes.type.energy.EnergyResource;
-import com.ultramega.refinedtypes.type.soul.SoulResource;
-import com.ultramega.refinedtypes.type.source.SourceResource;
 
 import com.refinedmods.refinedstorage.api.resource.ResourceAmount;
 import com.refinedmods.refinedstorage.common.api.support.resource.PlatformResourceKey;
@@ -13,11 +11,7 @@ import com.refinedmods.refinedstorage.common.api.support.resource.RecipeModIngre
 
 import java.util.Optional;
 
-import net.neoforged.neoforge.fluids.FluidType;
-
 import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
-import static com.ultramega.refinedtypes.type.soul.SoulResource.SOUL_RESOURCE;
-import static com.ultramega.refinedtypes.type.source.SourceResource.SOURCE_RESOURCE;
 
 public class JEIRecipeModIngredientConverter implements RecipeModIngredientConverter {
     @Override
@@ -25,11 +19,11 @@ public class JEIRecipeModIngredientConverter implements RecipeModIngredientConve
         if (ingredient instanceof TypeStack stack) {
             if (stack.type() == Types.FE.get()) {
                 return Optional.of(ENERGY_RESOURCE);
-            } else if (stack.type() == Types.SOURCE.get()) {
+            } /*else if (stack.type() == Types.SOURCE.get()) {
                 return Optional.of(SOURCE_RESOURCE);
             } else if (stack.type() == Types.SOUL.get()) {
                 return Optional.of(SOUL_RESOURCE);
-            }
+            }*/
         }
         return Optional.empty();
     }
@@ -39,11 +33,11 @@ public class JEIRecipeModIngredientConverter implements RecipeModIngredientConve
         if (ingredient instanceof TypeStack(Type type, long amount)) {
             if (type == Types.FE.get()) {
                 return Optional.of(new ResourceAmount(ENERGY_RESOURCE, amount));
-            } else if (type == Types.SOURCE.get()) {
+            } /*else if (type == Types.SOURCE.get()) {
                 return Optional.of(new ResourceAmount(SOURCE_RESOURCE, amount));
             } else if (type == Types.SOUL.get()) {
                 return Optional.of(new ResourceAmount(SOUL_RESOURCE, amount));
-            }
+            }*/
         }
         return Optional.empty();
     }
@@ -52,8 +46,8 @@ public class JEIRecipeModIngredientConverter implements RecipeModIngredientConve
     public Optional<Object> convertToIngredient(final PlatformResourceKey resourceKey) {
         return switch (resourceKey) {
             case EnergyResource(Type type) -> Optional.of(new TypeStack(type, 1));
-            case SourceResource(Type type) -> Optional.of(new TypeStack(type, FluidType.BUCKET_VOLUME));
-            case SoulResource(Type type) -> Optional.of(new TypeStack(type, 1));
+//            case SourceResource(Type type) -> Optional.of(new TypeStack(type, FluidType.BUCKET_VOLUME));
+//            case SoulResource(Type type) -> Optional.of(new TypeStack(type, 1));
             default -> Optional.empty();
         };
     }

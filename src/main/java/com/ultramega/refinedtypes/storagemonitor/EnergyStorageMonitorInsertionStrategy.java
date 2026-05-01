@@ -1,7 +1,6 @@
 package com.ultramega.refinedtypes.storagemonitor;
 
-import com.ultramega.refinedtypes.registry.Types;
-import com.ultramega.refinedtypes.type.TypeStack;
+import com.ultramega.refinedtypes.type.TypeOperationResult;
 import com.ultramega.refinedtypes.type.energy.EnergyResource;
 
 import com.refinedmods.refinedstorage.api.core.Action;
@@ -13,11 +12,11 @@ import com.refinedmods.refinedstorage.api.storage.root.RootStorage;
 import com.refinedmods.refinedstorage.common.api.storagemonitor.StorageMonitorInsertionStrategy;
 
 import java.util.Optional;
-import javax.annotation.Nullable;
 
-import dev.technici4n.grandpower.api.ILongEnergyStorage;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
 
+import static com.ultramega.refinedtypes.RefinedTypesUtil.dischargeContainer;
 import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
 
 public class EnergyStorageMonitorInsertionStrategy implements StorageMonitorInsertionStrategy {
@@ -30,44 +29,26 @@ public class EnergyStorageMonitorInsertionStrategy implements StorageMonitorInse
             return Optional.empty();
         }
         final RootStorage rootStorage = network.getComponent(StorageNetworkComponent.class);
-        final ItemStack modifiedStack = stack.copy();
-        return Optional.ofNullable(modifiedStack.getCapability(ILongEnergyStorage.ITEM))
-            .map(handler -> this.handleInsert(actor, configuredEnergyResource, handler, rootStorage, modifiedStack));
+        return dischargeContainer(stack)
+            .map(extracted -> this.tryInsert(actor, configuredEnergyResource, extracted, rootStorage))
+            .map(extracted -> this.doInsert(actor, extracted, rootStorage));
     }
 
     @Nullable
-    private ItemStack handleInsert(final Actor actor,
-                                   final EnergyResource configuredEnergyResource,
-                                   final ILongEnergyStorage handler,
-                                   final RootStorage rootStorage,
-                                   final ItemStack modifiedStack) {
-        final TypeStack extractedSimulated = new TypeStack(Types.FE.get(), handler.extract(Long.MAX_VALUE, true));
-        if (extractedSimulated.isEmpty()) {
-            return null;
-        }
-        final long insertedSimulated = this.tryInsert(actor, configuredEnergyResource, extractedSimulated, rootStorage);
-        if (insertedSimulated == 0) {
-            return null;
-        }
-        final TypeStack extracted = new TypeStack(Types.FE.get(), handler.extract(insertedSimulated, false));
-        if (extracted.isEmpty()) {
-            return null;
-        }
-        this.doInsert(actor, extracted, rootStorage);
-        return modifiedStack;
-    }
-
-    private long tryInsert(final Actor actor,
-                           final EnergyResource configuredResource,
-                           final TypeStack result,
-                           final RootStorage rootStorage) {
+    private TypeOperationResult tryInsert(final Actor actor,
+                                final EnergyResource configuredResource,
+                                final TypeOperationResult result,
+                                final RootStorage rootStorage) {
         if (!result.type().equals(configuredResource.type())) {
-            return 0;
+            return null;
         }
-        return rootStorage.insert(ENERGY_RESOURCE, result.amount(), Action.SIMULATE, actor);
+        final long insertedSimulated = rootStorage.insert(ENERGY_RESOURCE, result.amount(), Action.SIMULATE, actor);
+        final boolean insertedSuccessfully = insertedSimulated == result.amount();
+        return insertedSuccessfully ? result : null;
     }
 
-    private void doInsert(final Actor actor, final TypeStack result, final RootStorage rootStorage) {
+    private ItemStack doInsert(final Actor actor, final TypeOperationResult result, final RootStorage rootStorage) {
         rootStorage.insert(ENERGY_RESOURCE, result.amount(), Action.EXECUTE, actor);
+        return result.container();
     }
 }

@@ -1,21 +1,17 @@
 package com.ultramega.refinedtypes.datagen;
 
 import com.ultramega.refinedtypes.datagen.loot.BlockLootTableProviderImpl;
-import com.ultramega.refinedtypes.datagen.model.BlockModelProviderImpl;
-import com.ultramega.refinedtypes.datagen.model.ItemModelProviderImpl;
-import com.ultramega.refinedtypes.datagen.recipe.RecipeProviderImpl;
-import com.ultramega.refinedtypes.datagen.tag.BlockTagsProviderImpl;
-import com.ultramega.refinedtypes.datagen.tag.ItemTagsProviderImpl;
+import com.ultramega.refinedtypes.datagen.model.ModelProviders;
+import com.ultramega.refinedtypes.datagen.recipe.MainRecipeProvider;
+import com.ultramega.refinedtypes.datagen.tag.BlockTagsProvider;
+import com.ultramega.refinedtypes.datagen.tag.ItemTagsProvider;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.MOD_ID;
@@ -26,68 +22,20 @@ public class DataGenerators {
     }
 
     @SubscribeEvent
-    public static void onGatherData(final GatherDataEvent e) {
-        registerBlockModelProviders(e.getGenerator(), e.getExistingFileHelper());
-        registerItemModelProviders(e.getGenerator(), e.getExistingFileHelper());
-        registerBlockStateProviders(e.getGenerator(), e.getExistingFileHelper());
-        registerLootTableProviders(e.getGenerator(), e.getLookupProvider());
-        registerRecipeProviders(e.getGenerator(), e.getLookupProvider());
-        registerTagProviders(e.getGenerator(), e.getLookupProvider(), e.getExistingFileHelper());
-        registerAdvancementProviders(e.getGenerator(), e.getLookupProvider());
-    }
-
-    private static void registerBlockModelProviders(final DataGenerator generator,
-                                                    final ExistingFileHelper existingFileHelper) {
-        final DataGenerator.PackGenerator mainPack = generator.getVanillaPack(true);
-        mainPack.addProvider(output -> new BlockModelProviderImpl(output, existingFileHelper));
-    }
-
-    private static void registerBlockStateProviders(final DataGenerator generator,
-                                                    final ExistingFileHelper existingFileHelper) {
-        final DataGenerator.PackGenerator mainPack = generator.getVanillaPack(true);
-        mainPack.addProvider(output -> new BlockStateProviderImpl(output, existingFileHelper));
-    }
-
-    private static void registerItemModelProviders(final DataGenerator generator,
-                                                   final ExistingFileHelper existingFileHelper) {
-        final DataGenerator.PackGenerator mainPack = generator.getVanillaPack(true);
-        mainPack.addProvider(output -> new ItemModelProviderImpl(output, existingFileHelper));
-    }
-
-    private static void registerLootTableProviders(final DataGenerator generator,
-                                                   final CompletableFuture<HolderLookup.Provider> provider) {
-        final DataGenerator.PackGenerator mainPack = generator.getVanillaPack(true);
-        mainPack.addProvider(output -> new BlockLootTableProviderImpl(output, provider));
-    }
-
-    private static void registerRecipeProviders(final DataGenerator generator,
-                                                final CompletableFuture<HolderLookup.Provider> provider) {
-        final DataGenerator.PackGenerator mainPack = generator.getVanillaPack(true);
-        mainPack.addProvider(output -> new RecipeProviderImpl(output, provider));
-    }
-
-    private static void registerTagProviders(final DataGenerator generator,
-        final CompletableFuture<HolderLookup.Provider> provider,
-        final ExistingFileHelper existingFileHelper
-    ) {
-        final DataGenerator.PackGenerator mainPack = generator.getVanillaPack(true);
-        final BlockTagsProviderImpl blockTagsProvider = mainPack.addProvider(
-            output -> new BlockTagsProviderImpl(output, provider, existingFileHelper)
-        );
-        mainPack.addProvider(output -> new ItemTagsProviderImpl(
+    public static void onGatherData(final GatherDataEvent.Client e) {
+        final DataGenerator generator = e.getGenerator();
+        final DataGenerator.PackGenerator pack = generator.getVanillaPack(true);
+        pack.addProvider(ModelProviders::new);
+        pack.addProvider(output -> new BlockLootTableProviderImpl(output, e.getLookupProvider()));
+        pack.addProvider(output -> new MainRecipeProvider.Runner(output, e.getLookupProvider()));
+        final BlockTagsProvider blockTagsProvider = pack.addProvider(output ->
+            new BlockTagsProvider(output, e.getLookupProvider()));
+        pack.addProvider(output ->
+            new ItemTagsProvider(output, e.getLookupProvider(), blockTagsProvider.contentsGetter()));
+        pack.addProvider(output -> new AdvancementProvider(
             output,
-            provider,
-            blockTagsProvider,
-            existingFileHelper
+            e.getLookupProvider(),
+            List.of(new com.ultramega.refinedtypes.datagen.advancement.AdvancementProvider())
         ));
-    }
-
-    private static void registerAdvancementProviders(final DataGenerator generator,
-                                                     final CompletableFuture<HolderLookup.Provider> provider) {
-        final DataGenerator.PackGenerator mainPack = generator.getVanillaPack(true);
-        mainPack.addProvider(output -> new AdvancementProvider(
-            output,
-            provider,
-            List.of(new com.ultramega.refinedtypes.datagen.advancement.AdvancementProvider())));
     }
 }

@@ -7,14 +7,15 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
+import static net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED;
 
 public class EnergyProgressWidget extends ProgressWidget {
-    private static final ResourceLocation SPRITE = createRefinedTypesIdentifier("widget/energy_progress_bar");
+    private static final Identifier SPRITE = createRefinedTypesIdentifier("widget/energy_progress_bar");
 
     private final DoubleSupplier progressSupplier;
     private final Supplier<List<Component>> tooltipSupplier;
@@ -31,14 +32,14 @@ public class EnergyProgressWidget extends ProgressWidget {
     }
 
     @Override
-    public void renderWidget(final GuiGraphics graphics, final int mouseX, final int mouseY, final float partialTicks) {
+    protected void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float partialTicks) {
         final int correctedHeight = (int) (this.progressSupplier.getAsDouble() * this.height);
         final int correctedY = this.getY() + this.height - correctedHeight;
         final int u = 0;
         final int v = this.height - correctedHeight;
-        graphics.blitSprite(SPRITE, 16, 70, u, v, this.getX(), correctedY, this.width, correctedHeight);
+        graphics.blitSprite(GUI_TEXTURED, SPRITE, 16, 70, u, v, this.getX(), correctedY, this.width, correctedHeight);
         if (this.isHovered) {
-            graphics.renderComponentTooltip(Minecraft.getInstance().font, this.tooltipSupplier.get(), mouseX, mouseY);
+            graphics.setComponentTooltipForNextFrame(Minecraft.getInstance().font, this.tooltipSupplier.get(), mouseX, mouseY);
         }
     }
 }

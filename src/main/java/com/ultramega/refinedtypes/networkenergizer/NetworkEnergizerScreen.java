@@ -4,17 +4,16 @@ import com.refinedmods.refinedstorage.common.support.AbstractBaseScreen;
 import com.refinedmods.refinedstorage.common.support.containermenu.PropertyTypes;
 import com.refinedmods.refinedstorage.common.support.widget.RedstoneModeSideButtonWidget;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
+import org.jspecify.annotations.Nullable;
 
 import static com.refinedmods.refinedstorage.common.util.IdentifierUtil.createIdentifier;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesTranslation;
 
 public class NetworkEnergizerScreen extends AbstractBaseScreen<NetworkEnergizerContainerMenu> {
-    private static final ResourceLocation TEXTURE = createIdentifier("textures/gui/controller.png");
+    private static final Identifier TEXTURE = createIdentifier("textures/gui/controller.png");
 
     @Nullable
     private EnergyProgressWidget progressWidget;
@@ -22,10 +21,8 @@ public class NetworkEnergizerScreen extends AbstractBaseScreen<NetworkEnergizerC
     public NetworkEnergizerScreen(final NetworkEnergizerContainerMenu menu,
                                   final Inventory playerInventory,
                                   final Component title) {
-        super(menu, playerInventory, title);
+        super(menu, playerInventory, title, 176, 189);
         this.inventoryLabelY = 94;
-        this.imageWidth = 176;
-        this.imageHeight = 189;
     }
 
     @Override
@@ -53,7 +50,7 @@ public class NetworkEnergizerScreen extends AbstractBaseScreen<NetworkEnergizerC
     }
 
     @Override
-    protected ResourceLocation getTexture() {
+    protected Identifier getTexture() {
         return TEXTURE;
     }
 }

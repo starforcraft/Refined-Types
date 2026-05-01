@@ -13,12 +13,15 @@ import com.refinedmods.refinedstorage.common.storage.StorageVariant;
 import com.refinedmods.refinedstorage.common.storage.UpgradeableStorageContainer;
 
 import java.util.Optional;
-import javax.annotation.Nullable;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
 
 import static com.refinedmods.refinedstorage.common.util.IdentifierUtil.format;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesTranslation;
@@ -30,9 +33,10 @@ public class EnergyStorageDiskItem extends AbstractStorageContainerItem implemen
     private final EnergyStorageVariant variant;
     private final Component helpText;
 
-    public EnergyStorageDiskItem(final StorageContainerItemHelper helper,
+    public EnergyStorageDiskItem(final Identifier id,
+                                 final StorageContainerItemHelper helper,
                                  final EnergyStorageVariant variant) {
-        super(new Item.Properties().stacksTo(1).fireResistant(), helper);
+        super(new Item.Properties().stacksTo(1).fireResistant().setId(ResourceKey.create(Registries.ITEM, id)), helper);
         this.variant = variant;
         this.helpText = getHelpText(variant);
     }

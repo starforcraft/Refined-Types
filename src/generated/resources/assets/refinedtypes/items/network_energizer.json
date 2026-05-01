@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "refinedtypes:block/network_energizer_on"
+  }
+}

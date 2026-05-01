@@ -5,7 +5,10 @@ import com.refinedmods.refinedstorage.api.resource.ResourceKey;
 import com.refinedmods.refinedstorage.api.storage.Actor;
 import com.refinedmods.refinedstorage.api.storage.InsertableStorage;
 
-import dev.technici4n.grandpower.api.ILongEnergyStorage;
+import com.google.common.primitives.Ints;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class EnergyInsertableStorage implements InsertableStorage {
     private final EnergyCapabilityCache capabilityCache;
@@ -19,7 +22,7 @@ public class EnergyInsertableStorage implements InsertableStorage {
             return 0;
         }
         return this.capabilityCache.getCapability()
-            .map(ILongEnergyStorage::getAmount)
+            .map(EnergyHandler::getAmountAsLong)
             .orElse(0L);
     }
 
@@ -29,7 +32,19 @@ public class EnergyInsertableStorage implements InsertableStorage {
             return 0;
         }
         return this.capabilityCache.getCapability()
-            .map(handler -> handler.receive(amount, action == Action.SIMULATE))
+            .map(handler -> this.insert(amount, action, handler))
             .orElse(0L);
+    }
+
+    @SuppressWarnings("deprecation")
+    private long insert(final long amount, final Action action, final EnergyHandler handler) {
+        final TransactionContext potentialOpenTransactionFromEarlierInTheStack = Transaction.getCurrentOpenedTransaction();
+        try (Transaction tx = Transaction.open(potentialOpenTransactionFromEarlierInTheStack)) {
+            final int inserted = handler.insert(Ints.saturatedCast(amount), tx);
+            if (action == Action.EXECUTE) {
+                tx.commit();
+            }
+            return inserted;
+        }
     }
 }

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "refinedtypes:block/source_storage_block/creative_source_storage_block"
-  }
-}

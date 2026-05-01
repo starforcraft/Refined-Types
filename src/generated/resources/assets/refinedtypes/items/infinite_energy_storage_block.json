@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "refinedtypes:block/energy_storage_block/infinite_energy_storage_block"
+  }
+}

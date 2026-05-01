@@ -4,11 +4,10 @@ import com.ultramega.refinedtypes.registry.Items;
 
 import com.refinedmods.refinedstorage.common.storage.StorageVariant;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
+import org.jspecify.annotations.Nullable;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
 
@@ -25,9 +24,9 @@ public enum EnergyStorageVariant implements StringRepresentable, StorageVariant 
     CREATIVE(-1L);
 
     private final String name;
-    private final ResourceLocation storageDiskId;
-    private final ResourceLocation storageBlockId;
-    private final ResourceLocation storagePartId;
+    private final Identifier storageDiskId;
+    private final Identifier storageBlockId;
+    private final Identifier storagePartId;
     @Nullable
     private final Long capacity;
 
@@ -56,18 +55,19 @@ public enum EnergyStorageVariant implements StringRepresentable, StorageVariant 
         return Items.getEnergyStoragePart(this);
     }
 
-    public ResourceLocation getStorageDiskId() {
+    public Identifier getStorageDiskId() {
         return this.storageDiskId;
     }
 
-    public ResourceLocation getStorageBlockId() {
+    public Identifier getStorageBlockId() {
         return this.storageBlockId;
     }
 
-    public ResourceLocation getStoragePartId() {
+    public Identifier getStoragePartId() {
         return this.storagePartId;
     }
 
+    @Override
     public String getName() {
         return this.name;
     }

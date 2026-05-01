@@ -93,13 +93,11 @@ val emiVersion: String by project
 
 dependencies {
     api("com.refinedmods.refinedstorage:refinedstorage-neoforge:${refinedstorageVersion}")
-    api("dev.technici4n:GrandPower:${grandpowerVersion}")
-    jarJar("dev.technici4n:GrandPower:${grandpowerVersion}")
 
-    implementation("com.hollingsworth.ars_nouveau:ars_nouveau-${minecraftVersion}:${arsNouveauVersion}")
-    implementation("com.buuz135:industrialforegoing:1.21-${industrialForegoingVersion}")
-    implementation("curse.maven:industrial-foregoing-souls-904394:6235883")
-    implementation("com.hrznstudio:titanium:1.21-${titaniumVersion}")
+//    implementation("com.hollingsworth.ars_nouveau:ars_nouveau-${minecraftVersion}:${arsNouveauVersion}")
+//    implementation("com.buuz135:industrialforegoing:1.21-${industrialForegoingVersion}")
+//    implementation("curse.maven:industrial-foregoing-souls-904394:6235883")
+//    implementation("com.hrznstudio:titanium:1.21-${titaniumVersion}")
 
     runtimeOnly("com.refinedmods.refinedstorage:refinedstorage-jei-integration-neoforge:${refinedstorageJeiIntegrationVersion}")
     // runtimeOnly("com.refinedmods.refinedstorage:refinedstorage-emi-integration-neoforge:${refinedstorageEmiIntegrationVersion}")
@@ -109,7 +107,7 @@ dependencies {
     testCompileOnly("mezz.jei:jei-${minecraftVersion}-common:${jeiVersion}")
     compileOnlyApi("mezz.jei:jei-${minecraftVersion}-neoforge-api:${jeiVersion}")
     // runtimeOnly("dev.emi:emi-neoforge:${emiVersion}")
-    compileOnlyApi("dev.emi:emi-neoforge:${emiVersion}")
+//    compileOnlyApi("dev.emi:emi-neoforge:${emiVersion}")
 }
 
 val currentChangelog: String by project
@@ -127,7 +125,7 @@ publishMods {
         changelogType = "html"
         displayName = file.map { it.asFile.name }
         requires("refined-storage")
-        optional("ars-nouveau", "industrial-foregoing-souls")
+//        optional("ars-nouveau", "industrial-foregoing-souls")
     }
 
     modrinth {
@@ -135,7 +133,7 @@ publishMods {
         projectId = "WvQIise1"
         minecraftVersions.add(minecraftVersion)
         requires("refined-storage")
-        optional("ars-nouveau", "industrial-foregoing-souls")
+//        optional("ars-nouveau", "industrial-foregoing-souls")
     }
 }
 

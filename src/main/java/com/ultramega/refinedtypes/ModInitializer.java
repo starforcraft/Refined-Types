@@ -1,22 +1,12 @@
 package com.ultramega.refinedtypes;
 
-import com.ultramega.refinedtypes.autocrafting.EnergyPatternProviderExternalPatternSinkFactory;
-import com.ultramega.refinedtypes.autocrafting.SoulPatternProviderExternalPatternSinkFactory;
-import com.ultramega.refinedtypes.autocrafting.SourcePatternProviderExternalPatternSinkFactory;
-import com.ultramega.refinedtypes.compat.emi.EmiEnergyResourceModIngredientConverter;
 import com.ultramega.refinedtypes.compat.jei.JEIRecipeModIngredientConverter;
 import com.ultramega.refinedtypes.exporter.EnergyExporterTransferStrategyFactory;
-import com.ultramega.refinedtypes.exporter.SoulExporterTransferStrategyFactory;
-import com.ultramega.refinedtypes.exporter.SourceExporterTransferStrategyFactory;
 import com.ultramega.refinedtypes.externalstorage.EnergyPlatformExternalStorageProviderFactory;
-import com.ultramega.refinedtypes.externalstorage.SoulPlatformExternalStorageProviderFactory;
-import com.ultramega.refinedtypes.externalstorage.SourcePlatformExternalStorageProviderFactory;
-import com.ultramega.refinedtypes.grid.TypeGridResourceFactory;
-import com.ultramega.refinedtypes.grid.energy.EnergyGridExtractionStrategy;
-import com.ultramega.refinedtypes.grid.energy.EnergyGridInsertionStrategy;
+import com.ultramega.refinedtypes.grid.strategy.energy.EnergyGridExtractionStrategy;
+import com.ultramega.refinedtypes.grid.strategy.energy.EnergyGridInsertionStrategy;
+import com.ultramega.refinedtypes.grid.view.energy.EnergyGridResourceType;
 import com.ultramega.refinedtypes.importer.EnergyImporterTransferStrategyFactory;
-import com.ultramega.refinedtypes.importer.SoulImporterTransferStrategyFactory;
-import com.ultramega.refinedtypes.importer.SourceImporterTransferStrategyFactory;
 import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerBlock;
 import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerBlockEntity;
 import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerContainerMenu;
@@ -32,52 +22,36 @@ import com.ultramega.refinedtypes.storage.energy.EnergyStorageBlockProvider;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageDiskItem;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
 import com.ultramega.refinedtypes.storage.energy.ResourceContainerEnergyHandlerAdapter;
-import com.ultramega.refinedtypes.storage.soul.SoulStorageBlockBlockItem;
-import com.ultramega.refinedtypes.storage.soul.SoulStorageBlockProvider;
-import com.ultramega.refinedtypes.storage.soul.SoulStorageDiskItem;
-import com.ultramega.refinedtypes.storage.soul.SoulStorageVariant;
-import com.ultramega.refinedtypes.storage.source.SourceStorageBlockBlockItem;
-import com.ultramega.refinedtypes.storage.source.SourceStorageBlockProvider;
-import com.ultramega.refinedtypes.storage.source.SourceStorageDiskItem;
-import com.ultramega.refinedtypes.storage.source.SourceStorageVariant;
 import com.ultramega.refinedtypes.storagemonitor.EnergyStorageMonitorInsertionStrategy;
-import com.ultramega.refinedtypes.type.energy.EnergyResource;
 import com.ultramega.refinedtypes.type.energy.EnergyResourceContainerInsertStrategy;
 import com.ultramega.refinedtypes.type.energy.EnergyResourceFactory;
 import com.ultramega.refinedtypes.type.energy.EnergyResourceType;
-import com.ultramega.refinedtypes.type.soul.SoulResource;
-import com.ultramega.refinedtypes.type.soul.SoulResourceFactory;
-import com.ultramega.refinedtypes.type.soul.SoulResourceType;
-import com.ultramega.refinedtypes.type.soul.SoulUtil;
-import com.ultramega.refinedtypes.type.source.SourceResource;
-import com.ultramega.refinedtypes.type.source.SourceResourceFactory;
-import com.ultramega.refinedtypes.type.source.SourceResourceType;
-import com.ultramega.refinedtypes.type.source.SourceUtil;
 
 import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
 import com.refinedmods.refinedstorage.common.api.support.network.AbstractNetworkNodeContainerBlockEntity;
-import com.refinedmods.refinedstorage.common.content.BlockConstants;
+import com.refinedmods.refinedstorage.common.content.BlockEntityProvider;
+import com.refinedmods.refinedstorage.common.content.BlockEntityTypeFactory;
+import com.refinedmods.refinedstorage.common.content.BlockProperties;
 import com.refinedmods.refinedstorage.common.content.ExtendedMenuTypeFactory;
-import com.refinedmods.refinedstorage.common.storage.StorageContainerUpgradeRecipe;
-import com.refinedmods.refinedstorage.common.storage.StorageContainerUpgradeRecipeSerializer;
 import com.refinedmods.refinedstorage.common.support.SimpleItem;
 import com.refinedmods.refinedstorage.common.support.packet.PacketHandler;
 import com.refinedmods.refinedstorage.neoforge.api.RefinedStorageNeoForgeApi;
 
-import java.util.Set;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -106,15 +80,15 @@ import static com.ultramega.refinedtypes.RefinedTypesUtil.isIndustrialForegoingS
 
 @Mod(MOD_ID)
 public final class ModInitializer {
-    private static final ResourceLocation ENERGY_ID = createRefinedTypesIdentifier("energy");
-    private static final ResourceLocation SOURCE_ID = createRefinedTypesIdentifier("source");
-    private static final ResourceLocation SOUL_ID = createRefinedTypesIdentifier("soul");
+    public static final Identifier ENERGY_ID = createRefinedTypesIdentifier("energy");
+//    private static final Identifier SOURCE_ID = createRefinedTypesIdentifier("source");
+//    private static final Identifier SOUL_ID = createRefinedTypesIdentifier("soul");
 
     private static final Config CONFIG = new Config();
 
     public ModInitializer(final IEventBus eventBus, final ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.COMMON, CONFIG.getSpec());
-        if (FMLEnvironment.dist == Dist.CLIENT) {
+        if (FMLEnvironment.getDist() == Dist.CLIENT) {
             eventBus.addListener(ClientModInitializer::onClientSetup);
             eventBus.addListener(ClientModInitializer::onRegisterMenuScreens);
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
@@ -145,7 +119,13 @@ public final class ModInitializer {
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             MOD_ID
         );
-        registerBlockEntities(blockEntityRegistry);
+        registerBlockEntities(blockEntityRegistry, new BlockEntityTypeFactory() {
+            @Override
+            public <T extends BlockEntity> BlockEntityType<T> create(final BlockEntityProvider<T> factory,
+                                                                     final Block... allowedBlocks) {
+                return new BlockEntityType<>(factory::create, new HashSet<>(Arrays.asList(allowedBlocks)));
+            }
+        });
         blockEntityRegistry.register(eventBus);
 
         final DeferredRegister<MenuType<?>> menuRegistry = DeferredRegister.create(
@@ -165,13 +145,6 @@ public final class ModInitializer {
         };
         registerMenus(menuRegistry, extendedMenuTypeFactory);
         menuRegistry.register(eventBus);
-
-        final DeferredRegister<RecipeSerializer<?>> recipeSerializerRegistry = DeferredRegister.create(
-            BuiltInRegistries.RECIPE_SERIALIZER,
-            MOD_ID
-        );
-        registerRecipeSerializers(recipeSerializerRegistry);
-        recipeSerializerRegistry.register(eventBus);
     }
 
     private static void registerBlocks(final DeferredRegister<Block> registry) {
@@ -179,22 +152,22 @@ public final class ModInitializer {
 
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             Blocks.setEnergyStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(),
-                () -> RefinedStorageApi.INSTANCE.createStorageBlock(BlockConstants.PROPERTIES,
+                () -> RefinedStorageApi.INSTANCE.createStorageBlock(BlockProperties.stone(variant.getStorageBlockId()),
                     new EnergyStorageBlockProvider(variant))));
         }
         if (isArsNouveauLoaded()) {
-            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-                Blocks.setSourceStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(),
-                    () -> RefinedStorageApi.INSTANCE.createStorageBlock(BlockConstants.PROPERTIES,
-                        new SourceStorageBlockProvider(variant))));
-            }
+//            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
+//                Blocks.setSourceStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(),
+//                    () -> RefinedStorageApi.INSTANCE.createStorageBlock(BlockConstants.PROPERTIES,
+//                        new SourceStorageBlockProvider(variant))));
+//            }
         }
         if (isIndustrialForegoingSoulsLoaded()) {
-            for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-                Blocks.setSoulStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(),
-                    () -> RefinedStorageApi.INSTANCE.createStorageBlock(BlockConstants.PROPERTIES,
-                        new SoulStorageBlockProvider(variant))));
-            }
+//            for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
+//                Blocks.setSoulStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(),
+//                    () -> RefinedStorageApi.INSTANCE.createStorageBlock(BlockConstants.PROPERTIES,
+//                        new SoulStorageBlockProvider(variant))));
+//            }
         }
     }
 
@@ -203,85 +176,87 @@ public final class ModInitializer {
 
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             if (variant != EnergyStorageVariant.CREATIVE) {
-                Items.setEnergyStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
+                Items.setEnergyStoragePart(variant, registry.register(variant.getStoragePartId().getPath(),
+                    () -> new SimpleItem(variant.getStoragePartId())));
             }
             Items.setEnergyStorageDisk(variant, registry.register(variant.getStorageDiskId().getPath(), () -> new EnergyStorageDiskItem(
+                variant.getStorageDiskId(),
                 RefinedStorageApi.INSTANCE.getStorageContainerItemHelper(),
                 variant)));
             Items.setEnergyStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(), () -> new EnergyStorageBlockBlockItem(
+                variant.getStorageBlockId(),
                 Blocks.getEnergyStorageBlock(variant),
                 variant)));
         }
         if (isArsNouveauLoaded()) {
-            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-                if (variant != SourceStorageVariant.CREATIVE) {
-                    Items.setSourceStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
-                }
-                Items.setSourceStorageDisk(variant, registry.register(variant.getStorageDiskId().getPath(), () -> new SourceStorageDiskItem(
-                    RefinedStorageApi.INSTANCE.getStorageContainerItemHelper(), variant)));
-                Items.setSourceStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(), () -> new SourceStorageBlockBlockItem(
-                    Blocks.getSourceStorageBlock(variant),
-                    variant)));
-            }
+//            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
+//                if (variant != SourceStorageVariant.CREATIVE) {
+//                    Items.setSourceStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
+//                }
+//                Items.setSourceStorageDisk(variant, registry.register(variant.getStorageDiskId().getPath(), () -> new SourceStorageDiskItem(
+//                    RefinedStorageApi.INSTANCE.getStorageContainerItemHelper(), variant)));
+//                Items.setSourceStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(), () -> new SourceStorageBlockBlockItem(
+//                    Blocks.getSourceStorageBlock(variant),
+//                    variant)));
+//            }
         }
         if (isIndustrialForegoingSoulsLoaded()) {
-            for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-                if (variant != SoulStorageVariant.CREATIVE) {
-                    Items.setSoulStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
-                }
-                Items.setSoulStorageDisk(variant, registry.register(variant.getStorageDiskId().getPath(), () -> new SoulStorageDiskItem(
-                    RefinedStorageApi.INSTANCE.getStorageContainerItemHelper(), variant)));
-                Items.setSoulStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(), () -> new SoulStorageBlockBlockItem(
-                    Blocks.getSoulStorageBlock(variant),
-                    variant)));
-            }
+//            for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
+//                if (variant != SoulStorageVariant.CREATIVE) {
+//                    Items.setSoulStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
+//                }
+//                Items.setSoulStorageDisk(variant, registry.register(variant.getStorageDiskId().getPath(), () -> new SoulStorageDiskItem(
+//                    RefinedStorageApi.INSTANCE.getStorageContainerItemHelper(), variant)));
+//                Items.setSoulStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(), () -> new SoulStorageBlockBlockItem(
+//                    Blocks.getSoulStorageBlock(variant),
+//                    variant)));
+//            }
         }
     }
 
-    @SuppressWarnings("DataFlowIssue")
-    private static void registerBlockEntities(final DeferredRegister<BlockEntityType<?>> registry) {
+    private static void registerBlockEntities(final DeferredRegister<BlockEntityType<?>> registry, final BlockEntityTypeFactory typeFactory) {
         BlockEntities.setNetworkEnergizer(registry.register(
             ContentIdentification.NETWORK_ENERGIZER,
-            () -> new BlockEntityType<>(
+            () -> typeFactory.create(
                 NetworkEnergizerBlockEntity::new,
-                Set.of(Blocks.getNetworkEnergizer()),
-                null
+                Blocks.getNetworkEnergizer()
             )
         ));
 
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             BlockEntities.setEnergyStorageBlock(variant,
-                registry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
-                    (pos, state) -> RefinedStorageApi.INSTANCE.createStorageBlockEntity(pos, state,
-                        new EnergyStorageBlockProvider(variant)),
-                    Set.of(Blocks.getEnergyStorageBlock(variant)),
-                    null
-                ))
+                registry.register(variant.getStorageBlockId().getPath(),
+                    () -> typeFactory.create(
+                        (pos, state) -> RefinedStorageApi.INSTANCE.createStorageBlockEntity(
+                            pos, state, new EnergyStorageBlockProvider(variant)
+                        ),
+                        Blocks.getEnergyStorageBlock(variant)
+                    ))
             );
         }
         if (isArsNouveauLoaded()) {
-            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-                BlockEntities.setSourceStorageBlock(variant,
-                    registry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
-                        (pos, state) -> RefinedStorageApi.INSTANCE.createStorageBlockEntity(pos, state,
-                            new SourceStorageBlockProvider(variant)),
-                        Set.of(Blocks.getSourceStorageBlock(variant)),
-                        null
-                    ))
-                );
-            }
+//            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
+//                BlockEntities.setSourceStorageBlock(variant,
+//                    registry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
+//                        (pos, state) -> RefinedStorageApi.INSTANCE.createStorageBlockEntity(pos, state,
+//                            new SourceStorageBlockProvider(variant)),
+//                        Set.of(Blocks.getSourceStorageBlock(variant)),
+//                        null
+//                    ))
+//                );
+//            }
         }
         if (isIndustrialForegoingSoulsLoaded()) {
-            for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-                BlockEntities.setSoulStorageBlock(variant,
-                    registry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
-                        (pos, state) -> RefinedStorageApi.INSTANCE.createStorageBlockEntity(pos, state,
-                            new SoulStorageBlockProvider(variant)),
-                        Set.of(Blocks.getSoulStorageBlock(variant)),
-                        null
-                    ))
-                );
-            }
+//            for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
+//                BlockEntities.setSoulStorageBlock(variant,
+//                    registry.register(variant.getStorageBlockId().getPath(), () -> new BlockEntityType<>(
+//                        (pos, state) -> RefinedStorageApi.INSTANCE.createStorageBlockEntity(pos, state,
+//                            new SoulStorageBlockProvider(variant)),
+//                        Set.of(Blocks.getSoulStorageBlock(variant)),
+//                        null
+//                    ))
+//                );
+//            }
         }
     }
 
@@ -298,79 +273,18 @@ public final class ModInitializer {
                 RefinedStorageApi.INSTANCE.createStorageBlockContainerMenu(syncId, playerInventory.player, data,
                     EnergyResourceFactory.INSTANCE, Menus.getEnergyStorage()), RefinedStorageApi.INSTANCE.getStorageBlockDataStreamCodec())));
         if (isArsNouveauLoaded()) {
-            Menus.setSourceStorage(registry.register(
-                "source_storage_block",
-                () -> extendedMenuTypeFactory.create((syncId, playerInventory, data) ->
-                    RefinedStorageApi.INSTANCE.createStorageBlockContainerMenu(syncId, playerInventory.player, data,
-                        SourceResourceFactory.INSTANCE, Menus.getSourceStorage()), RefinedStorageApi.INSTANCE.getStorageBlockDataStreamCodec())));
+//            Menus.setSourceStorage(registry.register(
+//                "source_storage_block",
+//                () -> extendedMenuTypeFactory.create((syncId, playerInventory, data) ->
+//                    RefinedStorageApi.INSTANCE.createStorageBlockContainerMenu(syncId, playerInventory.player, data,
+//                        SourceResourceFactory.INSTANCE, Menus.getSourceStorage()), RefinedStorageApi.INSTANCE.getStorageBlockDataStreamCodec())));
         }
         if (isIndustrialForegoingSoulsLoaded()) {
-            Menus.setSoulStorage(registry.register(
-                "soul_storage_block",
-                () -> extendedMenuTypeFactory.create((syncId, playerInventory, data) ->
-                    RefinedStorageApi.INSTANCE.createStorageBlockContainerMenu(syncId, playerInventory.player, data,
-                        SoulResourceFactory.INSTANCE, Menus.getSoulStorage()), RefinedStorageApi.INSTANCE.getStorageBlockDataStreamCodec())));
-        }
-    }
-
-    private static void registerRecipeSerializers(final DeferredRegister<RecipeSerializer<?>> registry) {
-        registry.register(
-            "energy_storage_disk_upgrade",
-            () -> new StorageContainerUpgradeRecipeSerializer<>(
-                EnergyStorageVariant.values(),
-                to -> new StorageContainerUpgradeRecipe<>(
-                    EnergyStorageVariant.values(), to, Items::getEnergyStorageDisk
-                )
-            )
-        );
-        registry.register(
-            "energy_storage_block_upgrade",
-            () -> new StorageContainerUpgradeRecipeSerializer<>(
-                EnergyStorageVariant.values(),
-                to -> new StorageContainerUpgradeRecipe<>(
-                    EnergyStorageVariant.values(), to, Items::getEnergyStorageBlock
-                )
-            )
-        );
-        if (isArsNouveauLoaded()) {
-            registry.register(
-                "source_storage_disk_upgrade",
-                () -> new StorageContainerUpgradeRecipeSerializer<>(
-                    SourceStorageVariant.values(),
-                    to -> new StorageContainerUpgradeRecipe<>(
-                        SourceStorageVariant.values(), to, Items::getSourceStorageDisk
-                    )
-                )
-            );
-            registry.register(
-                "source_storage_block_upgrade",
-                () -> new StorageContainerUpgradeRecipeSerializer<>(
-                    SourceStorageVariant.values(),
-                    to -> new StorageContainerUpgradeRecipe<>(
-                        SourceStorageVariant.values(), to, Items::getSourceStorageBlock
-                    )
-                )
-            );
-        }
-        if (isIndustrialForegoingSoulsLoaded()) {
-            registry.register(
-                "soul_storage_disk_upgrade",
-                () -> new StorageContainerUpgradeRecipeSerializer<>(
-                    SoulStorageVariant.values(),
-                    to -> new StorageContainerUpgradeRecipe<>(
-                        SoulStorageVariant.values(), to, Items::getSoulStorageDisk
-                    )
-                )
-            );
-            registry.register(
-                "soul_storage_block_upgrade",
-                () -> new StorageContainerUpgradeRecipeSerializer<>(
-                    SoulStorageVariant.values(),
-                    to -> new StorageContainerUpgradeRecipe<>(
-                        SoulStorageVariant.values(), to, Items::getSoulStorageBlock
-                    )
-                )
-            );
+//            Menus.setSoulStorage(registry.register(
+//                "soul_storage_block",
+//                () -> extendedMenuTypeFactory.create((syncId, playerInventory, data) ->
+//                    RefinedStorageApi.INSTANCE.createStorageBlockContainerMenu(syncId, playerInventory.player, data,
+//                        SoulResourceFactory.INSTANCE, Menus.getSoulStorage()), RefinedStorageApi.INSTANCE.getStorageBlockDataStreamCodec())));
         }
     }
 
@@ -378,7 +292,7 @@ public final class ModInitializer {
         RefinedStorageApi.INSTANCE.getResourceTypeRegistry().register(ENERGY_ID, EnergyResourceType.INSTANCE);
         RefinedStorageApi.INSTANCE.getAlternativeResourceFactories().add(EnergyResourceFactory.INSTANCE);
         RefinedStorageApi.INSTANCE.getStorageTypeRegistry().register(ENERGY_ID, EnergyResourceType.STORAGE_TYPE);
-        RefinedStorageApi.INSTANCE.addGridResourceRepositoryMapper(EnergyResource.class, new TypeGridResourceFactory());
+        RefinedStorageApi.INSTANCE.getGridResourceTypeRegistry().register(ENERGY_ID, EnergyGridResourceType.INSTANCE);
         RefinedStorageApi.INSTANCE.addGridInsertionStrategyFactory(EnergyGridInsertionStrategy::new);
         RefinedStorageApi.INSTANCE.addGridExtractionStrategyFactory(EnergyGridExtractionStrategy::new);
         RefinedStorageApi.INSTANCE.addStorageMonitorInsertionStrategy(new EnergyStorageMonitorInsertionStrategy());
@@ -386,32 +300,31 @@ public final class ModInitializer {
         RefinedStorageApi.INSTANCE.getImporterTransferStrategyRegistry().register(ENERGY_ID, new EnergyImporterTransferStrategyFactory());
         RefinedStorageApi.INSTANCE.getExporterTransferStrategyRegistry().register(ENERGY_ID, new EnergyExporterTransferStrategyFactory());
         RefinedStorageApi.INSTANCE.addExternalStorageProviderFactory(new EnergyPlatformExternalStorageProviderFactory());
-        RefinedStorageApi.INSTANCE.addPatternProviderExternalPatternSinkFactory(new EnergyPatternProviderExternalPatternSinkFactory());
 
         if (isArsNouveauLoaded()) {
-            RefinedStorageApi.INSTANCE.getResourceTypeRegistry().register(SOURCE_ID, SourceResourceType.INSTANCE);
-            RefinedStorageApi.INSTANCE.getAlternativeResourceFactories().add(SourceResourceFactory.INSTANCE);
-            RefinedStorageApi.INSTANCE.getStorageTypeRegistry().register(SOURCE_ID, SourceResourceType.STORAGE_TYPE);
-            RefinedStorageApi.INSTANCE.addGridResourceRepositoryMapper(SourceResource.class, new TypeGridResourceFactory());
-            RefinedStorageApi.INSTANCE.getImporterTransferStrategyRegistry().register(SOURCE_ID, new SourceImporterTransferStrategyFactory());
-            RefinedStorageApi.INSTANCE.getExporterTransferStrategyRegistry().register(SOURCE_ID, new SourceExporterTransferStrategyFactory());
-            RefinedStorageApi.INSTANCE.addExternalStorageProviderFactory(new SourcePlatformExternalStorageProviderFactory());
-            RefinedStorageApi.INSTANCE.addPatternProviderExternalPatternSinkFactory(new SourcePatternProviderExternalPatternSinkFactory());
+//            RefinedStorageApi.INSTANCE.getResourceTypeRegistry().register(SOURCE_ID, SourceResourceType.INSTANCE);
+//            RefinedStorageApi.INSTANCE.getAlternativeResourceFactories().add(SourceResourceFactory.INSTANCE);
+//            RefinedStorageApi.INSTANCE.getStorageTypeRegistry().register(SOURCE_ID, SourceResourceType.STORAGE_TYPE);
+//            RefinedStorageApi.INSTANCE.addGridResourceRepositoryMapper(SourceResource.class, new TypeGridResourceFactory());
+//            RefinedStorageApi.INSTANCE.getImporterTransferStrategyRegistry().register(SOURCE_ID, new SourceImporterTransferStrategyFactory());
+//            RefinedStorageApi.INSTANCE.getExporterTransferStrategyRegistry().register(SOURCE_ID, new SourceExporterTransferStrategyFactory());
+//            RefinedStorageApi.INSTANCE.addExternalStorageProviderFactory(new SourcePlatformExternalStorageProviderFactory());
+//            RefinedStorageApi.INSTANCE.addPatternProviderExternalPatternSinkFactory(new SourcePatternProviderExternalPatternSinkFactory());
         }
 
         if (isIndustrialForegoingSoulsLoaded()) {
-            RefinedStorageApi.INSTANCE.getResourceTypeRegistry().register(SOUL_ID, SoulResourceType.INSTANCE);
-            RefinedStorageApi.INSTANCE.getAlternativeResourceFactories().add(SoulResourceFactory.INSTANCE);
-            RefinedStorageApi.INSTANCE.getStorageTypeRegistry().register(SOUL_ID, SoulResourceType.STORAGE_TYPE);
-            RefinedStorageApi.INSTANCE.addGridResourceRepositoryMapper(SoulResource.class, new TypeGridResourceFactory());
-            RefinedStorageApi.INSTANCE.getImporterTransferStrategyRegistry().register(SOUL_ID, new SoulImporterTransferStrategyFactory());
-            RefinedStorageApi.INSTANCE.getExporterTransferStrategyRegistry().register(SOUL_ID, new SoulExporterTransferStrategyFactory());
-            RefinedStorageApi.INSTANCE.addExternalStorageProviderFactory(new SoulPlatformExternalStorageProviderFactory());
-            RefinedStorageApi.INSTANCE.addPatternProviderExternalPatternSinkFactory(new SoulPatternProviderExternalPatternSinkFactory());
+//            RefinedStorageApi.INSTANCE.getResourceTypeRegistry().register(SOUL_ID, SoulResourceType.INSTANCE);
+//            RefinedStorageApi.INSTANCE.getAlternativeResourceFactories().add(SoulResourceFactory.INSTANCE);
+//            RefinedStorageApi.INSTANCE.getStorageTypeRegistry().register(SOUL_ID, SoulResourceType.STORAGE_TYPE);
+//            RefinedStorageApi.INSTANCE.addGridResourceRepositoryMapper(SoulResource.class, new TypeGridResourceFactory());
+//            RefinedStorageApi.INSTANCE.getImporterTransferStrategyRegistry().register(SOUL_ID, new SoulImporterTransferStrategyFactory());
+//            RefinedStorageApi.INSTANCE.getExporterTransferStrategyRegistry().register(SOUL_ID, new SoulExporterTransferStrategyFactory());
+//            RefinedStorageApi.INSTANCE.addExternalStorageProviderFactory(new SoulPlatformExternalStorageProviderFactory());
+//            RefinedStorageApi.INSTANCE.addPatternProviderExternalPatternSinkFactory(new SoulPatternProviderExternalPatternSinkFactory());
         }
 
         if (ModList.get().isLoaded("emi")) {
-            RefinedStorageApi.INSTANCE.addIngredientConverter(new EmiEnergyResourceModIngredientConverter());
+//            RefinedStorageApi.INSTANCE.addIngredientConverter(new EmiEnergyResourceModIngredientConverter());
         } else if (ModList.get().isLoaded("jei")) {
             RefinedStorageApi.INSTANCE.addIngredientConverter(new JEIRecipeModIngredientConverter());
         }
@@ -443,32 +356,32 @@ public final class ModInitializer {
                         output.accept(Items.getEnergyStorageBlock(variant));
                     }
                     if (isArsNouveauLoaded()) {
-                        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-                            if (variant == SourceStorageVariant.CREATIVE) {
-                                continue;
-                            }
-                            output.accept(Items.getSourceStoragePart(variant));
-                        }
-                        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-                            output.accept(Items.getSourceStorageDisk(variant));
-                        }
-                        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-                            output.accept(Items.getSourceStorageBlock(variant));
-                        }
+//                        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
+//                            if (variant == SourceStorageVariant.CREATIVE) {
+//                                continue;
+//                            }
+//                            output.accept(Items.getSourceStoragePart(variant));
+//                        }
+//                        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
+//                            output.accept(Items.getSourceStorageDisk(variant));
+//                        }
+//                        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
+//                            output.accept(Items.getSourceStorageBlock(variant));
+//                        }
                     }
                     if (isIndustrialForegoingSoulsLoaded()) {
-                        for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-                            if (variant == SoulStorageVariant.CREATIVE) {
-                                continue;
-                            }
-                            output.accept(Items.getSoulStoragePart(variant));
-                        }
-                        for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-                            output.accept(Items.getSoulStorageDisk(variant));
-                        }
-                        for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-                            output.accept(Items.getSoulStorageBlock(variant));
-                        }
+//                        for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
+//                            if (variant == SoulStorageVariant.CREATIVE) {
+//                                continue;
+//                            }
+//                            output.accept(Items.getSoulStoragePart(variant));
+//                        }
+//                        for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
+//                            output.accept(Items.getSoulStorageDisk(variant));
+//                        }
+//                        for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
+//                            output.accept(Items.getSoulStorageBlock(variant));
+//                        }
                     }
                 })
                 .build()
@@ -478,7 +391,7 @@ public final class ModInitializer {
     private void registerCapabilities(final RegisterCapabilitiesEvent event) {
         this.registerNetworkNodeContainerProvider(event, BlockEntities.getNetworkEnergizer());
         event.registerBlockEntity(
-            Capabilities.EnergyStorage.BLOCK,
+            Capabilities.Energy.BLOCK,
             com.refinedmods.refinedstorage.common.content.BlockEntities.INSTANCE.getInterface(),
             (be, side) -> new ResourceContainerEnergyHandlerAdapter(be.getExportedResources())
         );
@@ -486,16 +399,16 @@ public final class ModInitializer {
             this.registerNetworkNodeContainerProvider(event, BlockEntities.getEnergyStorageBlock(variant));
         }
         if (isArsNouveauLoaded()) {
-            SourceUtil.registerCapability(event);
-            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-                this.registerNetworkNodeContainerProvider(event, BlockEntities.getSourceStorageBlock(variant));
-            }
+//            SourceUtil.registerCapability(event);
+//            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
+//                this.registerNetworkNodeContainerProvider(event, BlockEntities.getSourceStorageBlock(variant));
+//            }
         }
         if (isIndustrialForegoingSoulsLoaded()) {
-            SoulUtil.registerCapability(event);
-            for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-                this.registerNetworkNodeContainerProvider(event, BlockEntities.getSoulStorageBlock(variant));
-            }
+//            SoulUtil.registerCapability(event);
+//            for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
+//                this.registerNetworkNodeContainerProvider(event, BlockEntities.getSoulStorageBlock(variant));
+//            }
         }
     }
 

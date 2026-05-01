@@ -1,18 +1,19 @@
 package com.ultramega.refinedtypes.storage.energy;
 
 import com.ultramega.refinedtypes.type.energy.EnergyResource;
-import com.ultramega.refinedtypes.type.energy.EnergyResourceType;
 
+import com.refinedmods.refinedstorage.api.core.Action;
 import com.refinedmods.refinedstorage.api.resource.ResourceAmount;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceContainer;
-import com.refinedmods.refinedstorage.common.support.resource.ItemResource;
+import com.refinedmods.refinedstorage.common.support.resource.ResourceTypes;
 
-import dev.technici4n.grandpower.api.ILongEnergyStorage;
-import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
 
-public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage {
+public class ResourceContainerEnergyHandlerAdapter extends SnapshotJournal<ResourceContainer> implements EnergyHandler {
     private final ResourceContainer container;
 
     public ResourceContainerEnergyHandlerAdapter(final ResourceContainer container) {
@@ -20,86 +21,31 @@ public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage
     }
 
     @Override
-    public long receive(final long maxReceive, final boolean simulate) {
-        if (maxReceive <= 0) {
-            return 0L;
+    public int insert(final int amount, final TransactionContext transaction) {
+        if (amount <= 0) {
+            return 0;
         }
-
-        for (int i = 0; i < this.container.size(); i++) {
-            final ResourceAmount currentResource = this.container.get(i);
-            if (currentResource == null) {
-                return this.insertEnergyInEmptySlot(i, maxReceive, simulate);
-            } else if (currentResource.resource() instanceof EnergyResource) {
-                final long received = this.insertEnergyInFilledSlot(i, maxReceive, simulate, currentResource);
-                if (received > 0) {
-                    return received;
-                }
-            }
+        final long insertedSimulated = this.container.insert(ENERGY_RESOURCE, amount, Action.SIMULATE);
+        if (insertedSimulated > 0) {
+            this.updateSnapshots(transaction);
         }
-
-        return 0L;
-    }
-
-    private long insertEnergyInFilledSlot(final int index,
-                                          final long maxReceive,
-                                          final boolean simulate,
-                                          final ResourceAmount currentResource) {
-        final long currentAmount = currentResource.amount();
-        final long toInsert = Math.min(
-            maxReceive,
-            Math.max(this.container.getMaxAmount(currentResource.resource()), EnergyResourceType.INSTANCE.getInterfaceExportLimit()) - currentAmount
-        );
-        if (toInsert <= 0) {
-            return 0L;
-        }
-        if (!simulate) {
-            this.container.set(index, new ResourceAmount(currentResource.resource(), currentAmount + toInsert));
-        }
-        return toInsert;
-    }
-
-    private long insertEnergyInEmptySlot(final int tank,
-                                         final long maxReceive,
-                                         final boolean simulate) {
-        final long toInsert = Math.min(
-            maxReceive,
-            Math.max(this.container.getMaxAmount(ItemResource.ofItemStack(ItemStack.EMPTY)), EnergyResourceType.INSTANCE.getInterfaceExportLimit())
-        );
-        if (!simulate) {
-            this.container.set(tank, new ResourceAmount(ENERGY_RESOURCE, toInsert));
-        }
-        return toInsert;
+        return (int) this.container.insert(ENERGY_RESOURCE, amount, Action.EXECUTE);
     }
 
     @Override
-    public long extract(final long maxExtract, final boolean simulate) {
-        if (maxExtract <= 0) {
-            return 0L;
+    public int extract(final int amount, final TransactionContext transaction) {
+        if (amount <= 0) {
+            return 0;
         }
-
-        for (int i = 0; i < this.container.size(); i++) {
-            final ResourceAmount resourceAmount = this.container.get(i);
-            if (resourceAmount == null || !(resourceAmount.resource() instanceof EnergyResource)) {
-                continue;
-            }
-
-            final long available = resourceAmount.amount();
-            if (available <= 0) {
-                return 0L;
-            }
-
-            final long toExtract = Math.min(maxExtract, available);
-            if (!simulate) {
-                this.container.shrink(i, toExtract);
-            }
-            return toExtract;
+        final long extractedSimulated = this.container.extract(ENERGY_RESOURCE, amount, Action.SIMULATE);
+        if (extractedSimulated > 0) {
+            this.updateSnapshots(transaction);
         }
-
-        return 0L;
+        return (int) this.container.extract(ENERGY_RESOURCE, amount, Action.EXECUTE);
     }
 
     @Override
-    public long getAmount() {
+    public long getAmountAsLong() {
         long amount = 0;
         for (int i = 0; i < this.container.size(); i++) {
             final ResourceAmount resourceAmount = this.container.get(i);
@@ -112,26 +58,24 @@ public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage
     }
 
     @Override
-    public long getCapacity() {
-        long capacity = 0;
-        for (int i = 0; i < this.container.size(); i++) {
-            final ResourceAmount resource = this.container.get(i);
-            if (resource == null || resource.resource() instanceof EnergyResource) {
-                capacity += Math.max(this.container.getMaxAmount(resource != null ? resource.resource() : ItemResource.ofItemStack(ItemStack.EMPTY)),
-                    EnergyResourceType.INSTANCE.getInterfaceExportLimit());
+    public long getCapacityAsLong() {
+        return ResourceTypes.FLUID.getInterfaceExportLimit();
+    }
+
+    @Override
+    protected ResourceContainer createSnapshot() {
+        return this.container.copy();
+    }
+
+    @Override
+    protected void revertToSnapshot(final ResourceContainer snapshot) {
+        for (int i = 0; i < snapshot.size(); ++i) {
+            final ResourceAmount snapshotSlot = snapshot.get(i);
+            if (snapshotSlot == null) {
+                this.container.remove(i);
+            } else {
+                this.container.set(i, snapshotSlot);
             }
         }
-
-        return capacity;
-    }
-
-    @Override
-    public boolean canExtract() {
-        return true;
-    }
-
-    @Override
-    public boolean canReceive() {
-        return true;
     }
 }

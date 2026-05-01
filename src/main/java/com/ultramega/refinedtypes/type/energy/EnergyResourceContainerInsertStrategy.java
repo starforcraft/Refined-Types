@@ -2,13 +2,14 @@ package com.ultramega.refinedtypes.type.energy;
 
 import com.refinedmods.refinedstorage.api.resource.ResourceAmount;
 import com.refinedmods.refinedstorage.api.resource.ResourceKey;
-import com.refinedmods.refinedstorage.common.Platform;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceContainerInsertStrategy;
 
 import java.util.Optional;
 
-import dev.technici4n.grandpower.api.ILongEnergyStorage;
 import net.minecraft.world.item.ItemStack;
+
+import static com.ultramega.refinedtypes.RefinedTypesUtil.chargeContainer;
+import static com.ultramega.refinedtypes.type.energy.EnergyResourceType.DEFAULT_TRANSFER_AMOUNT;
 
 public class EnergyResourceContainerInsertStrategy implements ResourceContainerInsertStrategy {
     @Override
@@ -16,21 +17,19 @@ public class EnergyResourceContainerInsertStrategy implements ResourceContainerI
         if (!(resourceAmount.resource() instanceof EnergyResource)) {
             return Optional.empty();
         }
-        final ItemStack modifiedContainer = container.copy();
-        return Optional.ofNullable(modifiedContainer.getCapability(ILongEnergyStorage.ITEM))
-            .map(handler -> handler.receive(resourceAmount.amount(), false))
-            .map(inserted -> new InsertResult(modifiedContainer, inserted));
+        return chargeContainer(container, resourceAmount).map(
+            result -> new InsertResult(result.container(), result.amount())
+        );
     }
 
     @Override
     public Optional<ConversionInfo> getConversionInfo(final ResourceKey resource, final ItemStack carriedStack) {
-        if (!(resource instanceof EnergyResource)) {
+        if (!(resource instanceof EnergyResource energyResource)) {
             return Optional.empty();
         }
-        final ItemStack modifiedStack = carriedStack.copy();
-        return Optional.ofNullable(modifiedStack.getCapability(ILongEnergyStorage.ITEM))
-            .map(handler -> handler.receive(Platform.INSTANCE.getBucketAmount(), false))
-            .filter(amount -> amount > 0)
-            .map(result -> new ConversionInfo(carriedStack, modifiedStack));
+        final ResourceAmount toFill = new ResourceAmount(energyResource, DEFAULT_TRANSFER_AMOUNT);
+        return chargeContainer(carriedStack, toFill)
+            .filter(result -> result.amount() > 0)
+            .map(result -> new ConversionInfo(carriedStack, result.container()));
     }
 }

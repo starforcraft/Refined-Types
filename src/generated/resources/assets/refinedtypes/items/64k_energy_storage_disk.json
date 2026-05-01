@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "refinedtypes:item/energy/64k_energy_storage_disk"
+  }
+}

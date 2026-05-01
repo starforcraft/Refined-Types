@@ -10,14 +10,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.MOD_ID;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
-import static com.ultramega.refinedtypes.RefinedTypesUtil.isArsNouveauLoaded;
-import static com.ultramega.refinedtypes.RefinedTypesUtil.isIndustrialForegoingSoulsLoaded;
 
 public final class Types {
     public static final ResourceKey<Registry<Type>> TYPE_REGISTRY_KEY = ResourceKey.createRegistryKey(createRefinedTypesIdentifier("type"));
@@ -31,17 +28,17 @@ public final class Types {
     public static final DeferredRegister<Type> TYPES = DeferredRegister.create(TYPE_REGISTRY, MOD_ID);
 
     public static final Supplier<Type> FE = TYPES.register("fe", () -> new Type("FE", createRefinedTypesIdentifier("types/fe")));
-    public static final Supplier<Type> SOURCE;
-    public static final Supplier<Type> SOUL;
+//    public static final Supplier<Type> SOURCE;
+//    public static final Supplier<Type> SOUL;
 
-    static {
-        SOURCE = isArsNouveauLoaded()
-            ? TYPES.register("source", () -> new Type("Source", ResourceLocation.fromNamespaceAndPath("ars_nouveau", "block/mana_still")))
-            : () -> new Type("", null);
-        SOUL = isIndustrialForegoingSoulsLoaded()
-            ? TYPES.register("soul", () -> new Type("Soul", null))
-            : () -> new Type("", null);
-    }
+//    static {
+//        SOURCE = isArsNouveauLoaded()
+//            ? TYPES.register("source", () -> new Type("Source", Identifier.fromNamespaceAndPath("ars_nouveau", "block/mana_still")))
+//            : () -> new Type("", null);
+//        SOUL = isIndustrialForegoingSoulsLoaded()
+//            ? TYPES.register("soul", () -> new Type("Soul", null))
+//            : () -> new Type("", null);
+//    }
 
     private Types() {
     }

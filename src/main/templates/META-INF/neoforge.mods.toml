@@ -1,5 +1,4 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
 issueTrackerURL = "https://github.com/starforcraft/Refined-Types/issues"
 license = "MIT"
 [[mods]]
@@ -16,12 +15,12 @@ config="refinedtypes.mixins.json"
 [[dependencies.refinedtypes]]
 modId="minecraft"
 type="required"
-versionRange="[1.21,)"
+versionRange="[26.1.2,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.refinedtypes]]
 modId = "refinedstorage"
 type = "required"
-versionRange = "2.0.0-beta.17"
+versionRange = "[3.2.1,)"
 side = "BOTH"

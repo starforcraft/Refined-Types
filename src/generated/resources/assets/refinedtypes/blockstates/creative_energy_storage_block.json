@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "refinedtypes:block/creative_energy_storage_block"
+      "model": "refinedtypes:block/energy_storage_block/creative_energy_storage_block"
     }
   }
 }

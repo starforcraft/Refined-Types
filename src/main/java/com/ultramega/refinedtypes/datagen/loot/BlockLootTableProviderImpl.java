@@ -2,8 +2,6 @@ package com.ultramega.refinedtypes.datagen.loot;
 
 import com.ultramega.refinedtypes.registry.Blocks;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
-import com.ultramega.refinedtypes.storage.soul.SoulStorageVariant;
-import com.ultramega.refinedtypes.storage.source.SourceStorageVariant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,18 +10,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-import javax.annotation.Nullable;
 
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.world.RandomSequence;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.RandomSupport;
@@ -31,8 +29,9 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
-import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.common.conditions.ConditionalOps;
@@ -40,12 +39,10 @@ import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.conditions.WithConditions;
 import org.apache.commons.lang3.Validate;
-
-import static com.ultramega.refinedtypes.RefinedTypesUtil.ARS_NOUVEAU;
-import static com.ultramega.refinedtypes.RefinedTypesUtil.INDUSTRIAL_FOREGOING_SOULS;
+import org.jspecify.annotations.Nullable;
 
 /**
- * Inspired by <a href="https://github.com/MinecraftschurliMods/Bibliocraft-Legacy/blob/main/src/api/java/com/github/minecraftschurlimods/bibliocraft/api/datagen/BlockLootTableProvider.java">Bibliocraft-Legacy</a>
+ * Inspired by <a href="https://github.com/MinecraftschurliMods/Bibliocraft-Legacy/blob/main/src/api/java/at/minecraftschurli/mods/bibliocraft/api/datagen/BlockLootTableProvider.java">Bibliocraft-Legacy</a>
  */
 public class BlockLootTableProviderImpl implements DataProvider {
     private static final Codec<Optional<WithConditions<LootTable>>> CONDITIONAL_CODEC = ConditionalOps.createConditionalCodecWithConditions(LootTable.DIRECT_CODEC);
@@ -64,12 +61,12 @@ public class BlockLootTableProviderImpl implements DataProvider {
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             this.addLootTableWithCondition(Blocks.getEnergyStorageBlock(variant), null);
         }
-        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-            this.addLootTableWithCondition(Blocks.getSourceStorageBlock(variant), ARS_NOUVEAU);
-        }
-        for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-            this.addLootTableWithCondition(Blocks.getSoulStorageBlock(variant), INDUSTRIAL_FOREGOING_SOULS);
-        }
+//        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
+//            this.addLootTableWithCondition(Blocks.getSourceStorageBlock(variant), ARS_NOUVEAU);
+//        }
+//        for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
+//            this.addLootTableWithCondition(Blocks.getSoulStorageBlock(variant), INDUSTRIAL_FOREGOING_SOULS);
+//        }
     }
 
     private void addLootTableWithCondition(final Block block, @Nullable final String modId) {
@@ -81,11 +78,16 @@ public class BlockLootTableProviderImpl implements DataProvider {
     }
 
     public LootTable.Builder createNameableTable(final Block block) {
-        return this.createStandardTable(LootItem.lootTableItem(block).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)));
+        return this.createStandardTable(LootItem.lootTableItem(block).apply(copyName()));
     }
 
     public LootTable.Builder createStandardTable(final LootPoolSingletonContainer.Builder<?> builder) {
         return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(builder).when(ExplosionCondition.survivesExplosion()));
+    }
+
+    private static CopyComponentsFunction.Builder copyName() {
+        return CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+            .include(DataComponents.CUSTOM_NAME);
     }
 
     @Override
@@ -95,10 +97,10 @@ public class BlockLootTableProviderImpl implements DataProvider {
 
     private CompletableFuture<?> run(final CachedOutput output, final HolderLookup.Provider provider) {
         this.generate();
-        final Map<RandomSupport.Seed128bit, ResourceLocation> seeds = new Object2ObjectOpenHashMap<>();
+        final Map<RandomSupport.Seed128bit, Identifier> seeds = new Object2ObjectOpenHashMap<>();
         return CompletableFuture.allOf(this.map.entrySet().stream().map(entry -> {
-            final ResourceLocation location = entry.getKey().location();
-            final ResourceLocation sequence = seeds.put(RandomSequence.seedForKey(location), location);
+            final Identifier location = entry.getKey().identifier();
+            final Identifier sequence = seeds.put(RandomSequence.seedForKey(location), location);
             if (sequence != null) {
                 Util.logAndPauseIfInIde("Loot table random sequence seed collision on " + sequence + " and " + location);
             }
@@ -112,12 +114,12 @@ public class BlockLootTableProviderImpl implements DataProvider {
     }
 
     public void addLootTable(final Block block, final WithConditionsBuilder<LootTable.Builder> builder) {
-        this.map.put(block.getLootTable(), builder);
+        block.getLootTable().ifPresent(key -> this.map.put(key, builder));
     }
 
     @Override
     public String getName() {
-        return "Loot Tables";
+        return "Refined Types Loot Tables";
     }
 
     public static WithConditionsBuilder<LootTable.Builder> wrapLootTable(final LootTable.Builder table) {
@@ -146,16 +148,19 @@ public class BlockLootTableProviderImpl implements DataProvider {
             return new WithConditionsBuilder<N>(this.conditions).withCarrier(mapper.apply(this.carrier));
         }
 
+        @Override
         public WithConditionsBuilder<T> addCondition(final ICondition... conditions) {
             this.conditions.addAll(List.of(conditions));
             return this;
         }
 
+        @Override
         public WithConditionsBuilder<T> withCarrier(final T carrier) {
             this.carrier = carrier;
             return this;
         }
 
+        @Override
         public WithConditions<T> build() {
             Validate.notNull(this.carrier, "You need to supply a carrier to create a WithConditions");
             return new WithConditions<>(this.conditions, this.carrier);

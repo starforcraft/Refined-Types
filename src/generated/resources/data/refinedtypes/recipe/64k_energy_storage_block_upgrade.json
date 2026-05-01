@@ -1,0 +1,8 @@
+{
+  "type": "refinedstorage:storage_container_upgrade",
+  "part": "refinedtypes:64k_energy_storage_part",
+  "result": "refinedtypes:64k_energy_storage_block",
+  "sources": [
+    "refinedtypes:creative_energy_storage_block"
+  ]
+}

@@ -12,7 +12,8 @@ import com.refinedmods.refinedstorage.common.importer.ImporterTransferQuotaProvi
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.neoforged.neoforge.fluids.FluidType;
+
+import static com.ultramega.refinedtypes.type.energy.EnergyResourceType.DEFAULT_TRANSFER_AMOUNT;
 
 public class EnergyImporterTransferStrategyFactory implements ImporterTransferStrategyFactory {
     @Override
@@ -22,8 +23,8 @@ public class EnergyImporterTransferStrategyFactory implements ImporterTransferSt
                                            final UpgradeState upgradeState) {
         final EnergyImporterSource source = new EnergyImporterSource(new EnergyCapabilityCache(level, pos, direction));
         final int singleAmount = upgradeState.has(Items.INSTANCE.getStackUpgrade())
-            ? FluidType.BUCKET_VOLUME * 100
-            : FluidType.BUCKET_VOLUME;
+            ? (int) DEFAULT_TRANSFER_AMOUNT * 100
+            : (int) DEFAULT_TRANSFER_AMOUNT;
         final ImporterTransferQuotaProvider transferQuotaProvider = new ImporterTransferQuotaProvider(
             singleAmount,
             upgradeState,

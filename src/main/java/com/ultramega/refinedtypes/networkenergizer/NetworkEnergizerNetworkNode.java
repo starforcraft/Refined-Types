@@ -7,7 +7,7 @@ import com.refinedmods.refinedstorage.api.network.impl.node.AbstractNetworkNode;
 import com.refinedmods.refinedstorage.api.network.storage.StorageNetworkComponent;
 import com.refinedmods.refinedstorage.api.storage.Actor;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
 
@@ -23,6 +23,11 @@ public class NetworkEnergizerNetworkNode extends AbstractNetworkNode implements 
 
     public void updateStoredCache() {
         this.cachedStored = this.getStoredUncached();
+    }
+
+    @Override
+    public void setActive(final boolean active) {
+        super.setActive(active);
     }
 
     private long getStoredUncached() {
@@ -84,7 +89,7 @@ public class NetworkEnergizerNetworkNode extends AbstractNetworkNode implements 
 
     @Override
     public long getEnergyUsage() {
-        return 0L;
+        return 1L;
     }
 
     public void setEnergyStorage(@Nullable final EnergyStorage energyStorage) {

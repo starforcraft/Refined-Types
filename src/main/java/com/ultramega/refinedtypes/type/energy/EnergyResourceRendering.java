@@ -14,10 +14,9 @@ import java.util.List;
 import java.util.Locale;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.Level;
 
 public class EnergyResourceRendering implements ResourceRendering {
     private static final DecimalFormat FORMATTER = new DecimalFormat(
@@ -47,20 +46,20 @@ public class EnergyResourceRendering implements ResourceRendering {
     }
 
     @Override
-    public void render(final ResourceKey resourceKey, final GuiGraphics graphics, final int x, final int y) {
-        if (resourceKey instanceof EnergyResource(Type type)) {
-            TypeRenderer.render(graphics.pose(), x, y, type);
+    public void render(final ResourceKey resource, final GuiGraphicsExtractor graphics, final int x, final int y) {
+        if (resource instanceof EnergyResource(Type type)) {
+            TypeRenderer.render(graphics, x, y, type);
         }
     }
 
     @Override
-    public void render(final ResourceKey resourceKey,
+    public void render(final ResourceKey resource,
                        final PoseStack poseStack,
-                       final MultiBufferSource multiBufferSource,
+                       final SubmitNodeCollector nodes,
                        final int light,
-                       final Level level) {
-        if (resourceKey instanceof EnergyResource(Type type)) {
-            TypeRenderer.render(poseStack, multiBufferSource, light, type);
+                       final long seed) {
+        if (resource instanceof EnergyResource(Type type)) {
+            TypeRenderer.render(poseStack, nodes, light, type);
         }
     }
 
