@@ -22,7 +22,8 @@ public enum SourceStorageVariant implements StringRepresentable, StorageVariant 
     B_262144(262_144L),
     B_1048576(1_048_576L),
     B_8388608(8_388_608L),
-    INFINITE(null);
+    INFINITE(null),
+    CREATIVE(-1L);
 
     private final String name;
     private final ResourceLocation storageDiskId;
@@ -32,16 +33,17 @@ public enum SourceStorageVariant implements StringRepresentable, StorageVariant 
     private final Long capacityInBuckets;
 
     SourceStorageVariant(@Nullable final Long capacityInBuckets) {
-        this.name = capacityInBuckets == null ? "infinite" : capacityInBuckets + "b";
+        if (capacityInBuckets == null) {
+            this.name = "infinite";
+        } else if (capacityInBuckets == -1) {
+            this.name = "creative";
+        } else {
+            this.name = capacityInBuckets + "b";
+        }
         this.storagePartId = createRefinedTypesIdentifier(this.name + "_source_storage_part");
         this.storageDiskId = createRefinedTypesIdentifier(this.name + "_source_storage_disk");
         this.storageBlockId = createRefinedTypesIdentifier(this.name + "_source_storage_block");
         this.capacityInBuckets = capacityInBuckets;
-    }
-
-    @Nullable
-    public Long getCapacityInBuckets() {
-        return this.capacityInBuckets;
     }
 
     @Override
@@ -49,6 +51,8 @@ public enum SourceStorageVariant implements StringRepresentable, StorageVariant 
     public Long getCapacity() {
         if (this.capacityInBuckets == null) {
             return null;
+        } else if (this.capacityInBuckets == -1L) {
+            return -1L;
         }
         return this.capacityInBuckets * Platform.INSTANCE.getBucketAmount();
     }

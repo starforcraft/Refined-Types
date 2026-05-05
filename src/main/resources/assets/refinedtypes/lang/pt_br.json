@@ -26,11 +26,14 @@
   "item.refinedtypes.1048576k_energy_storage_disk": "Disco de Armazenamento de Energia de 1048576K",
   "item.refinedtypes.8388608k_energy_storage_disk": "Disco de Armazenamento de Energia de 8388608K",
   "item.refinedtypes.infinite_energy_storage_disk": "Disco de Armazenamento de Energia Infinita",
+  "item.refinedtypes.creative_energy_storage_disk": "Creative Energy Storage Disk",
 
   "item.refinedtypes.energy_storage_disk.help": "Armazena %s FE. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Energia. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Energia.",
   "item.refinedtypes.infinite_energy_storage_disk.help": "Armazena uma quantidade infinita de FE.",
+  "item.refinedtypes.creative_energy_storage_disk.help": "Has an infinitely amount of FE already stored.",
   "item.refinedtypes.energy_storage_block.help": "Armazena %s FE. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Energia e a Carcaça da Máquina. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Energia.",
   "item.refinedtypes.infinite_energy_storage_block.help": "Armazena uma quantidade infinita de FE.",
+  "item.refinedtypes.creative_energy_storage_block.help": "Has an infinitely amount of FE already stored.",
 
   "block.refinedtypes.64k_energy_storage_block": "Bloco de Armazenamento de Energia de 64K",
   "block.refinedtypes.256k_energy_storage_block": "Bloco de Armazenamento de Energia de 256K",
@@ -41,6 +44,7 @@
   "block.refinedtypes.1048576k_energy_storage_block": "Bloco de Armazenamento de Energia de 1048576K",
   "block.refinedtypes.8388608k_energy_storage_block": "Bloco de Armazenamento de Energia de 8388608K",
   "block.refinedtypes.infinite_energy_storage_block": "Bloco de Armazenamento de Energia Infinita",
+  "block.refinedtypes.creative_energy_storage_block": "Creative Energy Storage Block",
 
   "tag.item.refinedtypes.energy_storage_disks": "Discos de Armazenamento de Energia",
   "advancements.refinedtypes.storing_energies": "Armazenando energias",
@@ -88,11 +92,14 @@
   "item.refinedtypes.1048576b_source_storage_disk": "Disco de Armazenamento de Fonte de 1048576B",
   "item.refinedtypes.8388608b_source_storage_disk": "Disco de Armazenamento de Fonte de 8388608B",
   "item.refinedtypes.infinite_source_storage_disk": "Disco de Armazenamento de Fonte Infinita",
+  "item.refinedtypes.creative_source_storage_disk": "Creative Source Storage Disk",
 
   "item.refinedtypes.source_storage_disk.help": "Armazena %s de Fonte. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Fonte. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Fonte.",
   "item.refinedtypes.infinite_source_storage_disk.help": "Armazena uma quantidade infinita de Fonte.",
+  "item.refinedtypes.creative_source_storage_disk.help": "Has an infinitely amount of Source already stored.",
   "item.refinedtypes.source_storage_block.help": "Armazena %s de Fonte. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Fonte e a Carcaça da Máquina. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Fonte.",
   "item.refinedtypes.infinite_source_storage_block.help": "Armazena uma quantidade infinita de Fonte.",
+  "item.refinedtypes.creative_source_storage_block.help": "Has an infinitely amount of Source already stored.",
 
   "block.refinedtypes.64b_source_storage_block": "Bloco de Armazenamento de Fonte de 64B",
   "block.refinedtypes.256b_source_storage_block": "Bloco de Armazenamento de Fonte de 256B",
@@ -103,6 +110,7 @@
   "block.refinedtypes.1048576b_source_storage_block": "Bloco de Armazenamento de Fonte de 1048576B",
   "block.refinedtypes.8388608b_source_storage_block": "Bloco de Armazenamento de Fonte de 8388608B",
   "block.refinedtypes.infinite_source_storage_block": "Bloco de Armazenamento de Fonte Infinita",
+  "block.refinedtypes.creative_source_storage_block": "Creative Source Storage Block",
 
   "tag.item.refinedtypes.source_storage_disks": "Discos de Armazenamento de Fonte",
   "advancements.refinedtypes.storing_sources": "Armazenando fontes",
@@ -150,11 +158,14 @@
   "item.refinedtypes.262144k_soul_storage_disk": "Disco de Armazenamento de Alma de 262144K",
   "item.refinedtypes.2097152k_soul_storage_disk": "Disco de Armazenamento de Alma de 2097152K",
   "item.refinedtypes.infinite_soul_storage_disk": "Disco de Armazenamento de Alma Infinita",
+  "item.refinedtypes.creative_soul_storage_disk": "Creative Soul Storage Disk",
 
   "item.refinedtypes.soul_storage_disk.help": "Armazena %s de Alma. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Alma. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Alma.",
   "item.refinedtypes.infinite_soul_storage_disk.help": "Armazena uma quantidade infinita de Alma.",
+  "item.refinedtypes.creative_soul_storage_disk.help": "Has an infinitely amount of Soul already stored.",
   "item.refinedtypes.soul_storage_block.help": "Armazena %s de Alma. Quando vazio, use enquanto segura para retornar a Parte de Armazenamento de Alma e a Carcaça da Máquina. Aprimorável para um nível superior combinando com uma Parte de Armazenamento de Alma.",
   "item.refinedtypes.infinite_soul_storage_block.help": "Armazena uma quantidade infinita de Alma.",
+  "item.refinedtypes.creative_soul_storage_block.help": "Has an infinitely amount of Soul already stored.",
   "item.refinedtypes.soul.help": "Dica: Use uma Melhoria de Regulador para evitar que o exportador despeje todas as suas almas no tubo de alma conectado",
 
   "block.refinedtypes.1k_soul_storage_block": "Bloco de Armazenamento de Alma de 1K",
@@ -166,6 +177,7 @@
   "block.refinedtypes.262144k_soul_storage_block": "Bloco de Armazenamento de Alma de 262144K",
   "block.refinedtypes.2097152k_soul_storage_block": "Bloco de Armazenamento de Alma de 2097152K",
   "block.refinedtypes.infinite_soul_storage_block": "Bloco de Armazenamento de Alma Infinita",
+  "block.refinedtypes.creative_soul_storage_block": "Creative Soul Storage Block",
 
   "tag.item.refinedtypes.soul_storage_disks": "Discos de Armazenamento de Alma",
   "advancements.refinedtypes.storing_souls": "Armazenando almas",

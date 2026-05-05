@@ -31,8 +31,8 @@ import static com.refinedmods.refinedstorage.common.util.IdentifierUtil.format;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesTranslation;
 
 public class EnergyStorageBlockBlockItem extends AbstractStorageContainerBlockItem implements UpgradeableStorageContainer {
-    private static final Component INFINITE_HELP =
-        RefinedTypesUtil.createRefinedTypesTranslation("item", "infinite_energy_storage_block.help");
+    private static final Component INFINITE_HELP = RefinedTypesUtil.createRefinedTypesTranslation("item", "infinite_energy_storage_block.help");
+    private static final Component CREATIVE_HELP = RefinedTypesUtil.createRefinedTypesTranslation("item", "creative_energy_storage_block.help");
 
     private final EnergyStorageVariant variant;
     private final Component helpText;
@@ -50,6 +50,8 @@ public class EnergyStorageBlockBlockItem extends AbstractStorageContainerBlockIt
     private static Component getHelpText(final EnergyStorageVariant variant) {
         if (variant.getCapacity() == null) {
             return INFINITE_HELP;
+        } else if (variant.getCapacity() == -1) {
+            return CREATIVE_HELP;
         }
         return createRefinedTypesTranslation(
             "item",

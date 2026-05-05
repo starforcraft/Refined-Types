@@ -26,11 +26,14 @@
   "item.refinedtypes.1048576k_energy_storage_disk": "1048576k能量存储磁盘",
   "item.refinedtypes.8388608k_energy_storage_disk": "8388608k能量存储磁盘",
   "item.refinedtypes.infinite_energy_storage_disk": "无限能量存储磁盘",
+  "item.refinedtypes.creative_energy_storage_disk": "Creative Energy Storage Disk",
 
   "item.refinedtypes.energy_storage_disk.help": "可存储%s FE。清空后，手持使用可返还存储组件和存储外壳。与能量存储组件组合，可升级至更高等级。",
   "item.refinedtypes.infinite_energy_storage_disk.help": "无FE存储上限。",
+  "item.refinedtypes.creative_energy_storage_disk.help": "Has an infinitely amount of FE already stored.",
   "item.refinedtypes.energy_storage_block.help": "可存储%s FE。清空后，手持使用可返还存储组件和机械外壳。与能量存储组件组合，可升级至更高等级。",
   "item.refinedtypes.infinite_energy_storage_block.help": "无FE存储上限。",
+  "item.refinedtypes.creative_energy_storage_block.help": "Has an infinitely amount of FE already stored.",
 
   "block.refinedtypes.64k_energy_storage_block": "64k能量存储方块",
   "block.refinedtypes.256k_energy_storage_block": "256k能量存储方块",
@@ -41,6 +44,7 @@
   "block.refinedtypes.1048576k_energy_storage_block": "1048576k能量存储方块",
   "block.refinedtypes.8388608k_energy_storage_block": "8388608k能量存储方块",
   "block.refinedtypes.infinite_energy_storage_block": "无限能量存储方块",
+  "block.refinedtypes.creative_energy_storage_block": "Creative Energy Storage Block",
 
   "tag.item.refinedtypes.energy_storage_disks": "能量存储磁盘",
   "advancements.refinedtypes.storing_energies": "储存能量",
@@ -88,11 +92,14 @@
   "item.refinedtypes.1048576b_source_storage_disk": "1048576B魔源存储磁盘",
   "item.refinedtypes.8388608b_source_storage_disk": "8388608B魔源存储磁盘",
   "item.refinedtypes.infinite_source_storage_disk": "无限魔源存储磁盘",
+  "item.refinedtypes.creative_source_storage_disk": "Creative Source Storage Disk",
 
   "item.refinedtypes.source_storage_disk.help": "可存储%s魔源。清空后，手持使用可返还存储组件和存储外壳。与魔源存储组件组合，可升级至更高等级。",
   "item.refinedtypes.infinite_source_storage_disk.help": "无魔源存储上限。",
+  "item.refinedtypes.creative_source_storage_disk.help": "Has an infinitely amount of Source already stored.",
   "item.refinedtypes.source_storage_block.help": "可存储%s魔源。清空后，手持使用可返还存储组件和机械外壳。与魔源存储组件组合，可升级至更高等级。",
   "item.refinedtypes.infinite_source_storage_block.help": "无魔源存储上限。",
+  "item.refinedtypes.creative_source_storage_block.help": "Has an infinitely amount of Source already stored.",
 
   "block.refinedtypes.64b_source_storage_block": "64B魔源存储方块",
   "block.refinedtypes.256b_source_storage_block": "256B魔源存储方块",
@@ -103,6 +110,7 @@
   "block.refinedtypes.1048576b_source_storage_block": "1048576B魔源存储方块",
   "block.refinedtypes.8388608b_source_storage_block": "8388608B魔源存储方块",
   "block.refinedtypes.infinite_source_storage_block": "无限魔源存储方块",
+  "block.refinedtypes.creative_source_storage_block": "Creative Source Storage Block",
 
   "tag.item.refinedtypes.source_storage_disks": "魔源存储磁盘",
   "advancements.refinedtypes.storing_sources": "储存魔源",
@@ -150,11 +158,15 @@
   "item.refinedtypes.262144k_soul_storage_disk": "262144k灵魂存储磁盘",
   "item.refinedtypes.2097152k_soul_storage_disk": "2097152k灵魂存储磁盘",
   "item.refinedtypes.infinite_soul_storage_disk": "无限灵魂存储磁盘",
+  "item.refinedtypes.creative_soul_storage_disk": "Creative Soul Storage Disk",
 
   "item.refinedtypes.soul_storage_disk.help": "可存储%s灵魂。清空后，手持使用可返还存储组件和存储外壳。与灵魂存储组件组合，可升级至更高等级。",
   "item.refinedtypes.infinite_soul_storage_disk.help": "无灵魂存储上限。",
+  "item.refinedtypes.creative_soul_storage_disk.help": "Has an infinitely amount of Soul already stored.",
   "item.refinedtypes.soul_storage_block.help": "可存储%s灵魂。清空后，手持使用可返还存储组件和机械外壳。与灵魂存储组件组合，可升级至更高等级。",
   "item.refinedtypes.infinite_soul_storage_block.help": "无灵魂存储上限。",
+  "item.refinedtypes.creative_soul_storage_block.help": "Has an infinitely amount of Soul already stored.",
+  "item.refinedtypes.soul.help": "Tip: Use a Regulator Upgrade to prevent the exporter from dumping all of your souls into the connected soul pipe",
 
   "block.refinedtypes.1k_soul_storage_block": "1k灵魂存储方块",
   "block.refinedtypes.8k_soul_storage_block": "8k灵魂存储方块",
@@ -165,6 +177,7 @@
   "block.refinedtypes.262144k_soul_storage_block": "262144k灵魂存储方块",
   "block.refinedtypes.2097152k_soul_storage_block": "2097152k灵魂存储方块",
   "block.refinedtypes.infinite_soul_storage_block": "无限灵魂存储方块",
+  "block.refinedtypes.creative_soul_storage_block": "Creative Soul Storage Block",
 
   "tag.item.refinedtypes.soul_storage_disks": "灵魂存储磁盘",
   "advancements.refinedtypes.storing_souls": "储存灵魂",

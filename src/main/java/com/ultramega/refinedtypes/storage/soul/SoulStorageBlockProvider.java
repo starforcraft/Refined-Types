@@ -49,6 +49,7 @@ public class SoulStorageBlockProvider implements StorageBlockProvider {
             case K_262144 -> ModInitializer.getConfig().getSoulStorageBlock().get262144KEnergyUsage();
             case K_2097152 -> ModInitializer.getConfig().getSoulStorageBlock().get2097152KEnergyUsage();
             case INFINITE -> ModInitializer.getConfig().getSoulStorageBlock().getInfiniteEnergyUsage();
+            case CREATIVE -> 0;
         };
     }
 

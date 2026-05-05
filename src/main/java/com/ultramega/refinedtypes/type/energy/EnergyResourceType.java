@@ -2,16 +2,15 @@ package com.ultramega.refinedtypes.type.energy;
 
 import com.ultramega.refinedtypes.RefinedTypesUtil;
 import com.ultramega.refinedtypes.registry.Types;
+import com.ultramega.refinedtypes.storage.ImprovedSameTypeStorageType;
 
 import com.refinedmods.refinedstorage.api.network.impl.node.grid.GridOperationsImpl;
 import com.refinedmods.refinedstorage.api.network.node.grid.GridOperations;
 import com.refinedmods.refinedstorage.api.storage.Actor;
 import com.refinedmods.refinedstorage.api.storage.root.RootStorage;
 import com.refinedmods.refinedstorage.common.Platform;
-import com.refinedmods.refinedstorage.common.api.storage.StorageType;
 import com.refinedmods.refinedstorage.common.api.support.resource.PlatformResourceKey;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceType;
-import com.refinedmods.refinedstorage.common.storage.SameTypeStorageType;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -34,10 +33,11 @@ public enum EnergyResourceType implements ResourceType {
         Types.STREAM_CODEC, EnergyResource::type,
         EnergyResource::new
     );
-    public static final StorageType STORAGE_TYPE = new SameTypeStorageType<>(
+    public static final ImprovedSameTypeStorageType<?> STORAGE_TYPE = new ImprovedSameTypeStorageType<>(
         CODEC,
         resource -> resource instanceof EnergyResource,
         EnergyResource.class::cast,
+        EnergyResource.createEnergyResource(),
         Platform.INSTANCE.getBucketAmount(),
         Platform.INSTANCE.getBucketAmount() * 100
     );

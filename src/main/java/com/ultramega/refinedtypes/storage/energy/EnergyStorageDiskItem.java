@@ -24,10 +24,8 @@ import static com.refinedmods.refinedstorage.common.util.IdentifierUtil.format;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesTranslation;
 
 public class EnergyStorageDiskItem extends AbstractStorageContainerItem implements UpgradeableStorageContainer {
-    private static final Component INFINITE_HELP = RefinedTypesUtil.createRefinedTypesTranslation(
-        "item",
-        "infinite_energy_storage_disk.help"
-    );
+    private static final Component INFINITE_HELP = RefinedTypesUtil.createRefinedTypesTranslation("item", "infinite_energy_storage_disk.help");
+    private static final Component CREATIVE_HELP = RefinedTypesUtil.createRefinedTypesTranslation("item", "creative_energy_storage_disk.help");
 
     private final EnergyStorageVariant variant;
     private final Component helpText;
@@ -42,6 +40,8 @@ public class EnergyStorageDiskItem extends AbstractStorageContainerItem implemen
     private static Component getHelpText(final EnergyStorageVariant variant) {
         if (variant.getCapacity() == null) {
             return INFINITE_HELP;
+        } else if (variant.getCapacity() == -1) {
+            return CREATIVE_HELP;
         }
         return createRefinedTypesTranslation(
             "item",
@@ -49,7 +49,6 @@ public class EnergyStorageDiskItem extends AbstractStorageContainerItem implemen
             format(variant.getCapacity())
         );
     }
-
 
     @Override
     @Nullable

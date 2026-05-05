@@ -21,7 +21,8 @@ public enum EnergyStorageVariant implements StringRepresentable, StorageVariant 
     K_262144(262_144_000L),
     K_1048576(1_048_576_000L),
     K_8388608(8_388_608_000L),
-    INFINITE(null);
+    INFINITE(null),
+    CREATIVE(-1L);
 
     private final String name;
     private final ResourceLocation storageDiskId;
@@ -31,7 +32,13 @@ public enum EnergyStorageVariant implements StringRepresentable, StorageVariant 
     private final Long capacity;
 
     EnergyStorageVariant(@Nullable final Long capacity) {
-        this.name = capacity == null ? "infinite" : capacity / 1000 + "k";
+        if (capacity == null) {
+            this.name = "infinite";
+        } else if (capacity == -1) {
+            this.name = "creative";
+        } else {
+            this.name = capacity / 1000 + "k";
+        }
         this.storagePartId = createRefinedTypesIdentifier(this.name + "_energy_storage_part");
         this.storageDiskId = createRefinedTypesIdentifier(this.name + "_energy_storage_disk");
         this.storageBlockId = createRefinedTypesIdentifier(this.name + "_energy_storage_block");

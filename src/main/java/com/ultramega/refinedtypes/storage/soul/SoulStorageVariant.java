@@ -21,7 +21,8 @@ public enum SoulStorageVariant implements StringRepresentable, StorageVariant {
     K_32768(32768L),
     K_262144(262144L),
     K_2097152(2097152L),
-    INFINITE(null);
+    INFINITE(null),
+    CREATIVE(-1L);
 
     private final String name;
     private final ResourceLocation storageDiskId;
@@ -31,11 +32,19 @@ public enum SoulStorageVariant implements StringRepresentable, StorageVariant {
     private final Long capacity;
 
     SoulStorageVariant(@Nullable final Long capacity) {
-        this.name = capacity == null ? "infinite" : capacity + "k";
+        if (capacity == null) {
+            this.name = "infinite";
+            this.capacity = null;
+        } else if (capacity == -1) {
+            this.name = "creative";
+            this.capacity = -1L;
+        } else {
+            this.name = capacity + "k";
+            this.capacity = capacity * 1024;
+        }
         this.storagePartId = createRefinedTypesIdentifier(this.name + "_soul_storage_part");
         this.storageDiskId = createRefinedTypesIdentifier(this.name + "_soul_storage_disk");
         this.storageBlockId = createRefinedTypesIdentifier(this.name + "_soul_storage_block");
-        this.capacity = capacity != null ? capacity * 1024 : null;
     }
 
     @Override

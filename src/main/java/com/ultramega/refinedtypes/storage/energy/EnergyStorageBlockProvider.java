@@ -49,6 +49,7 @@ public class EnergyStorageBlockProvider implements StorageBlockProvider {
             case K_1048576 -> ModInitializer.getConfig().getEnergyStorageBlock().get1048576KEnergyUsage();
             case K_8388608 -> ModInitializer.getConfig().getEnergyStorageBlock().get8388608KEnergyUsage();
             case INFINITE -> ModInitializer.getConfig().getEnergyStorageBlock().getInfiniteEnergyUsage();
+            case CREATIVE -> 0;
         };
     }
 

@@ -202,7 +202,9 @@ public final class ModInitializer {
         registry.register(ContentIdentification.NETWORK_ENERGIZER, () -> Blocks.getNetworkEnergizer().createBlockItem());
 
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
-            Items.setEnergyStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
+            if (variant != EnergyStorageVariant.CREATIVE) {
+                Items.setEnergyStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
+            }
             Items.setEnergyStorageDisk(variant, registry.register(variant.getStorageDiskId().getPath(), () -> new EnergyStorageDiskItem(
                 RefinedStorageApi.INSTANCE.getStorageContainerItemHelper(),
                 variant)));
@@ -212,7 +214,9 @@ public final class ModInitializer {
         }
         if (isArsNouveauLoaded()) {
             for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-                Items.setSourceStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
+                if (variant != SourceStorageVariant.CREATIVE) {
+                    Items.setSourceStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
+                }
                 Items.setSourceStorageDisk(variant, registry.register(variant.getStorageDiskId().getPath(), () -> new SourceStorageDiskItem(
                     RefinedStorageApi.INSTANCE.getStorageContainerItemHelper(), variant)));
                 Items.setSourceStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(), () -> new SourceStorageBlockBlockItem(
@@ -222,7 +226,9 @@ public final class ModInitializer {
         }
         if (isIndustrialForegoingSoulsLoaded()) {
             for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-                Items.setSoulStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
+                if (variant != SoulStorageVariant.CREATIVE) {
+                    Items.setSoulStoragePart(variant, registry.register(variant.getStoragePartId().getPath(), SimpleItem::new));
+                }
                 Items.setSoulStorageDisk(variant, registry.register(variant.getStorageDiskId().getPath(), () -> new SoulStorageDiskItem(
                     RefinedStorageApi.INSTANCE.getStorageContainerItemHelper(), variant)));
                 Items.setSoulStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(), () -> new SoulStorageBlockBlockItem(
@@ -425,6 +431,9 @@ public final class ModInitializer {
                     output.accept(Blocks.getNetworkEnergizer());
 
                     for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
+                        if (variant == EnergyStorageVariant.CREATIVE) {
+                            continue;
+                        }
                         output.accept(Items.getEnergyStoragePart(variant));
                     }
                     for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
@@ -435,6 +444,9 @@ public final class ModInitializer {
                     }
                     if (isArsNouveauLoaded()) {
                         for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
+                            if (variant == SourceStorageVariant.CREATIVE) {
+                                continue;
+                            }
                             output.accept(Items.getSourceStoragePart(variant));
                         }
                         for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
@@ -446,6 +458,9 @@ public final class ModInitializer {
                     }
                     if (isIndustrialForegoingSoulsLoaded()) {
                         for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
+                            if (variant == SoulStorageVariant.CREATIVE) {
+                                continue;
+                            }
                             output.accept(Items.getSoulStoragePart(variant));
                         }
                         for (final SoulStorageVariant variant : SoulStorageVariant.values()) {

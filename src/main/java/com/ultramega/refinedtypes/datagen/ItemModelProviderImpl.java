@@ -31,21 +31,27 @@ public class ItemModelProviderImpl extends ItemModelProvider {
 
     private void registerEnergyStoragePartsDisks() {
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
-            this.basicItem("energy", Items.getEnergyStoragePart(variant));
+            if (variant != EnergyStorageVariant.CREATIVE) {
+                this.basicItem("energy", Items.getEnergyStoragePart(variant));
+            }
             this.basicItem("energy", Items.getEnergyStorageDisk(variant));
         }
     }
 
     private void registerSourceStoragePartsDisks() {
         for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
-            this.basicItem("source", Items.getSourceStoragePart(variant));
+            if (variant != SourceStorageVariant.CREATIVE) {
+                this.basicItem("source", Items.getSourceStoragePart(variant));
+            }
             this.basicItem("source", Items.getSourceStorageDisk(variant));
         }
     }
 
     private void registerSoulStoragePartsDisks() {
         for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
-            this.basicItem("soul", Items.getSoulStoragePart(variant));
+            if (variant != SoulStorageVariant.CREATIVE) {
+                this.basicItem("soul", Items.getSoulStoragePart(variant));
+            }
             this.basicItem("soul", Items.getSoulStorageDisk(variant));
         }
     }

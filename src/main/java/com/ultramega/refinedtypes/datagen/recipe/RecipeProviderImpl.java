@@ -41,16 +41,25 @@ public class RecipeProviderImpl extends RecipeProvider {
         final RecipeOutput soulsOutput = output.withConditions(new ModLoadedCondition("industrialforegoingsouls"));
 
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
+            if (variant == EnergyStorageVariant.CREATIVE) {
+                continue;
+            }
             this.recipeStorageDisk(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getEnergyStorageDisk(variant), output);
             this.recipeStorageBlock(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getEnergyStorageBlock(variant), Items.COPPER_BLOCK, output);
             this.recipeDiskFromStorageHousing(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getEnergyStorageDisk(variant), output);
         }
         for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
+            if (variant == SourceStorageVariant.CREATIVE) {
+                continue;
+            }
             this.recipeStorageDisk(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSourceStorageDisk(variant), arsOutput);
             this.recipeStorageBlock(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSourceStorageBlock(variant), Items.REDSTONE_BLOCK, arsOutput);
             this.recipeDiskFromStorageHousing(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSourceStorageDisk(variant), arsOutput);
         }
         for (final SoulStorageVariant variant : SoulStorageVariant.values()) {
+            if (variant == SoulStorageVariant.CREATIVE) {
+                continue;
+            }
             this.recipeStorageDisk(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSoulStorageDisk(variant), soulsOutput);
             this.recipeStorageBlock(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSoulStorageBlock(variant), Items.REDSTONE_BLOCK, soulsOutput);
             this.recipeDiskFromStorageHousing(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getSoulStorageDisk(variant), soulsOutput);

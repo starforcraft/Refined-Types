@@ -49,6 +49,7 @@ public class SourceStorageBlockProvider implements StorageBlockProvider {
             case B_1048576 -> ModInitializer.getConfig().getSourceStorageBlock().get1048576BSourceUsage();
             case B_8388608 -> ModInitializer.getConfig().getSourceStorageBlock().get8388608BSourceUsage();
             case INFINITE -> ModInitializer.getConfig().getSourceStorageBlock().getInfiniteSourceUsage();
+            case CREATIVE -> 0;
         };
     }
 

@@ -2,6 +2,7 @@ package com.ultramega.refinedtypes.type.source;
 
 import com.ultramega.refinedtypes.RefinedTypesUtil;
 import com.ultramega.refinedtypes.registry.Types;
+import com.ultramega.refinedtypes.storage.ImprovedSameTypeStorageType;
 
 import com.refinedmods.refinedstorage.api.network.impl.node.grid.GridOperationsImpl;
 import com.refinedmods.refinedstorage.api.network.node.grid.GridOperations;
@@ -34,10 +35,11 @@ public enum SourceResourceType implements ResourceType {
         Types.STREAM_CODEC, SourceResource::type,
         SourceResource::new
     );
-    public static final StorageType STORAGE_TYPE = new SameTypeStorageType<>(
+    public static final ImprovedSameTypeStorageType<?> STORAGE_TYPE = new ImprovedSameTypeStorageType<>(
         CODEC,
         resource -> resource instanceof SourceResource,
         SourceResource.class::cast,
+        SourceResource.createSourceResource(),
         Platform.INSTANCE.getBucketAmount(),
         Platform.INSTANCE.getBucketAmount() * 64
     );

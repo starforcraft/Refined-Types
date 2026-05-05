@@ -35,6 +35,10 @@
     {
       "id": "refinedtypes:infinite_soul_storage_disk",
       "required": false
+    },
+    {
+      "id": "refinedtypes:creative_soul_storage_disk",
+      "required": false
     }
   ]
 }
