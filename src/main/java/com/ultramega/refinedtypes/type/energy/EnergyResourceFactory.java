@@ -9,7 +9,7 @@ import java.util.Optional;
 import dev.technici4n.grandpower.api.ILongEnergyStorage;
 import net.minecraft.world.item.ItemStack;
 
-import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergyResource;
+import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
 
 public enum EnergyResourceFactory implements ResourceFactory {
     INSTANCE;
@@ -19,7 +19,7 @@ public enum EnergyResourceFactory implements ResourceFactory {
         return Optional.ofNullable(stack.getCapability(ILongEnergyStorage.ITEM))
             .map(handler -> handler.extract(Long.MAX_VALUE, true))
             .filter(amount -> amount > 0)
-            .map(amount -> new ResourceAmount(createEnergyResource(), amount));
+            .map(amount -> new ResourceAmount(ENERGY_RESOURCE, amount));
     }
 
     @Override

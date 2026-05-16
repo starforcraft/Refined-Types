@@ -12,10 +12,8 @@ import com.refinedmods.refinedstorage.common.api.support.resource.ResourceType;
 
 import java.util.List;
 
-public record EnergyResource(Type type) implements PlatformResourceKey, FuzzyModeNormalizer { //TODO: make an abstract class with the other Resource Types
-    public static EnergyResource createEnergyResource() {
-        return new EnergyResource(Types.FE.get());
-    }
+public record EnergyResource(Type type) implements PlatformResourceKey, FuzzyModeNormalizer {
+    public static final EnergyResource ENERGY_RESOURCE = new EnergyResource(Types.FE.get());
 
     @Override
     public long getInterfaceExportLimit() {
@@ -34,7 +32,7 @@ public record EnergyResource(Type type) implements PlatformResourceKey, FuzzyMod
 
     @Override
     public ResourceKey normalize() {
-        return new EnergyResource(this.type);
+        return ENERGY_RESOURCE;
     }
 
     @Override

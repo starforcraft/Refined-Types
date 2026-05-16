@@ -11,7 +11,7 @@ import com.refinedmods.refinedstorage.common.support.resource.ItemResource;
 import com.buuz135.industrialforegoingsouls.capabilities.ISoulHandler;
 import net.minecraft.world.item.ItemStack;
 
-import static com.ultramega.refinedtypes.type.soul.SoulResource.createSoulResource;
+import static com.ultramega.refinedtypes.type.soul.SoulResource.SOUL_RESOURCE;
 
 public record ResourceContainerSoulHandlerAdapter(ResourceContainer container) implements ISoulHandler {
     @Override
@@ -59,7 +59,7 @@ public record ResourceContainerSoulHandlerAdapter(ResourceContainer container) i
             return 0L;
         }
         if (action == Action.EXECUTE) {
-            this.container.set(tank, new ResourceAmount(createSoulResource(), toInsert));
+            this.container.set(tank, new ResourceAmount(SOUL_RESOURCE, toInsert));
         }
         return toInsert;
     }
@@ -72,7 +72,6 @@ public record ResourceContainerSoulHandlerAdapter(ResourceContainer container) i
 
         for (int i = 0; i < this.container.size(); i++) {
             final ResourceAmount resourceAmount = this.container.get(i);
-
             if (resourceAmount == null || !(resourceAmount.resource() instanceof SoulResource)) {
                 continue;
             }

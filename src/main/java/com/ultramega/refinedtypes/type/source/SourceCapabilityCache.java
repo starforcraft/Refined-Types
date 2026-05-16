@@ -15,7 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 
-import static com.ultramega.refinedtypes.type.source.SourceResource.createSourceResource;
+import static com.ultramega.refinedtypes.type.source.SourceResource.SOURCE_RESOURCE;
 
 public class SourceCapabilityCache {
     private final BlockCapabilityCache<ISourceCap, @NullableType Direction> cache;
@@ -32,7 +32,7 @@ public class SourceCapabilityCache {
         return this.getCapability().map(handler -> {
             final long amount = handler.getSource();
             if (amount > 0) {
-                return Collections.singletonList(new ResourceAmount(createSourceResource(), amount)).iterator();
+                return Collections.singletonList(new ResourceAmount(SOURCE_RESOURCE, amount)).iterator();
             }
             return Collections.<ResourceAmount>emptyIterator();
         }).orElse(Collections.emptyListIterator());
@@ -42,7 +42,7 @@ public class SourceCapabilityCache {
         return this.getCapability().map(handler -> {
             final long amount = handler.getSource();
             if (amount > 0) {
-                return Collections.<ResourceKey>singletonList(createSourceResource()).iterator();
+                return Collections.<ResourceKey>singletonList(SOURCE_RESOURCE).iterator();
             }
             return Collections.<ResourceKey>emptyListIterator();
         }).orElse(Collections.emptyListIterator());

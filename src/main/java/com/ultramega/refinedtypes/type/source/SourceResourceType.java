@@ -9,10 +9,8 @@ import com.refinedmods.refinedstorage.api.network.node.grid.GridOperations;
 import com.refinedmods.refinedstorage.api.storage.Actor;
 import com.refinedmods.refinedstorage.api.storage.root.RootStorage;
 import com.refinedmods.refinedstorage.common.Platform;
-import com.refinedmods.refinedstorage.common.api.storage.StorageType;
 import com.refinedmods.refinedstorage.common.api.support.resource.PlatformResourceKey;
 import com.refinedmods.refinedstorage.common.api.support.resource.ResourceType;
-import com.refinedmods.refinedstorage.common.storage.SameTypeStorageType;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -23,6 +21,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
+import static com.ultramega.refinedtypes.type.source.SourceResource.SOURCE_RESOURCE;
 
 public enum SourceResourceType implements ResourceType {
     INSTANCE;
@@ -39,7 +38,7 @@ public enum SourceResourceType implements ResourceType {
         CODEC,
         resource -> resource instanceof SourceResource,
         SourceResource.class::cast,
-        SourceResource.createSourceResource(),
+        SOURCE_RESOURCE,
         Platform.INSTANCE.getBucketAmount(),
         Platform.INSTANCE.getBucketAmount() * 64
     );

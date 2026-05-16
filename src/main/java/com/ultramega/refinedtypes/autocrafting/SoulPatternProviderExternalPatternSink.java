@@ -1,5 +1,6 @@
 package com.ultramega.refinedtypes.autocrafting;
 
+import com.ultramega.refinedtypes.type.TypeStack;
 import com.ultramega.refinedtypes.type.soul.SoulCapabilityCache;
 import com.ultramega.refinedtypes.type.soul.SoulResource;
 
@@ -10,11 +11,15 @@ import com.refinedmods.refinedstorage.common.api.autocrafting.PlatformPatternPro
 
 import java.util.Collection;
 
-import com.buuz135.industrialforegoingsouls.block_network.SoulNetwork;
+import com.buuz135.industrialforegoingsouls.capabilities.ISoulHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static com.ultramega.refinedtypes.type.soul.SoulUtil.getNetwork;
+import static com.ultramega.refinedtypes.type.soul.SoulUtil.toSoulAction;
 
 class SoulPatternProviderExternalPatternSink implements PlatformPatternProviderExternalPatternSink {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SoulPatternProviderExternalPatternSink.class);
+
     private final SoulCapabilityCache capabilityCache;
 
     SoulPatternProviderExternalPatternSink(final SoulCapabilityCache capabilityCache) {
@@ -23,8 +28,17 @@ class SoulPatternProviderExternalPatternSink implements PlatformPatternProviderE
 
     @Override
     public ExternalPatternSink.Result accept(final Collection<ResourceAmount> resources, final Action action) {
+        return this.capabilityCache.getCapability()
+            .map(handler -> this.accept(resources, action, handler))
+            .orElse(ExternalPatternSink.Result.SKIPPED);
+    }
+
+    private ExternalPatternSink.Result accept(final Collection<ResourceAmount> resources,
+                                              final Action action,
+                                              final ISoulHandler handler) {
         for (final ResourceAmount resource : resources) {
-            if (resource.resource() instanceof SoulResource && !this.accept(action, resource.amount())) {
+            if (resource.resource() instanceof SoulResource soulResource
+                && !this.accept(action, handler, resource.amount(), soulResource)) {
                 return ExternalPatternSink.Result.REJECTED;
             }
         }
@@ -32,25 +46,27 @@ class SoulPatternProviderExternalPatternSink implements PlatformPatternProviderE
     }
 
     private boolean accept(final Action action,
-                           final long amount) {
-        final SoulNetwork network = getNetwork(this.capabilityCache);
-        if (network != null) {
+                           final ISoulHandler handler,
+                           final long amount,
+                           final SoulResource soulResource) {
+        final long inserted = handler.fill((int) amount, toSoulAction(action));
+        if (inserted != amount) {
             if (action == Action.EXECUTE) {
-                network.addSouls(this.capabilityCache.getLevel(), (int) amount);
+                LOGGER.warn(
+                    "{} unexpectedly didn't accept all of {}, the remainder has been voided",
+                    handler,
+                    new TypeStack(soulResource.type(), amount)
+                );
             }
-
-            return true;
+            return false;
         }
-
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEmpty() {
-        final SoulNetwork network = getNetwork(this.capabilityCache);
-        if (network != null) {
-            return network.getSoulAmount() == 0;
-        }
-        return true;
+        return this.capabilityCache.getCapability()
+            .map(handler -> handler.getSoulInTank(0) == 0)
+            .orElse(true);
     }
 }

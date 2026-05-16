@@ -50,7 +50,7 @@ public class TypeGridResourceFactory implements ResourceRepositoryMapper<GridRes
         };
     }
 
-    private Type extractType(final ResourceKey resource) { //TODO: remove once Resource Types have an abstract class
+    private Type extractType(final ResourceKey resource) {
         return switch (resource) {
             case EnergyResource(Type type) -> type;
             case SourceResource(Type type) -> type;

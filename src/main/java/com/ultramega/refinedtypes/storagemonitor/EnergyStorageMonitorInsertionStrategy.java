@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import dev.technici4n.grandpower.api.ILongEnergyStorage;
 import net.minecraft.world.item.ItemStack;
 
-import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergyResource;
+import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
 
 public class EnergyStorageMonitorInsertionStrategy implements StorageMonitorInsertionStrategy {
     @Override
@@ -64,20 +64,10 @@ public class EnergyStorageMonitorInsertionStrategy implements StorageMonitorInse
         if (!result.type().equals(configuredResource.type())) {
             return 0;
         }
-        return rootStorage.insert(
-            createEnergyResource(),
-            result.amount(),
-            Action.SIMULATE,
-            actor
-        );
+        return rootStorage.insert(ENERGY_RESOURCE, result.amount(), Action.SIMULATE, actor);
     }
 
     private void doInsert(final Actor actor, final TypeStack result, final RootStorage rootStorage) {
-        rootStorage.insert(
-            createEnergyResource(),
-            result.amount(),
-            Action.EXECUTE,
-            actor
-        );
+        rootStorage.insert(ENERGY_RESOURCE, result.amount(), Action.EXECUTE, actor);
     }
 }

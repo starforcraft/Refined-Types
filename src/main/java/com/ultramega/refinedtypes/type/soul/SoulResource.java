@@ -12,9 +12,7 @@ import com.refinedmods.refinedstorage.common.api.support.resource.ResourceType;
 import java.util.List;
 
 public record SoulResource(Type type) implements PlatformResourceKey, FuzzyModeNormalizer {
-    public static SoulResource createSoulResource() {
-        return new SoulResource(Types.SOUL.get());
-    }
+    public static final SoulResource SOUL_RESOURCE = new SoulResource(Types.SOUL.get());
 
     @Override
     public long getInterfaceExportLimit() {
@@ -33,7 +31,7 @@ public record SoulResource(Type type) implements PlatformResourceKey, FuzzyModeN
 
     @Override
     public ResourceKey normalize() {
-        return new SoulResource(this.type);
+        return SOUL_RESOURCE;
     }
 
     @Override

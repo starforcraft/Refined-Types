@@ -21,6 +21,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
+import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
 
 public enum EnergyResourceType implements ResourceType {
     INSTANCE;
@@ -37,7 +38,7 @@ public enum EnergyResourceType implements ResourceType {
         CODEC,
         resource -> resource instanceof EnergyResource,
         EnergyResource.class::cast,
-        EnergyResource.createEnergyResource(),
+        ENERGY_RESOURCE,
         Platform.INSTANCE.getBucketAmount(),
         Platform.INSTANCE.getBucketAmount() * 100
     );

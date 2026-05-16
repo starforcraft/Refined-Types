@@ -5,13 +5,10 @@ import com.ultramega.refinedtypes.storage.soul.ResourceContainerSoulHandlerAdapt
 import com.refinedmods.refinedstorage.api.core.Action;
 import com.refinedmods.refinedstorage.common.content.BlockEntities;
 
-import javax.annotation.Nullable;
-
+import com.buuz135.industrialforegoingsouls.IndustrialForegoingSouls;
 import com.buuz135.industrialforegoingsouls.block.tile.NetworkBlockEntity;
-import com.buuz135.industrialforegoingsouls.block_network.SoulNetwork;
 import com.buuz135.industrialforegoingsouls.capabilities.ISoulHandler;
 import com.buuz135.industrialforegoingsouls.capabilities.SoulCapabilities;
-import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
 public class SoulUtil {
@@ -24,16 +21,17 @@ public class SoulUtil {
             BlockEntities.INSTANCE.getInterface(),
             (be, side) -> new ResourceContainerSoulHandlerAdapter(be.getExportedResources())
         );
-    }
-
-    @Nullable
-    public static SoulNetwork getNetwork(final SoulCapabilityCache capabilityCache) {
-        final Level level = capabilityCache.getLevel();
-        if (level.getBlockEntity(capabilityCache.getPos()) instanceof NetworkBlockEntity<?> networkBlock) {
-            return networkBlock.getNetwork();
-        }
-
-        return null;
+        event.registerBlock(
+            SoulCapabilities.BLOCK,
+            (level, pos, state, blockEntity, side) -> {
+                if (blockEntity instanceof NetworkBlockEntity<?> networkBlockEntity) {
+                    return new SoulNetworkSoulHandlerAdapter(level, networkBlockEntity);
+                }
+                return null;
+            },
+            IndustrialForegoingSouls.SOUL_PIPE_BLOCK.block().get(),
+            IndustrialForegoingSouls.SOUL_SURGE_BLOCK.block().get()
+        );
     }
 
     public static ISoulHandler.Action toSoulAction(final Action action) {

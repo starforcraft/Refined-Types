@@ -13,7 +13,7 @@ import dev.technici4n.grandpower.api.ILongEnergyStorage;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.world.item.ItemStack;
 
-import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergyResource;
+import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
 
 public class EnergyGridInsertionHint implements GridInsertionHint {
     @Override
@@ -25,7 +25,7 @@ public class EnergyGridInsertionHint implements GridInsertionHint {
     }
 
     private ClientTooltipComponent createComponent(final long resultAmount) {
-        return MouseClientTooltipComponent.resource(MouseClientTooltipComponent.Type.RIGHT, createEnergyResource(), doFormat(resultAmount));
+        return MouseClientTooltipComponent.resource(MouseClientTooltipComponent.Type.RIGHT, ENERGY_RESOURCE, doFormat(resultAmount));
     }
 
     private static String doFormat(final long resultAmount) {

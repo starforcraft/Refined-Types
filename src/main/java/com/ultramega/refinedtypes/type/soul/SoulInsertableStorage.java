@@ -5,9 +5,7 @@ import com.refinedmods.refinedstorage.api.resource.ResourceKey;
 import com.refinedmods.refinedstorage.api.storage.Actor;
 import com.refinedmods.refinedstorage.api.storage.InsertableStorage;
 
-import com.buuz135.industrialforegoingsouls.block_network.SoulNetwork;
-
-import static com.ultramega.refinedtypes.type.soul.SoulUtil.getNetwork;
+import static com.ultramega.refinedtypes.type.soul.SoulUtil.toSoulAction;
 
 public class SoulInsertableStorage implements InsertableStorage {
     private final SoulCapabilityCache capabilityCache;
@@ -20,13 +18,15 @@ public class SoulInsertableStorage implements InsertableStorage {
         if (!(resource instanceof SoulResource)) {
             return 0;
         }
-
-        final SoulNetwork network = getNetwork(this.capabilityCache);
-        if (network != null) {
-            return network.getSoulAmount();
-        }
-
-        return 0;
+        return this.capabilityCache.getCapability()
+            .map(handler -> {
+                long amount = 0;
+                for (int i = 0; i < handler.getSoulTanks(); ++i) {
+                    amount += handler.getSoulInTank(i);
+                }
+                return amount;
+            })
+            .orElse(0L);
     }
 
     @Override
@@ -34,16 +34,8 @@ public class SoulInsertableStorage implements InsertableStorage {
         if (!(resource instanceof SoulResource)) {
             return 0;
         }
-
-        final SoulNetwork network = getNetwork(this.capabilityCache);
-        if (network != null) {
-            if (action == Action.EXECUTE) {
-                network.addSouls(this.capabilityCache.getLevel(), (int) amount);
-            }
-
-            return (int) amount;
-        }
-
-        return 0;
+        return this.capabilityCache.getCapability()
+            .map(handler -> handler.fill((int) Math.min(Integer.MAX_VALUE, amount), toSoulAction(action)))
+            .orElse(0);
     }
 }

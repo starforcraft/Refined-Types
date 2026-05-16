@@ -26,9 +26,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.neoforge.fluids.FluidType;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
-import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergyResource;
-import static com.ultramega.refinedtypes.type.soul.SoulResource.createSoulResource;
-import static com.ultramega.refinedtypes.type.source.SourceResource.createSourceResource;
+import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
+import static com.ultramega.refinedtypes.type.soul.SoulResource.SOUL_RESOURCE;
+import static com.ultramega.refinedtypes.type.source.SourceResource.SOURCE_RESOURCE;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
@@ -69,11 +69,11 @@ public class JEIPlugin implements IModPlugin {
         @Override
         public void render(final GuiGraphics graphics, final TypeStack ingredient) {
             if (ingredient.type() == Types.FE.get()) {
-                RefinedStorageClientApi.INSTANCE.getResourceRendering(EnergyResource.class).render(createEnergyResource(), graphics, 0, 0);
+                RefinedStorageClientApi.INSTANCE.getResourceRendering(EnergyResource.class).render(ENERGY_RESOURCE, graphics, 0, 0);
             } else if (ingredient.type() == Types.SOURCE.get()) {
-                RefinedStorageClientApi.INSTANCE.getResourceRendering(SourceResource.class).render(createSourceResource(), graphics, 0, 0);
+                RefinedStorageClientApi.INSTANCE.getResourceRendering(SourceResource.class).render(SOURCE_RESOURCE, graphics, 0, 0);
             } else if (ingredient.type() == Types.SOUL.get()) {
-                RefinedStorageClientApi.INSTANCE.getResourceRendering(SoulResource.class).render(createSoulResource(), graphics, 0, 0);
+                RefinedStorageClientApi.INSTANCE.getResourceRendering(SoulResource.class).render(SOUL_RESOURCE, graphics, 0, 0);
             }
         }
 

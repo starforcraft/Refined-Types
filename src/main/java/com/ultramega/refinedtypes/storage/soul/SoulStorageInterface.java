@@ -9,7 +9,7 @@ import com.refinedmods.refinedstorage.common.api.support.resource.ResourceContai
 
 import com.buuz135.industrialforegoingsouls.capabilities.ISoulHandler;
 
-import static com.ultramega.refinedtypes.type.soul.SoulResource.createSoulResource;
+import static com.ultramega.refinedtypes.type.soul.SoulResource.SOUL_RESOURCE;
 import static com.ultramega.refinedtypes.type.soul.SoulUtil.fromSoulAction;
 
 public record SoulStorageInterface(ResourceContainer container) implements ISoulHandler {
@@ -24,7 +24,7 @@ public record SoulStorageInterface(ResourceContainer container) implements ISoul
             return 0;
         }
 
-        return (int) this.container.extract(createSoulResource(), maxDrain, fromSoulAction(action));
+        return (int) this.container.extract(SOUL_RESOURCE, maxDrain, fromSoulAction(action));
     }
 
     @Override

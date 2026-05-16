@@ -33,10 +33,13 @@ public class NetworkEnergizerBlockEntity extends AbstractBaseNetworkNodeContaine
     }
 
     private static EnergyStorage createEnergyStorage(final BlockEntity blockEntity) {
-        return new BlockEntityEnergyStorage(
-            new EnergyStorageImpl(1000),
-            blockEntity
-        );
+        return new BlockEntityEnergyStorage(new EnergyStorageImpl(1000), blockEntity);
+    }
+
+    @Override
+    public void doWork() {
+        super.doWork();
+        this.mainNetworkNode.updateStoredCache();
     }
 
     @Override

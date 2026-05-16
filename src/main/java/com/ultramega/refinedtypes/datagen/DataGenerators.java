@@ -1,14 +1,18 @@
 package com.ultramega.refinedtypes.datagen;
 
 import com.ultramega.refinedtypes.datagen.loot.BlockLootTableProviderImpl;
+import com.ultramega.refinedtypes.datagen.model.BlockModelProviderImpl;
+import com.ultramega.refinedtypes.datagen.model.ItemModelProviderImpl;
 import com.ultramega.refinedtypes.datagen.recipe.RecipeProviderImpl;
 import com.ultramega.refinedtypes.datagen.tag.BlockTagsProviderImpl;
 import com.ultramega.refinedtypes.datagen.tag.ItemTagsProviderImpl;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.advancements.AdvancementProvider;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -29,7 +33,7 @@ public class DataGenerators {
         registerLootTableProviders(e.getGenerator(), e.getLookupProvider());
         registerRecipeProviders(e.getGenerator(), e.getLookupProvider());
         registerTagProviders(e.getGenerator(), e.getLookupProvider(), e.getExistingFileHelper());
-        registerAdvancementProviders(e.getGenerator(), e.getLookupProvider(), e.getExistingFileHelper());
+        registerAdvancementProviders(e.getGenerator(), e.getLookupProvider());
     }
 
     private static void registerBlockModelProviders(final DataGenerator generator,
@@ -79,10 +83,11 @@ public class DataGenerators {
     }
 
     private static void registerAdvancementProviders(final DataGenerator generator,
-                                                     final CompletableFuture<HolderLookup.Provider> provider,
-                                                     final ExistingFileHelper existingFileHelper
-    ) {
+                                                     final CompletableFuture<HolderLookup.Provider> provider) {
         final DataGenerator.PackGenerator mainPack = generator.getVanillaPack(true);
-        mainPack.addProvider(output -> new AdvancementProviderImpl(output, provider, existingFileHelper));
+        mainPack.addProvider(output -> new AdvancementProvider(
+            output,
+            provider,
+            List.of(new com.ultramega.refinedtypes.datagen.advancement.AdvancementProvider())));
     }
 }

@@ -13,9 +13,7 @@ import com.refinedmods.refinedstorage.common.api.support.resource.ResourceType;
 import java.util.List;
 
 public record SourceResource(Type type) implements PlatformResourceKey, FuzzyModeNormalizer {
-    public static SourceResource createSourceResource() {
-        return new SourceResource(Types.SOURCE.get());
-    }
+    public static final SourceResource SOURCE_RESOURCE = new SourceResource(Types.SOURCE.get());
 
     @Override
     public long getInterfaceExportLimit() {
@@ -34,7 +32,7 @@ public record SourceResource(Type type) implements PlatformResourceKey, FuzzyMod
 
     @Override
     public ResourceKey normalize() {
-        return new SourceResource(this.type);
+        return SOURCE_RESOURCE;
     }
 
     @Override

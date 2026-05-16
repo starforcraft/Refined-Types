@@ -15,20 +15,20 @@ import java.util.Optional;
 
 import net.neoforged.neoforge.fluids.FluidType;
 
-import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergyResource;
-import static com.ultramega.refinedtypes.type.soul.SoulResource.createSoulResource;
-import static com.ultramega.refinedtypes.type.source.SourceResource.createSourceResource;
+import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
+import static com.ultramega.refinedtypes.type.soul.SoulResource.SOUL_RESOURCE;
+import static com.ultramega.refinedtypes.type.source.SourceResource.SOURCE_RESOURCE;
 
 public class JEIRecipeModIngredientConverter implements RecipeModIngredientConverter {
     @Override
     public Optional<PlatformResourceKey> convertToResource(final Object ingredient) {
         if (ingredient instanceof TypeStack stack) {
             if (stack.type() == Types.FE.get()) {
-                return Optional.of(createEnergyResource());
+                return Optional.of(ENERGY_RESOURCE);
             } else if (stack.type() == Types.SOURCE.get()) {
-                return Optional.of(createSourceResource());
+                return Optional.of(SOURCE_RESOURCE);
             } else if (stack.type() == Types.SOUL.get()) {
-                return Optional.of(createSoulResource());
+                return Optional.of(SOUL_RESOURCE);
             }
         }
         return Optional.empty();
@@ -36,13 +36,13 @@ public class JEIRecipeModIngredientConverter implements RecipeModIngredientConve
 
     @Override
     public Optional<ResourceAmount> convertToResourceAmount(final Object ingredient) {
-        if (ingredient instanceof TypeStack stack) {
-            if (stack.type() == Types.FE.get()) {
-                return Optional.of(new ResourceAmount(createEnergyResource(), stack.amount()));
-            } else if (stack.type() == Types.SOURCE.get()) {
-                return Optional.of(new ResourceAmount(createSourceResource(), stack.amount()));
-            } else if (stack.type() == Types.SOUL.get()) {
-                return Optional.of(new ResourceAmount(createSoulResource(), stack.amount()));
+        if (ingredient instanceof TypeStack(Type type, long amount)) {
+            if (type == Types.FE.get()) {
+                return Optional.of(new ResourceAmount(ENERGY_RESOURCE, amount));
+            } else if (type == Types.SOURCE.get()) {
+                return Optional.of(new ResourceAmount(SOURCE_RESOURCE, amount));
+            } else if (type == Types.SOUL.get()) {
+                return Optional.of(new ResourceAmount(SOUL_RESOURCE, amount));
             }
         }
         return Optional.empty();

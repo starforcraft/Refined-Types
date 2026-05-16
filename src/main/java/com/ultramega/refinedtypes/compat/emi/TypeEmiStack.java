@@ -26,9 +26,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
-import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergyResource;
-import static com.ultramega.refinedtypes.type.soul.SoulResource.createSoulResource;
-import static com.ultramega.refinedtypes.type.source.SourceResource.createSourceResource;
+import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
+import static com.ultramega.refinedtypes.type.soul.SoulResource.SOUL_RESOURCE;
+import static com.ultramega.refinedtypes.type.source.SourceResource.SOURCE_RESOURCE;
 
 public class TypeEmiStack extends EmiStack {
     private final Type type;
@@ -41,13 +41,13 @@ public class TypeEmiStack extends EmiStack {
 
         if (this.type == Types.FE.get()) {
             this.rendering = RefinedStorageClientApi.INSTANCE.getResourceRendering(EnergyResource.class);
-            this.resource = createEnergyResource();
+            this.resource = ENERGY_RESOURCE;
         } else if (this.type == Types.SOURCE.get()) {
             this.rendering = RefinedStorageClientApi.INSTANCE.getResourceRendering(SourceResource.class);
-            this.resource = createSourceResource();
+            this.resource = SOURCE_RESOURCE;
         } else if (this.type == Types.SOUL.get()) {
             this.rendering = RefinedStorageClientApi.INSTANCE.getResourceRendering(SoulResource.class);
-            this.resource = createSoulResource();
+            this.resource = SOUL_RESOURCE;
         } else {
             throw new RuntimeException("Invalid resource type " + type);
         }

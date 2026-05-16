@@ -16,7 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
-import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergyResource;
+import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
 
 public class EnergyGridInsertionStrategy implements GridInsertionStrategy {
     private final AbstractContainerMenu menu;
@@ -39,7 +39,7 @@ public class EnergyGridInsertionStrategy implements GridInsertionStrategy {
         if (extractableResource <= 0) {
             return false;
         }
-        this.gridOperations.insert(createEnergyResource(), insertMode, (resource, amount, action, source) -> {
+        this.gridOperations.insert(ENERGY_RESOURCE, insertMode, (resource, amount, action, source) -> {
             if (!(resource instanceof EnergyResource)) {
                 return 0;
             }

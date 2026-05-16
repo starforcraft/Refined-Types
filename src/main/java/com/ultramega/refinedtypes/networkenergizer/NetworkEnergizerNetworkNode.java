@@ -9,7 +9,7 @@ import com.refinedmods.refinedstorage.api.storage.Actor;
 
 import javax.annotation.Nullable;
 
-import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergyResource;
+import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
 
 public class NetworkEnergizerNetworkNode extends AbstractNetworkNode implements EnergyProvider {
     // This energy storage kick-starts the network when loading into a world, preventing it from shutting down
@@ -19,8 +19,27 @@ public class NetworkEnergizerNetworkNode extends AbstractNetworkNode implements 
     @Nullable
     private EnergyStorage energyStorage;
 
-    public void setEnergyStorage(@Nullable final EnergyStorage energyStorage) {
-        this.energyStorage = energyStorage;
+    private long cachedStored;
+
+    public void updateStoredCache() {
+        this.cachedStored = this.getStoredUncached();
+    }
+
+    private long getStoredUncached() {
+        if (!this.isActive()) {
+            return 0;
+        }
+
+        if (this.network != null) {
+            final StorageNetworkComponent storageComponent = this.network.getComponent(StorageNetworkComponent.class);
+            long stored = storageComponent.get(ENERGY_RESOURCE);
+            if (stored <= 0 && this.energyStorage != null) {
+                stored = this.energyStorage.getStored();
+            }
+            return stored;
+        }
+
+        return 0;
     }
 
     @Override
@@ -29,16 +48,7 @@ public class NetworkEnergizerNetworkNode extends AbstractNetworkNode implements 
             return 0;
         }
 
-        if (this.network != null) {
-            final StorageNetworkComponent storageComponent = this.network.getComponent(StorageNetworkComponent.class);
-            long stored = storageComponent.get(createEnergyResource());
-            if (stored <= 0 && this.energyStorage != null) {
-                stored = this.energyStorage.getStored();
-            }
-            return stored;
-        }
-
-        return 0;
+        return this.cachedStored;
     }
 
     @Override
@@ -58,9 +68,12 @@ public class NetworkEnergizerNetworkNode extends AbstractNetworkNode implements 
 
         if (this.network != null) {
             final StorageNetworkComponent storageComponent = this.network.getComponent(StorageNetworkComponent.class);
-            long extracted = storageComponent.extract(createEnergyResource(), amount, Action.EXECUTE, Actor.EMPTY);
+            long extracted = storageComponent.extract(ENERGY_RESOURCE, amount, Action.EXECUTE, Actor.EMPTY);
             if (extracted <= 0 && this.energyStorage != null) {
                 extracted = this.energyStorage.extract(amount, Action.EXECUTE);
+            }
+            if (extracted > 0) {
+                this.cachedStored = Math.max(0, this.cachedStored - extracted);
             }
 
             return extracted;
@@ -72,5 +85,9 @@ public class NetworkEnergizerNetworkNode extends AbstractNetworkNode implements 
     @Override
     public long getEnergyUsage() {
         return 0L;
+    }
+
+    public void setEnergyStorage(@Nullable final EnergyStorage energyStorage) {
+        this.energyStorage = energyStorage;
     }
 }

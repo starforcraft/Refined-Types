@@ -10,7 +10,7 @@ import com.refinedmods.refinedstorage.common.support.resource.ItemResource;
 import com.hollingsworth.arsnouveau.api.source.ISourceCap;
 import net.minecraft.world.item.ItemStack;
 
-import static com.ultramega.refinedtypes.type.source.SourceResource.createSourceResource;
+import static com.ultramega.refinedtypes.type.source.SourceResource.SOURCE_RESOURCE;
 
 public record ResourceContainerSourceHandlerAdapter(ResourceContainer container) implements ISourceCap {
     @Override
@@ -58,7 +58,7 @@ public record ResourceContainerSourceHandlerAdapter(ResourceContainer container)
             return 0L;
         }
         if (!simulate) {
-            this.container.set(tank, new ResourceAmount(createSourceResource(), toInsert));
+            this.container.set(tank, new ResourceAmount(SOURCE_RESOURCE, toInsert));
         }
         return toInsert;
     }
@@ -71,7 +71,6 @@ public record ResourceContainerSourceHandlerAdapter(ResourceContainer container)
 
         for (int i = 0; i < this.container.size(); i++) {
             final ResourceAmount resourceAmount = this.container.get(i);
-
             if (resourceAmount == null || !(resourceAmount.resource() instanceof SourceResource)) {
                 continue;
             }

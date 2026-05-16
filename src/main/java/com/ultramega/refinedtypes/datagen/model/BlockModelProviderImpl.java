@@ -1,4 +1,4 @@
-package com.ultramega.refinedtypes.datagen;
+package com.ultramega.refinedtypes.datagen.model;
 
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
 import com.ultramega.refinedtypes.storage.soul.SoulStorageVariant;

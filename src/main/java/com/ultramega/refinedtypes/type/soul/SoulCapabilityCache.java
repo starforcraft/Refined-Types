@@ -18,7 +18,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 
-import static com.ultramega.refinedtypes.type.soul.SoulResource.createSoulResource;
+import static com.ultramega.refinedtypes.type.soul.SoulResource.SOUL_RESOURCE;
 
 public class SoulCapabilityCache {
     private final BlockCapabilityCache<ISoulHandler, @NullableType Direction> cache;
@@ -57,7 +57,7 @@ public class SoulCapabilityCache {
                     final int amount = handler.getSoulInTank(this.index);
                     if (amount > 0) {
                         this.index++;
-                        return new ResourceAmount(createSoulResource(), amount);
+                        return new ResourceAmount(SOUL_RESOURCE, amount);
                     }
                 }
                 return this.endOfData();
@@ -79,7 +79,7 @@ public class SoulCapabilityCache {
                     final int amount = handler.getSoulInTank(this.index);
                     if (amount > 0) {
                         this.index++;
-                        return createSoulResource();
+                        return SOUL_RESOURCE;
                     }
                 }
                 return this.endOfData();

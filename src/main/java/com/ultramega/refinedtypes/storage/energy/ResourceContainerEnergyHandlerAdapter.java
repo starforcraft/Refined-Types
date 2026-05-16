@@ -10,9 +10,9 @@ import com.refinedmods.refinedstorage.common.support.resource.ItemResource;
 import dev.technici4n.grandpower.api.ILongEnergyStorage;
 import net.minecraft.world.item.ItemStack;
 
-import static com.ultramega.refinedtypes.type.energy.EnergyResource.createEnergyResource;
+import static com.ultramega.refinedtypes.type.energy.EnergyResource.ENERGY_RESOURCE;
 
-public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage { //TODO: abstract this with ResourceContainerSoulHandlerAdapter
+public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage {
     private final ResourceContainer container;
 
     public ResourceContainerEnergyHandlerAdapter(final ResourceContainer container) {
@@ -66,7 +66,7 @@ public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage
             Math.max(this.container.getMaxAmount(ItemResource.ofItemStack(ItemStack.EMPTY)), EnergyResourceType.INSTANCE.getInterfaceExportLimit())
         );
         if (!simulate) {
-            this.container.set(tank, new ResourceAmount(createEnergyResource(), toInsert));
+            this.container.set(tank, new ResourceAmount(ENERGY_RESOURCE, toInsert));
         }
         return toInsert;
     }
@@ -79,7 +79,6 @@ public class ResourceContainerEnergyHandlerAdapter implements ILongEnergyStorage
 
         for (int i = 0; i < this.container.size(); i++) {
             final ResourceAmount resourceAmount = this.container.get(i);
-
             if (resourceAmount == null || !(resourceAmount.resource() instanceof EnergyResource)) {
                 continue;
             }
