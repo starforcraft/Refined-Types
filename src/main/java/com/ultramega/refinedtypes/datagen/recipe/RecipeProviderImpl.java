@@ -20,8 +20,10 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 
@@ -48,6 +50,7 @@ public class RecipeProviderImpl extends RecipeProvider {
             this.recipeStorageBlock(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getEnergyStorageBlock(variant), Items.COPPER_BLOCK, output);
             this.recipeDiskFromStorageHousing(variant.getStoragePart(), com.ultramega.refinedtypes.registry.Items.getEnergyStorageDisk(variant), output);
         }
+        this.recipeNetworkEnergizer(output);
         for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
             if (variant == SourceStorageVariant.CREATIVE) {
                 continue;
@@ -118,7 +121,7 @@ public class RecipeProviderImpl extends RecipeProvider {
             .define('P', storagePart)
             .define('E', Items.REDSTONE_BLOCK)
             .unlockedBy("has_storage_part", has(storagePart))
-            .save(output, createRefinedTypesIdentifier("disk/" + BuiltInRegistries.ITEM.getKey(result).getPath()));
+            .save(output, this.createIdWithSuffix("disk/", result));
     }
 
     private void recipeStorageBlock(final Item storagePart, final Item result, final Item resourceBlock, final RecipeOutput output) {
@@ -131,7 +134,7 @@ public class RecipeProviderImpl extends RecipeProvider {
             .define('P', storagePart)
             .define('E', resourceBlock)
             .unlockedBy("has_storage_part", has(storagePart))
-            .save(output, createRefinedTypesIdentifier("blocks/" + BuiltInRegistries.ITEM.getKey(result).getPath()));
+            .save(output, this.createIdWithSuffix("blocks/", result));
     }
 
     private void registerFirstPartRecipe(final Item craftBlock, final Item result, final RecipeOutput output) {
@@ -144,7 +147,7 @@ public class RecipeProviderImpl extends RecipeProvider {
             .define('G', Tags.Items.GLASS_BLOCKS)
             .define('R', Tags.Items.DUSTS_REDSTONE)
             .unlockedBy("has_craft_block", has(craftBlock))
-            .save(output, createRefinedTypesIdentifier("part/" + BuiltInRegistries.ITEM.getKey(result).getPath()));
+            .save(output, this.createIdWithSuffix("part/", result));
     }
 
     private void registerUpgradePartRecipe(final StorageVariant prevPart,
@@ -168,7 +171,7 @@ public class RecipeProviderImpl extends RecipeProvider {
             .define('S', prevPartItem)
             .define('R', upgradeBlock)
             .unlockedBy("has_prev_part", has(prevPartItem))
-            .save(output, createRefinedTypesIdentifier("part/" + BuiltInRegistries.ITEM.getKey(resultPartItem).getPath()));
+            .save(output, this.createIdWithSuffix("part/", resultPartItem));
     }
 
     private void recipeDiskFromStorageHousing(final Item storagePart, final Item result, final RecipeOutput output) {
@@ -176,6 +179,22 @@ public class RecipeProviderImpl extends RecipeProvider {
             .requires(com.refinedmods.refinedstorage.common.content.Items.INSTANCE.getStorageHousing())
             .requires(storagePart)
             .unlockedBy("has_storage_part", has(storagePart))
-            .save(output, createRefinedTypesIdentifier("part/" + BuiltInRegistries.ITEM.getKey(result).getPath()));
+            .save(output, this.createIdWithSuffix("part/", result));
+    }
+
+    private void recipeNetworkEnergizer(final RecipeOutput output) {
+        final Block interfaceBlock = com.refinedmods.refinedstorage.common.content.Blocks.INSTANCE.getInterface();
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, com.ultramega.refinedtypes.registry.Blocks.getNetworkEnergizer())
+            .pattern("CCC")
+            .pattern("CIC")
+            .pattern("CCC")
+            .define('C', Items.COPPER_BLOCK)
+            .define('I', interfaceBlock)
+            .unlockedBy("has_interface", has(interfaceBlock))
+            .save(output);
+    }
+
+    private ResourceLocation createIdWithSuffix(final String suffix, final Item item) {
+        return createRefinedTypesIdentifier(suffix + BuiltInRegistries.ITEM.getKey(item).getPath());
     }
 }
