@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "refinedtypes:block/essentia_storage_block/infinite_essentia_storage_block"
+    }
+  }
+}

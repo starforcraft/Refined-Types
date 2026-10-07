@@ -2,11 +2,17 @@ package com.ultramega.refinedtypes;
 
 import com.ultramega.refinedtypes.compat.jei.JEIRecipeModIngredientConverter;
 import com.ultramega.refinedtypes.exporter.EnergyExporterTransferStrategyFactory;
+import com.ultramega.refinedtypes.exporter.EssentiaExporterTransferStrategyFactory;
 import com.ultramega.refinedtypes.externalstorage.EnergyPlatformExternalStorageProviderFactory;
+import com.ultramega.refinedtypes.externalstorage.EssentiaPlatformExternalStorageProviderFactory;
 import com.ultramega.refinedtypes.grid.strategy.energy.EnergyGridExtractionStrategy;
 import com.ultramega.refinedtypes.grid.strategy.energy.EnergyGridInsertionStrategy;
+import com.ultramega.refinedtypes.grid.strategy.essentia.EssentiaGridExtractionStrategy;
+import com.ultramega.refinedtypes.grid.strategy.essentia.EssentiaGridInsertionStrategy;
 import com.ultramega.refinedtypes.grid.view.energy.EnergyGridResourceType;
+import com.ultramega.refinedtypes.grid.view.essentia.EssentiaGridResourceType;
 import com.ultramega.refinedtypes.importer.EnergyImporterTransferStrategyFactory;
+import com.ultramega.refinedtypes.importer.EssentiaImporterTransferStrategyFactory;
 import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerBlock;
 import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerBlockEntity;
 import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerContainerMenu;
@@ -22,10 +28,16 @@ import com.ultramega.refinedtypes.storage.energy.EnergyStorageBlockProvider;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageDiskItem;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
 import com.ultramega.refinedtypes.storage.energy.ResourceContainerEnergyHandlerAdapter;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageBlockBlockItem;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageBlockProvider;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageDiskItem;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageVariant;
 import com.ultramega.refinedtypes.storagemonitor.EnergyStorageMonitorInsertionStrategy;
 import com.ultramega.refinedtypes.type.energy.EnergyResourceContainerInsertStrategy;
 import com.ultramega.refinedtypes.type.energy.EnergyResourceFactory;
 import com.ultramega.refinedtypes.type.energy.EnergyResourceType;
+import com.ultramega.refinedtypes.type.essentia.EssentiaResourceFactory;
+import com.ultramega.refinedtypes.type.essentia.EssentiaResourceType;
 
 import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
 import com.refinedmods.refinedstorage.common.api.support.network.AbstractNetworkNodeContainerBlockEntity;
@@ -77,10 +89,12 @@ import static com.ultramega.refinedtypes.RefinedTypesUtil.MOD_ID;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.isArsNouveauLoaded;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.isIndustrialForegoingSoulsLoaded;
+import static com.ultramega.refinedtypes.RefinedTypesUtil.isThaumaturgeLoaded;
 
 @Mod(MOD_ID)
 public final class ModInitializer {
     public static final Identifier ENERGY_ID = createRefinedTypesIdentifier("energy");
+    public static final Identifier ESSENTIA_ID = createRefinedTypesIdentifier("essentia");
 //    private static final Identifier SOURCE_ID = createRefinedTypesIdentifier("source");
 //    private static final Identifier SOUL_ID = createRefinedTypesIdentifier("soul");
 
@@ -155,6 +169,13 @@ public final class ModInitializer {
                 () -> RefinedStorageApi.INSTANCE.createStorageBlock(BlockProperties.stone(variant.getStorageBlockId()),
                     new EnergyStorageBlockProvider(variant))));
         }
+        if (isThaumaturgeLoaded()) {
+            for (final EssentiaStorageVariant variant : EssentiaStorageVariant.values()) {
+                Blocks.setEssentiaStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(),
+                    () -> RefinedStorageApi.INSTANCE.createStorageBlock(BlockProperties.stone(variant.getStorageBlockId()),
+                        new EssentiaStorageBlockProvider(variant))));
+            }
+        }
         if (isArsNouveauLoaded()) {
 //            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
 //                Blocks.setSourceStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(),
@@ -187,6 +208,22 @@ public final class ModInitializer {
                 variant.getStorageBlockId(),
                 Blocks.getEnergyStorageBlock(variant),
                 variant)));
+        }
+        if (isThaumaturgeLoaded()) {
+            for (final EssentiaStorageVariant variant : EssentiaStorageVariant.values()) {
+                if (variant != EssentiaStorageVariant.CREATIVE) {
+                    Items.setEssentiaStoragePart(variant, registry.register(variant.getStoragePartId().getPath(),
+                        () -> new SimpleItem(variant.getStoragePartId())));
+                }
+                Items.setEssentiaStorageDisk(variant, registry.register(variant.getStorageDiskId().getPath(), () -> new EssentiaStorageDiskItem(
+                    variant.getStorageDiskId(),
+                    RefinedStorageApi.INSTANCE.getStorageContainerItemHelper(),
+                    variant)));
+                Items.setEssentiaStorageBlock(variant, registry.register(variant.getStorageBlockId().getPath(), () -> new EssentiaStorageBlockBlockItem(
+                    variant.getStorageBlockId(),
+                    Blocks.getEssentiaStorageBlock(variant),
+                    variant)));
+            }
         }
         if (isArsNouveauLoaded()) {
 //            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
@@ -234,6 +271,19 @@ public final class ModInitializer {
                     ))
             );
         }
+        if (isThaumaturgeLoaded()) {
+            for (final EssentiaStorageVariant variant : EssentiaStorageVariant.values()) {
+                BlockEntities.setEssentiaStorageBlock(variant,
+                    registry.register(variant.getStorageBlockId().getPath(),
+                        () -> typeFactory.create(
+                            (pos, state) -> RefinedStorageApi.INSTANCE.createStorageBlockEntity(
+                                pos, state, new EssentiaStorageBlockProvider(variant)
+                            ),
+                            Blocks.getEssentiaStorageBlock(variant)
+                        ))
+                );
+            }
+        }
         if (isArsNouveauLoaded()) {
 //            for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
 //                BlockEntities.setSourceStorageBlock(variant,
@@ -272,6 +322,13 @@ public final class ModInitializer {
             () -> extendedMenuTypeFactory.create((syncId, playerInventory, data) ->
                 RefinedStorageApi.INSTANCE.createStorageBlockContainerMenu(syncId, playerInventory.player, data,
                     EnergyResourceFactory.INSTANCE, Menus.getEnergyStorage()), RefinedStorageApi.INSTANCE.getStorageBlockDataStreamCodec())));
+        if (isThaumaturgeLoaded()) {
+            Menus.setEssentiaStorage(registry.register(
+                "essentia_storage_block",
+                () -> extendedMenuTypeFactory.create((syncId, playerInventory, data) ->
+                    RefinedStorageApi.INSTANCE.createStorageBlockContainerMenu(syncId, playerInventory.player, data,
+                        EssentiaResourceFactory.INSTANCE, Menus.getEssentiaStorage()), RefinedStorageApi.INSTANCE.getStorageBlockDataStreamCodec())));
+        }
         if (isArsNouveauLoaded()) {
 //            Menus.setSourceStorage(registry.register(
 //                "source_storage_block",
@@ -300,6 +357,18 @@ public final class ModInitializer {
         RefinedStorageApi.INSTANCE.getImporterTransferStrategyRegistry().register(ENERGY_ID, new EnergyImporterTransferStrategyFactory());
         RefinedStorageApi.INSTANCE.getExporterTransferStrategyRegistry().register(ENERGY_ID, new EnergyExporterTransferStrategyFactory());
         RefinedStorageApi.INSTANCE.addExternalStorageProviderFactory(new EnergyPlatformExternalStorageProviderFactory());
+
+        if (isThaumaturgeLoaded()) {
+            RefinedStorageApi.INSTANCE.getResourceTypeRegistry().register(ESSENTIA_ID, EssentiaResourceType.INSTANCE);
+            RefinedStorageApi.INSTANCE.getAlternativeResourceFactories().add(EssentiaResourceFactory.INSTANCE);
+            RefinedStorageApi.INSTANCE.getStorageTypeRegistry().register(ESSENTIA_ID, EssentiaResourceType.STORAGE_TYPE);
+            RefinedStorageApi.INSTANCE.getGridResourceTypeRegistry().register(ESSENTIA_ID, EssentiaGridResourceType.INSTANCE);
+            RefinedStorageApi.INSTANCE.addGridInsertionStrategyFactory(EssentiaGridInsertionStrategy::new);
+            RefinedStorageApi.INSTANCE.addGridExtractionStrategyFactory(EssentiaGridExtractionStrategy::new);
+            RefinedStorageApi.INSTANCE.getImporterTransferStrategyRegistry().register(ESSENTIA_ID, new EssentiaImporterTransferStrategyFactory());
+            RefinedStorageApi.INSTANCE.getExporterTransferStrategyRegistry().register(ESSENTIA_ID, new EssentiaExporterTransferStrategyFactory());
+            RefinedStorageApi.INSTANCE.addExternalStorageProviderFactory(new EssentiaPlatformExternalStorageProviderFactory());
+        }
 
         if (isArsNouveauLoaded()) {
 //            RefinedStorageApi.INSTANCE.getResourceTypeRegistry().register(SOURCE_ID, SourceResourceType.INSTANCE);
@@ -344,16 +413,20 @@ public final class ModInitializer {
                     output.accept(Blocks.getNetworkEnergizer());
 
                     for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
-                        if (variant == EnergyStorageVariant.CREATIVE) {
-                            continue;
+                        if (variant != EnergyStorageVariant.CREATIVE) {
+                            output.accept(Items.getEnergyStoragePart(variant));
                         }
-                        output.accept(Items.getEnergyStoragePart(variant));
-                    }
-                    for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
                         output.accept(Items.getEnergyStorageDisk(variant));
-                    }
-                    for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
                         output.accept(Items.getEnergyStorageBlock(variant));
+                    }
+                    if (isThaumaturgeLoaded()) {
+                        for (final EssentiaStorageVariant variant : EssentiaStorageVariant.values()) {
+                            if (variant != EssentiaStorageVariant.CREATIVE) {
+                                output.accept(Items.getEssentiaStoragePart(variant));
+                            }
+                            output.accept(Items.getEssentiaStorageDisk(variant));
+                            output.accept(Items.getEssentiaStorageBlock(variant));
+                        }
                     }
                     if (isArsNouveauLoaded()) {
 //                        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
@@ -397,6 +470,11 @@ public final class ModInitializer {
         );
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             this.registerNetworkNodeContainerProvider(event, BlockEntities.getEnergyStorageBlock(variant));
+        }
+        if (isThaumaturgeLoaded()) {
+            for (final EssentiaStorageVariant variant : EssentiaStorageVariant.values()) {
+                this.registerNetworkNodeContainerProvider(event, BlockEntities.getEssentiaStorageBlock(variant));
+            }
         }
         if (isArsNouveauLoaded()) {
 //            SourceUtil.registerCapability(event);

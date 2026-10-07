@@ -81,10 +81,12 @@ sourceSets {
 }
 
 val refinedstorageVersion: String by project
-val grandpowerVersion: String by project
 val arsNouveauVersion: String by project
 val industrialForegoingVersion: String by project
 val titaniumVersion: String by project
+val thaumaturgeVersion: String by project
+val lithostitchedVersion: String by project
+val curiosVersion: String by project
 val refinedstorageJeiIntegrationVersion: String by project
 val refinedstorageEmiIntegrationVersion: String by project
 val minecraftVersion: String by project
@@ -98,6 +100,9 @@ dependencies {
 //    implementation("com.buuz135:industrialforegoing:1.21-${industrialForegoingVersion}")
 //    implementation("curse.maven:industrial-foregoing-souls-904394:6235883")
 //    implementation("com.hrznstudio:titanium:1.21-${titaniumVersion}")
+    implementation("curse.maven:thaumaturge-1628024:${thaumaturgeVersion}")
+    implementation("curse.maven:lithostitched-936015:${lithostitchedVersion}")
+    implementation("curse.maven:curios-309927:${curiosVersion}")
 
     runtimeOnly("com.refinedmods.refinedstorage:refinedstorage-jei-integration-neoforge:${refinedstorageJeiIntegrationVersion}")
     // runtimeOnly("com.refinedmods.refinedstorage:refinedstorage-emi-integration-neoforge:${refinedstorageEmiIntegrationVersion}")

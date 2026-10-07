@@ -2,6 +2,7 @@ package com.ultramega.refinedtypes.registry;
 
 import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerBlock;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageVariant;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import static java.util.Objects.requireNonNull;
 
 public final class Blocks {
     private static final Map<EnergyStorageVariant, Supplier<Block>> ENERGY_STORAGE_BLOCKS = new EnumMap<>(EnergyStorageVariant.class);
+    private static final Map<EssentiaStorageVariant, Supplier<Block>> ESSENTIA_STORAGE_BLOCKS = new EnumMap<>(EssentiaStorageVariant.class);
 //    private static final Map<SourceStorageVariant, Supplier<Block>> SOURCE_STORAGE_BLOCKS = new EnumMap<>(SourceStorageVariant.class);
 //    private static final Map<SoulStorageVariant, Supplier<Block>> SOUL_STORAGE_BLOCKS = new EnumMap<>(SoulStorageVariant.class);
 
@@ -29,6 +31,14 @@ public final class Blocks {
 
     public static void setEnergyStorageBlock(final EnergyStorageVariant variant, final Supplier<Block> supplier) {
         ENERGY_STORAGE_BLOCKS.put(variant, supplier);
+    }
+
+    public static Block getEssentiaStorageBlock(final EssentiaStorageVariant variant) {
+        return ESSENTIA_STORAGE_BLOCKS.get(variant).get();
+    }
+
+    public static void setEssentiaStorageBlock(final EssentiaStorageVariant variant, final Supplier<Block> supplier) {
+        ESSENTIA_STORAGE_BLOCKS.put(variant, supplier);
     }
 
 //    public static Block getSourceStorageBlock(final SourceStorageVariant variant) {

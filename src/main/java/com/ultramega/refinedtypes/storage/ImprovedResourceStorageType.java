@@ -21,6 +21,7 @@ import com.refinedmods.refinedstorage.common.api.storage.StorageType;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -47,7 +48,7 @@ public class ImprovedResourceStorageType implements StorageType {
 
     private final MapCodec<StorageContents> codec;
     private final Predicate<ResourceKey> valid;
-    private final ResourceKey resource;
+    private final Supplier<? extends Storage> creativeStorageFactory;
     private final long diskInterfaceTransferQuota;
     private final long diskInterfaceTransferQuotaWithStackUpgrade;
 
@@ -56,8 +57,16 @@ public class ImprovedResourceStorageType implements StorageType {
                                        final ResourceKey resource,
                                        final long diskInterfaceTransferQuota,
                                        final long diskInterfaceTransferQuotaWithStackUpgrade) {
+        this(resourceCodec, valid, diskInterfaceTransferQuota, diskInterfaceTransferQuotaWithStackUpgrade, () -> new CreativeStorageImpl(resource));
+    }
+
+    public ImprovedResourceStorageType(final Codec<ResourceKey> resourceCodec,
+                                       final Predicate<ResourceKey> valid,
+                                       final long diskInterfaceTransferQuota,
+                                       final long diskInterfaceTransferQuotaWithStackUpgrade,
+                                       final Supplier<? extends Storage> creativeStorageFactory) {
         this.valid = valid;
-        this.resource = resource;
+        this.creativeStorageFactory = creativeStorageFactory;
         this.diskInterfaceTransferQuota = diskInterfaceTransferQuota;
         this.diskInterfaceTransferQuotaWithStackUpgrade = diskInterfaceTransferQuotaWithStackUpgrade;
 
@@ -107,7 +116,7 @@ public class ImprovedResourceStorageType implements StorageType {
     private SerializableStorage createStorage(final StorageContents contents, final boolean isCreative, final Runnable listener) {
         final TrackedStorageRepository trackingRepository = new InMemoryTrackedStorageRepository();
         final TrackedStorageImpl tracked = new TrackedStorageImpl(
-            isCreative ? new CreativeStorageImpl(this.resource) : new StorageImpl(),
+            isCreative ? this.creativeStorageFactory.get() : new StorageImpl(),
             trackingRepository,
             System::currentTimeMillis
         );

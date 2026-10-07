@@ -3,6 +3,7 @@ package com.ultramega.refinedtypes.datagen.advancement;
 import com.ultramega.refinedtypes.registry.Items;
 import com.ultramega.refinedtypes.registry.Tags;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageVariant;
 
 import java.util.function.Consumer;
 
@@ -38,6 +39,21 @@ public class AdvancementProvider implements AdvancementSubProvider {
                 ItemPredicate.Builder.item().of(items, Tags.ENERGY_STORAGE_DISKS).build()
             ))
             .save(consumer, MOD_ID + ":storing_energies");
+
+        Advancement.Builder.advancement()
+            .parent(createIdentifier("drives"))
+            .display(Items.getEssentiaStorageDisk(EssentiaStorageVariant.K_64),
+                createRefinedTypesTranslation("advancements", "storing_essentias"),
+                createRefinedTypesTranslation("advancements", "storing_essentias.description"),
+                null,
+                AdvancementType.GOAL,
+                true,
+                true,
+                false)
+            .addCriterion("energy_storage_disk_in_inventory", InventoryChangeTrigger.TriggerInstance.hasItems(
+                ItemPredicate.Builder.item().of(items, Tags.ESSENTIA_STORAGE_DISKS).build()
+            ))
+            .save(consumer, MOD_ID + ":storing_essentias");
 
 //        Advancement.Builder.advancement()
 //            .parent(createIdentifier("drives"))

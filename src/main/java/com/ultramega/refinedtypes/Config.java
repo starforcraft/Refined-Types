@@ -9,11 +9,13 @@ public final class Config {
     private final ModConfigSpec spec;
 
     private final EnergyStorageBlockEntry energyStorageBlock;
+    private final EssentiaStorageBlockEntry essentiaStorageBlock;
     private final SourceStorageBlockEntry sourceStorageBlock;
     private final SoulStorageBlockEntry soulStorageBlock;
 
     public Config() {
         this.energyStorageBlock = new EnergyStorageBlockEntry();
+        this.essentiaStorageBlock = new EssentiaStorageBlockEntry();
         this.sourceStorageBlock = new SourceStorageBlockEntry();
         this.soulStorageBlock = new SoulStorageBlockEntry();
         this.spec = this.builder.build();
@@ -25,6 +27,10 @@ public final class Config {
 
     public EnergyStorageBlockEntry getEnergyStorageBlock() {
         return this.energyStorageBlock;
+    }
+
+    public EssentiaStorageBlockEntry getEssentiaStorageBlock() {
+        return this.essentiaStorageBlock;
     }
 
     public SourceStorageBlockEntry getSourceStorageBlock() {
@@ -118,6 +124,131 @@ public final class Config {
                 );
             this.infiniteEnergyUsage = builder
                 .translation(translationKey("energyStorageBlock.infiniteEnergyUsage"))
+                .defineInRange(
+                    "infiniteEnergyUsage",
+                    18,
+                    0,
+                    Long.MAX_VALUE
+                );
+            builder.pop();
+        }
+
+        public long get64KEnergyUsage() {
+            return this.k64EnergyUsage.get();
+        }
+
+        public long get256KEnergyUsage() {
+            return this.k256EnergyUsage.get();
+        }
+
+        public long get1024KEnergyUsage() {
+            return this.k1024EnergyUsage.get();
+        }
+
+        public long get8192KEnergyUsage() {
+            return this.k8192EnergyUsage.get();
+        }
+
+        public long get65536KEnergyUsage() {
+            return this.k65536EnergyUsage.get();
+        }
+
+        public long get262144KEnergyUsage() {
+            return this.k262144EnergyUsage.get();
+        }
+
+        public long get1048576KEnergyUsage() {
+            return this.k1048576EnergyUsage.get();
+        }
+
+        public long get8388608KEnergyUsage() {
+            return this.k8388608EnergyUsage.get();
+        }
+
+        public long getInfiniteEnergyUsage() {
+            return this.infiniteEnergyUsage.get();
+        }
+    }
+
+    public class EssentiaStorageBlockEntry {
+        private final ModConfigSpec.LongValue k64EnergyUsage;
+        private final ModConfigSpec.LongValue k256EnergyUsage;
+        private final ModConfigSpec.LongValue k1024EnergyUsage;
+        private final ModConfigSpec.LongValue k8192EnergyUsage;
+        private final ModConfigSpec.LongValue k65536EnergyUsage;
+        private final ModConfigSpec.LongValue k262144EnergyUsage;
+        private final ModConfigSpec.LongValue k1048576EnergyUsage;
+        private final ModConfigSpec.LongValue k8388608EnergyUsage;
+        private final ModConfigSpec.LongValue infiniteEnergyUsage;
+
+        EssentiaStorageBlockEntry() {
+            builder.translation(translationKey("essentiaStorageBlock")).push("essentiaStorageBlock");
+            this.k64EnergyUsage = builder
+                .translation(translationKey("essentiaStorageBlock.64KEnergyUsage"))
+                .defineInRange(
+                    "64KEnergyUsage",
+                    2,
+                    0,
+                    Long.MAX_VALUE
+                );
+            this.k256EnergyUsage = builder
+                .translation(translationKey("essentiaStorageBlock.256KEnergyUsage"))
+                .defineInRange(
+                    "256KEnergyUsage",
+                    4,
+                    0,
+                    Long.MAX_VALUE
+                );
+            this.k1024EnergyUsage = builder
+                .translation(translationKey("essentiaStorageBlock.1024KEnergyUsage"))
+                .defineInRange(
+                    "1024KEnergyUsage",
+                    6,
+                    0,
+                    Long.MAX_VALUE
+                );
+            this.k8192EnergyUsage = builder
+                .translation(translationKey("essentiaStorageBlock.8192KEnergyUsage"))
+                .defineInRange(
+                    "8192KEnergyUsage",
+                    8,
+                    0,
+                    Long.MAX_VALUE
+                );
+            this.k65536EnergyUsage = builder
+                .translation(translationKey("essentiaStorageBlock.65536KEnergyUsage"))
+                .defineInRange(
+                    "65536KEnergyUsage",
+                    10,
+                    0,
+                    Long.MAX_VALUE
+                );
+            this.k262144EnergyUsage = builder
+                .translation(translationKey("essentiaStorageBlock.262144KEnergyUsage"))
+                .defineInRange(
+                    "262144KEnergyUsage",
+                    12,
+                    0,
+                    Long.MAX_VALUE
+                );
+            this.k1048576EnergyUsage = builder
+                .translation(translationKey("essentiaStorageBlock.1048576KEnergyUsage"))
+                .defineInRange(
+                    "1048576KEnergyUsage",
+                    14,
+                    0,
+                    Long.MAX_VALUE
+                );
+            this.k8388608EnergyUsage = builder
+                .translation(translationKey("essentiaStorageBlock.8388608KEnergyUsage"))
+                .defineInRange(
+                    "8388608KEnergyUsage",
+                    16,
+                    0,
+                    Long.MAX_VALUE
+                );
+            this.infiniteEnergyUsage = builder
+                .translation(translationKey("essentiaStorageBlock.infiniteEnergyUsage"))
                 .defineInRange(
                     "infiniteEnergyUsage",
                     18,

@@ -22,11 +22,8 @@ public class EnergyGridResourceType extends TypeGridResourceType {
     public static final EnergyGridResourceType INSTANCE = new EnergyGridResourceType();
 
     static final MapCodec<GridResource> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
-        instance.group(EnergyResourceType.CODEC
-            .fieldOf(ENERGY_ID.getPath())
-            .forGetter(g -> ENERGY_RESOURCE)
-        ).apply(instance, energyResource -> RefinedStorageApi.INSTANCE.getGridResourceRepositoryMapper()
-            .apply(energyResource)));
+        instance.group(EnergyResourceType.CODEC.fieldOf(ENERGY_ID.getPath()).forGetter(g -> ENERGY_RESOURCE))
+            .apply(instance, energyResource -> RefinedStorageApi.INSTANCE.getGridResourceRepositoryMapper().apply(energyResource)));
 
     private static final MutableComponent TITLE = RefinedTypesUtil.createRefinedTypesTranslation(
         "misc",

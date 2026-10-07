@@ -2,6 +2,7 @@ package com.ultramega.refinedtypes.datagen.tag;
 
 import com.ultramega.refinedtypes.registry.Items;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageVariant;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,6 +18,7 @@ import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
 
 import static com.ultramega.refinedtypes.RefinedTypesUtil.MOD_ID;
 import static com.ultramega.refinedtypes.registry.Tags.ENERGY_STORAGE_DISKS;
+import static com.ultramega.refinedtypes.registry.Tags.ESSENTIA_STORAGE_DISKS;
 
 public class ItemTagsProvider extends BlockTagCopyingItemTagProvider {
     public ItemTagsProvider(final PackOutput packOutput,
@@ -32,6 +34,11 @@ public class ItemTagsProvider extends BlockTagCopyingItemTagProvider {
                 .map(Items::getEnergyStorageDisk)
                 .map(t -> (Supplier<Item>) () -> t)
                 .toList(), false);
+        this.addAllToTag(ESSENTIA_STORAGE_DISKS,
+            Arrays.stream(EssentiaStorageVariant.values())
+                .map(Items::getEssentiaStorageDisk)
+                .map(t -> (Supplier<Item>) () -> t)
+                .toList(), true);
 //        this.addAllToTag(SOURCE_STORAGE_DISKS,
 //            Arrays.stream(SourceStorageVariant.values())
 //                .map(Items::getSourceStorageDisk)

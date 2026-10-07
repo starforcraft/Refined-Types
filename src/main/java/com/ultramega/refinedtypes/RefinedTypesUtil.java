@@ -24,8 +24,11 @@ public final class RefinedTypesUtil {
     public static final Identifier CREATIVE_MODE_TAB = createRefinedTypesIdentifier(MOD_ID);
     public static final MutableComponent MOD = Component.translatable("refinedtypes.configuration.title");
 
+    public static final String THAUMATURGE = "thaumaturge";
     public static final String ARS_NOUVEAU = "ars_nouveau";
     public static final String INDUSTRIAL_FOREGOING_SOULS = "industrialforegoingsouls";
+    @Nullable
+    private static Boolean thaumaturgeLoaded = null;
     @Nullable
     private static Boolean arsNouveauLoaded = null;
     @Nullable
@@ -50,6 +53,13 @@ public final class RefinedTypesUtil {
                                                                  final String value,
                                                                  final Object... args) {
         return Component.translatable(createRefinedTypesTranslationKey(category, value), args);
+    }
+
+    public static boolean isThaumaturgeLoaded() {
+        if (thaumaturgeLoaded == null) {
+            thaumaturgeLoaded = ModList.get().isLoaded(THAUMATURGE);
+        }
+        return thaumaturgeLoaded;
     }
 
     public static boolean isArsNouveauLoaded() {

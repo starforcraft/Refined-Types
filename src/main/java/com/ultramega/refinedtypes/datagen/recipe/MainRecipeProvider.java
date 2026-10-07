@@ -3,6 +3,7 @@ package com.ultramega.refinedtypes.datagen.recipe;
 import com.ultramega.refinedtypes.registry.Blocks;
 import com.ultramega.refinedtypes.registry.Items;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageVariant;
 
 import com.refinedmods.refinedstorage.common.misc.ProcessorItem;
 import com.refinedmods.refinedstorage.common.storage.StorageContainerUpgradeRecipe;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
+import com.leclowndu93150.thaumaturge.registry.TTItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -72,6 +74,29 @@ public class MainRecipeProvider extends RecipeProvider {
         energyUpgrades.forEach(up ->
             this.registerUpgradePartRecipe(up.from(), up.to(), com.refinedmods.refinedstorage.common.content.Items.INSTANCE.getProcessor(up.processor()),
                 net.minecraft.world.item.Items.COPPER_BLOCK, up.upgradeBlock()));
+
+        for (final EssentiaStorageVariant variant : EssentiaStorageVariant.values()) {
+            if (variant == EssentiaStorageVariant.CREATIVE) {
+                continue;
+            }
+            this.recipeStorageDisk(variant.getStoragePart(), Items.getEssentiaStorageDisk(variant));
+            this.recipeStorageBlock(variant.getStoragePart(), Items.getEssentiaStorageBlock(variant), TTItems.INGOT_THAUMIUM.get());
+            this.recipeDiskFromStorageHousing(variant.getStoragePart(), Items.getEssentiaStorageDisk(variant));
+        }
+
+        this.registerFirstPartRecipe(TTItems.INGOT_THAUMIUM.get(), EssentiaStorageVariant.K_64.getStoragePart());
+        final List<Upgrade> essentiaUpgrades = List.of(
+            new Upgrade(EssentiaStorageVariant.K_64, EssentiaStorageVariant.K_256, ProcessorItem.Type.BASIC, net.minecraft.world.item.Items.GOLD_BLOCK),
+            new Upgrade(EssentiaStorageVariant.K_256, EssentiaStorageVariant.K_1024, ProcessorItem.Type.IMPROVED, net.minecraft.world.item.Items.GOLD_BLOCK),
+            new Upgrade(EssentiaStorageVariant.K_1024, EssentiaStorageVariant.K_8192, ProcessorItem.Type.ADVANCED, net.minecraft.world.item.Items.DIAMOND_BLOCK),
+            new Upgrade(EssentiaStorageVariant.K_8192, EssentiaStorageVariant.K_65536, ProcessorItem.Type.ADVANCED, net.minecraft.world.item.Items.DIAMOND_BLOCK),
+            new Upgrade(EssentiaStorageVariant.K_65536, EssentiaStorageVariant.K_262144, ProcessorItem.Type.ADVANCED, net.minecraft.world.item.Items.EMERALD_BLOCK),
+            new Upgrade(EssentiaStorageVariant.K_262144, EssentiaStorageVariant.K_1048576, ProcessorItem.Type.ADVANCED, net.minecraft.world.item.Items.EMERALD_BLOCK),
+            new Upgrade(EssentiaStorageVariant.K_1048576, EssentiaStorageVariant.K_8388608, ProcessorItem.Type.ADVANCED, net.minecraft.world.item.Items.NETHERITE_BLOCK)
+        );
+        essentiaUpgrades.forEach(up ->
+            this.registerUpgradePartRecipe(up.from(), up.to(), com.refinedmods.refinedstorage.common.content.Items.INSTANCE.getProcessor(up.processor()),
+                TTItems.INGOT_THAUMIUM.get(), up.upgradeBlock()));
     }
 
     private void storageUpgrades() {
@@ -79,6 +104,11 @@ public class MainRecipeProvider extends RecipeProvider {
             Items::getEnergyStorageDisk, "energy_storage_disk_upgrade");
         this.storageUpgrades(EnergyStorageVariant.values(), Items::getEnergyStoragePart,
             Blocks::getEnergyStorageBlock, "energy_storage_block_upgrade");
+
+        this.storageUpgrades(EssentiaStorageVariant.values(), Items::getEssentiaStoragePart,
+            Items::getEssentiaStorageDisk, "essentia_storage_disk_upgrade");
+        this.storageUpgrades(EssentiaStorageVariant.values(), Items::getEssentiaStoragePart,
+            Blocks::getEssentiaStorageBlock, "essentia_storage_block_upgrade");
     }
 
     private void networkEnergizer() {
@@ -172,11 +202,11 @@ public class MainRecipeProvider extends RecipeProvider {
                                                             final Function<T, ItemLike> containerProvider,
                                                             final String name) {
         for (final T variant : variants) {
-            if (variant.getCapacity() == null) {
+            if (variant.getCapacity() == null || variant.getCapacity() < 0) {
                 continue;
             }
             final List<T> lowerVariants = Arrays.stream(variants)
-                .filter(otherVariant -> otherVariant.getCapacity() != null)
+                .filter(otherVariant -> otherVariant.getCapacity() != null && otherVariant.getCapacity() >= 0)
                 .filter(otherVariant -> otherVariant.getCapacity() < variant.getCapacity())
                 .toList();
             if (lowerVariants.isEmpty()) {

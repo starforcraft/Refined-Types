@@ -26,8 +26,8 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class EnergyGridExtractionStrategy implements GridExtractionStrategy {
     private final GridOperations gridOperations;
-    private final ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource> playerInventory;
-    private final ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource> playerCursor;
+    private final ResourceHandler<ItemResource> playerInventory;
+    private final ResourceHandler<ItemResource> playerCursor;
 
     public EnergyGridExtractionStrategy(final AbstractContainerMenu containerMenu,
                                         final ServerPlayer player,

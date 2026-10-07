@@ -1,6 +1,7 @@
 package com.ultramega.refinedtypes.registry;
 
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageVariant;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -12,6 +13,10 @@ public final class Items {
     private static final Map<EnergyStorageVariant, Supplier<Item>> ENERGY_STORAGE_PARTS = new EnumMap<>(EnergyStorageVariant.class);
     private static final Map<EnergyStorageVariant, Supplier<Item>> ENERGY_STORAGE_DISKS = new EnumMap<>(EnergyStorageVariant.class);
     private static final Map<EnergyStorageVariant, Supplier<Item>> ENERGY_STORAGE_BLOCKS = new EnumMap<>(EnergyStorageVariant.class);
+
+    private static final Map<EssentiaStorageVariant, Supplier<Item>> ESSENTIA_STORAGE_PARTS = new EnumMap<>(EssentiaStorageVariant.class);
+    private static final Map<EssentiaStorageVariant, Supplier<Item>> ESSENTIA_STORAGE_DISKS = new EnumMap<>(EssentiaStorageVariant.class);
+    private static final Map<EssentiaStorageVariant, Supplier<Item>> ESSENTIA_STORAGE_BLOCKS = new EnumMap<>(EssentiaStorageVariant.class);
 
 //    private static final Map<SourceStorageVariant, Supplier<Item>> SOURCE_STORAGE_PARTS = new EnumMap<>(SourceStorageVariant.class);
 //    private static final Map<SourceStorageVariant, Supplier<Item>> SOURCE_STORAGE_DISKS = new EnumMap<>(SourceStorageVariant.class);
@@ -46,6 +51,30 @@ public final class Items {
 
     public static void setEnergyStorageBlock(final EnergyStorageVariant variant, final Supplier<Item> supplier) {
         ENERGY_STORAGE_BLOCKS.put(variant, supplier);
+    }
+
+    public static Item getEssentiaStoragePart(final EssentiaStorageVariant variant) {
+        return ESSENTIA_STORAGE_PARTS.get(variant).get();
+    }
+
+    public static void setEssentiaStoragePart(final EssentiaStorageVariant variant, final Supplier<Item> supplier) {
+        ESSENTIA_STORAGE_PARTS.put(variant, supplier);
+    }
+
+    public static Item getEssentiaStorageDisk(final EssentiaStorageVariant variant) {
+        return ESSENTIA_STORAGE_DISKS.get(variant).get();
+    }
+
+    public static void setEssentiaStorageDisk(final EssentiaStorageVariant variant, final Supplier<Item> supplier) {
+        ESSENTIA_STORAGE_DISKS.put(variant, supplier);
+    }
+
+    public static Item getEssentiaStorageBlock(final EssentiaStorageVariant variant) {
+        return ESSENTIA_STORAGE_BLOCKS.get(variant).get();
+    }
+
+    public static void setEssentiaStorageBlock(final EssentiaStorageVariant variant, final Supplier<Item> supplier) {
+        ESSENTIA_STORAGE_BLOCKS.put(variant, supplier);
     }
 
 //    public static Item getSourceStoragePart(final SourceStorageVariant variant) {

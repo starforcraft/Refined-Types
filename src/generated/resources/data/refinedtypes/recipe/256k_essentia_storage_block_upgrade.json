@@ -1,0 +1,8 @@
+{
+  "type": "refinedstorage:storage_container_upgrade",
+  "part": "refinedtypes:256k_essentia_storage_part",
+  "result": "refinedtypes:256k_essentia_storage_block",
+  "sources": [
+    "refinedtypes:64k_essentia_storage_block"
+  ]
+}

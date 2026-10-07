@@ -8,18 +8,24 @@ import com.refinedmods.refinedstorage.api.storage.Storage;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class CreativeStorageImpl implements Storage {
-    private final ResourceKey resource;
+    private final Supplier<? extends Collection<? extends ResourceKey>> resources;
+
 
     public CreativeStorageImpl(final ResourceKey resource) {
-        this.resource = resource;
+        this(() -> List.of(resource));
+    }
+
+    public CreativeStorageImpl(final Supplier<? extends Collection<? extends ResourceKey>> resources) {
+        this.resources = resources;
     }
 
     @Override
     public long extract(final ResourceKey resource, final long amount, final Action action, final Actor actor) {
         ResourceAmount.validate(resource, amount);
-        if (!this.resource.equals(resource)) {
+        if (!this.resources.get().contains(resource)) {
             return 0;
         }
         return amount;
@@ -33,7 +39,9 @@ public class CreativeStorageImpl implements Storage {
 
     @Override
     public Collection<ResourceAmount> getAll() {
-        return List.of(new ResourceAmount(this.resource, Long.MAX_VALUE));
+        return this.resources.get().stream()
+            .map(resource -> new ResourceAmount(resource, Long.MAX_VALUE))
+            .toList();
     }
 
     @Override

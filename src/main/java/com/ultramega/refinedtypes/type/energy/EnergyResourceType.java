@@ -78,11 +78,6 @@ public enum EnergyResourceType implements ResourceType {
 
     @Override
     public GridOperations createGridOperations(final RootStorage rootStorage, final Actor actor) {
-        return new GridOperationsImpl(
-            rootStorage,
-            actor,
-            resource -> Long.MAX_VALUE,
-            DEFAULT_TRANSFER_AMOUNT
-        );
+        return new GridOperationsImpl(rootStorage, actor, resource -> Long.MAX_VALUE, DEFAULT_TRANSFER_AMOUNT);
     }
 }

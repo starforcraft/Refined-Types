@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "refinedtypes:block/essentia_storage_block/1048576k_essentia_storage_block"
+  }
+}

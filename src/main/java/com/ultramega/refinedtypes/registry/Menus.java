@@ -13,6 +13,8 @@ import static java.util.Objects.requireNonNull;
 public final class Menus {
     @Nullable
     private static Supplier<MenuType<AbstractContainerMenu>> energyStorage;
+    @Nullable
+    private static Supplier<MenuType<AbstractContainerMenu>> essentiaStorage;
 //    private static Supplier<MenuType<AbstractContainerMenu>> sourceStorage;
 //    private static Supplier<MenuType<AbstractContainerMenu>> soulStorage;
 
@@ -28,6 +30,14 @@ public final class Menus {
 
     public static void setEnergyStorage(final Supplier<MenuType<AbstractContainerMenu>> supplier) {
         energyStorage = supplier;
+    }
+
+    public static MenuType<AbstractContainerMenu> getEssentiaStorage() {
+        return requireNonNull(essentiaStorage).get();
+    }
+
+    public static void setEssentiaStorage(final Supplier<MenuType<AbstractContainerMenu>> supplier) {
+        essentiaStorage = supplier;
     }
 
 //    public static MenuType<AbstractContainerMenu> getSourceStorage() {

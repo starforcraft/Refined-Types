@@ -5,7 +5,6 @@
   "sources": [
     "refinedtypes:64k_energy_storage_block",
     "refinedtypes:256k_energy_storage_block",
-    "refinedtypes:1024k_energy_storage_block",
-    "refinedtypes:creative_energy_storage_block"
+    "refinedtypes:1024k_energy_storage_block"
   ]
 }

@@ -8,7 +8,6 @@
     "refinedtypes:1024k_energy_storage_block",
     "refinedtypes:8192k_energy_storage_block",
     "refinedtypes:65536k_energy_storage_block",
-    "refinedtypes:262144k_energy_storage_block",
-    "refinedtypes:creative_energy_storage_block"
+    "refinedtypes:262144k_energy_storage_block"
   ]
 }

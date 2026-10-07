@@ -2,6 +2,7 @@ package com.ultramega.refinedtypes.datagen.tag;
 
 import com.ultramega.refinedtypes.registry.Blocks;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageVariant;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -29,6 +30,9 @@ public class BlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
 
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             this.markAsMineable(Blocks.getEnergyStorageBlock(variant), false);
+        }
+        for (final EssentiaStorageVariant variant : EssentiaStorageVariant.values()) {
+            this.markAsMineable(Blocks.getEssentiaStorageBlock(variant), true);
         }
 //        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
 //            this.markAsMineable(Blocks.getSourceStorageBlock(variant), true);

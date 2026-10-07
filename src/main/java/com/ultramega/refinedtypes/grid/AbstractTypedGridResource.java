@@ -40,11 +40,20 @@ public abstract class AbstractTypedGridResource<R extends PlatformResourceKey> e
                                         final Class<R> resourceClass,
                                         final Type type,
                                         final long autocraftingAmount) {
+        this(resource, name, attributes, resourceClass, Types.TYPE_REGISTRY.getId(type), autocraftingAmount);
+    }
+
+    protected AbstractTypedGridResource(final R resource,
+                                        final String name,
+                                        final Function<GridResourceAttributeKey, Set<String>> attributes,
+                                        final Class<R> resourceClass,
+                                        final int registryId,
+                                        final long autocraftingAmount) {
         super(resource, name, attributes);
-        this.id = Types.TYPE_REGISTRY.getId(type);
+        this.id = registryId;
         this.rendering = RefinedStorageClientApi.INSTANCE.getResourceRendering(resourceClass);
         this.autocraftingAmount = autocraftingAmount;
-        this.tooltip = List.of(type.getDisplayName());
+        this.tooltip = this.rendering.getTooltip(resource);
     }
 
     @Override

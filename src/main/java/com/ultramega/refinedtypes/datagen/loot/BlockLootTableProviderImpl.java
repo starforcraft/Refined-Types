@@ -2,6 +2,7 @@ package com.ultramega.refinedtypes.datagen.loot;
 
 import com.ultramega.refinedtypes.registry.Blocks;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageVariant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +61,9 @@ public class BlockLootTableProviderImpl implements DataProvider {
 
         for (final EnergyStorageVariant variant : EnergyStorageVariant.values()) {
             this.addLootTableWithCondition(Blocks.getEnergyStorageBlock(variant), null);
+        }
+        for (final EssentiaStorageVariant variant : EssentiaStorageVariant.values()) {
+            this.addLootTableWithCondition(Blocks.getEssentiaStorageBlock(variant), null);
         }
 //        for (final SourceStorageVariant variant : SourceStorageVariant.values()) {
 //            this.addLootTableWithCondition(Blocks.getSourceStorageBlock(variant), ARS_NOUVEAU);

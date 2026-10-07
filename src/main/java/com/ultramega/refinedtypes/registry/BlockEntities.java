@@ -2,6 +2,7 @@ package com.ultramega.refinedtypes.registry;
 
 import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerBlockEntity;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageVariant;
 
 import com.refinedmods.refinedstorage.common.api.support.network.AbstractNetworkNodeContainerBlockEntity;
 
@@ -17,6 +18,8 @@ import static java.util.Objects.requireNonNull;
 public final class BlockEntities {
     private static final Map<EnergyStorageVariant, Supplier<BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>>>> ENERGY_STORAGE_BLOCKS =
         new EnumMap<>(EnergyStorageVariant.class);
+    private static final Map<EssentiaStorageVariant, Supplier<BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>>>> ESSENTIA_STORAGE_BLOCKS =
+        new EnumMap<>(EssentiaStorageVariant.class);
 //    private static final Map<SourceStorageVariant, Supplier<BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>>>> SOURCE_STORAGE_BLOCKS =
 //        new EnumMap<>(SourceStorageVariant.class);
 //    private static final Map<SoulStorageVariant, Supplier<BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>>>> SOUL_STORAGE_BLOCKS =
@@ -35,6 +38,15 @@ public final class BlockEntities {
     public static void setEnergyStorageBlock(final EnergyStorageVariant variant,
                                              final Supplier<BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>>> supplier) {
         ENERGY_STORAGE_BLOCKS.put(variant, supplier);
+    }
+
+    public static BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>> getEssentiaStorageBlock(final EssentiaStorageVariant variant) {
+        return ESSENTIA_STORAGE_BLOCKS.get(variant).get();
+    }
+
+    public static void setEssentiaStorageBlock(final EssentiaStorageVariant variant,
+                                               final Supplier<BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>>> supplier) {
+        ESSENTIA_STORAGE_BLOCKS.put(variant, supplier);
     }
 
 //    public static BlockEntityType<AbstractNetworkNodeContainerBlockEntity<?>> getSourceStorageBlock(final SourceStorageVariant variant) {

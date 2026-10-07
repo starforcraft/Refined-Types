@@ -4,6 +4,7 @@ import com.ultramega.refinedtypes.networkenergizer.NetworkEnergizerBlock;
 import com.ultramega.refinedtypes.registry.Blocks;
 import com.ultramega.refinedtypes.registry.Items;
 import com.ultramega.refinedtypes.storage.energy.EnergyStorageVariant;
+import com.ultramega.refinedtypes.storage.essentia.EssentiaStorageVariant;
 
 import java.util.stream.Stream;
 
@@ -27,6 +28,7 @@ import net.minecraft.world.level.block.Block;
 
 import static com.refinedmods.refinedstorage.common.util.IdentifierUtil.createIdentifier;
 import static com.ultramega.refinedtypes.ModInitializer.ENERGY_ID;
+import static com.ultramega.refinedtypes.ModInitializer.ESSENTIA_ID;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.MOD_ID;
 import static com.ultramega.refinedtypes.RefinedTypesUtil.createRefinedTypesIdentifier;
 import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
@@ -80,6 +82,17 @@ public class ModelProviders extends ModelProvider {
             blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, plainVariant(blockModel)));
             itemModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(blockModel));
         }
+        for (final EssentiaStorageVariant variant : EssentiaStorageVariant.values()) {
+            final Identifier blockModel = ModelTemplates.CUBE_ALL.create(
+                createRefinedTypesIdentifier("block/essentia_storage_block/" + variant.getName() + "_essentia_storage_block"),
+                TextureMapping.cube(texture(
+                    createRefinedTypesIdentifier("block/essentia_storage_block/" + variant.getName() + "_essentia_storage_block"))),
+                blockModels.modelOutput
+            );
+            final Block block = Blocks.getEssentiaStorageBlock(variant);
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, plainVariant(blockModel)));
+            itemModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(blockModel));
+        }
     }
 
     private void registerStorageItems(final ItemModelGenerators itemModels) {
@@ -87,6 +100,12 @@ public class ModelProviders extends ModelProvider {
             this.generateStorageItems(Items.getEnergyStorageDisk(variant), variant.getStorageDiskId(), ENERGY_ID, itemModels);
             if (variant != EnergyStorageVariant.CREATIVE) {
                 this.generateStorageItems(Items.getEnergyStoragePart(variant), variant.getStoragePartId(), ENERGY_ID, itemModels);
+            }
+        }
+        for (final EssentiaStorageVariant variant : EssentiaStorageVariant.values()) {
+            this.generateStorageItems(Items.getEssentiaStorageDisk(variant), variant.getStorageDiskId(), ESSENTIA_ID, itemModels);
+            if (variant != EssentiaStorageVariant.CREATIVE) {
+                this.generateStorageItems(Items.getEssentiaStoragePart(variant), variant.getStoragePartId(), ESSENTIA_ID, itemModels);
             }
         }
     }

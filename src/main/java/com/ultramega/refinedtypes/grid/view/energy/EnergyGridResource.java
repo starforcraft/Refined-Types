@@ -7,7 +7,6 @@ import com.ultramega.refinedtypes.type.energy.EnergyResource;
 
 import com.refinedmods.refinedstorage.api.resource.ResourceAmount;
 import com.refinedmods.refinedstorage.api.resource.repository.ResourceRepository;
-import com.refinedmods.refinedstorage.common.Platform;
 import com.refinedmods.refinedstorage.common.api.grid.view.GridResource;
 import com.refinedmods.refinedstorage.common.api.grid.view.GridResourceAttributeKey;
 import com.refinedmods.refinedstorage.common.api.grid.view.GridResourceType;
