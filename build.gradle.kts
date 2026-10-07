@@ -3,7 +3,7 @@ import org.gradle.jvm.tasks.Jar
 plugins {
     id("com.refinedmods.refinedarchitect.root")
     id("com.refinedmods.refinedarchitect.neoforge")
-    id("me.modmuss50.mod-publish-plugin") version "1.1.0"
+    id("me.modmuss50.mod-publish-plugin") version "2.1.1"
 }
 
 repositories {
@@ -129,6 +129,8 @@ publishMods {
         minecraftVersions.add(minecraftVersion)
         changelogType = "html"
         displayName = file.map { it.asFile.name }
+        client = true
+        server = true
         requires("refined-storage")
 //        optional("ars-nouveau", "industrial-foregoing-souls")
     }
