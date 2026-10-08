@@ -1,5 +1,6 @@
 package com.ultramega.refinedtypes;
 
+import com.ultramega.refinedtypes.compat.jei.EssentiaJEIRecipeModIngredientConverter;
 import com.ultramega.refinedtypes.compat.jei.JEIRecipeModIngredientConverter;
 import com.ultramega.refinedtypes.exporter.EnergyExporterTransferStrategyFactory;
 import com.ultramega.refinedtypes.exporter.EssentiaExporterTransferStrategyFactory;
@@ -396,6 +397,9 @@ public final class ModInitializer {
 //            RefinedStorageApi.INSTANCE.addIngredientConverter(new EmiEnergyResourceModIngredientConverter());
         } else if (ModList.get().isLoaded("jei")) {
             RefinedStorageApi.INSTANCE.addIngredientConverter(new JEIRecipeModIngredientConverter());
+            if (isThaumaturgeLoaded()) {
+                RefinedStorageApi.INSTANCE.addIngredientConverter(new EssentiaJEIRecipeModIngredientConverter());
+            }
         }
     }
 
